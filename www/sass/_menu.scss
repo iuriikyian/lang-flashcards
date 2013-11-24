@@ -15,6 +15,7 @@
   width: $menu-width;
   background-color: $menu-background-color;
   color: $menu-color;
+  overflow-y: scroll;
   .menu-item {
     border-bottom: solid 1px $menu-border-color;
     font-size: 20px;

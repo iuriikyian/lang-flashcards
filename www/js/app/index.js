@@ -55,40 +55,45 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
 	    	}
 	    },
 	    
+	    // empty name means 'today' deck
 	    showCardView : function(deckName){
 	    	this._destroyCurrentView();
 	    	var deck = this.decksManager.getDeck('english', deckName);
     		//var deck = new Deck(testDeckData);
-    		var v = new CardView({
+    		var view = new CardView({
     			el : '.body',
     			card : deck.getCurrentCardSideInfo()
     		});
-    		this.view = v;
-	    	v.render();
+    		this.view = view;
+	    	view.render();
 	    	var me = this;
-	    	v.on('back', function(){
+	    	view.on('back', function(){
 	    		me.showDecksView();
 	    		console.log('Event:back');
 	    	});
-	    	v.on('card:show-next', function(){
+	    	view.on('show:menu', function(){
+	    		console.log('Event:show:menu');
+	    		me.showCardViewMenu();
+	    	});
+	    	view.on('card:show-next', function(){
 	    		deck.gotoNext();
-	    		v.setCard(deck.getCurrentCardSideInfo());
-		    	v.render();
+	    		view.setCard(deck.getCurrentCardSideInfo());
+		    	view.render();
 	    		console.log('Event:card:show-next');
 	    	});
-	    	v.on('card:show-prev', function(){
+	    	view.on('card:show-prev', function(){
 	    		deck.gotoPrev();
-	    		v.setCard(deck.getCurrentCardSideInfo());
-		    	v.render();
+	    		view.setCard(deck.getCurrentCardSideInfo());
+		    	view.render();
 	    		console.log('Event:card:show-prev');
 	    	});
-	    	v.on('card:flip', function(){
+	    	view.on('card:flip', function(){
 	    		deck.flipCard();
-	    		v.setCard(deck.getCurrentCardSideInfo());
-		    	v.render();
+	    		view.setCard(deck.getCurrentCardSideInfo());
+		    	view.render();
 	    		console.log('Event:card:flip');
 	    	});
-	    	v.on('card:toggle-select', function(newValue){
+	    	view.on('card:toggle-select', function(newValue){
 	    		deck.selectCard(newValue);
 	    		console.log('Event:card:toggle-select');
 	    	});
@@ -105,24 +110,8 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
 	    	this.view = view;
 	    	view.render();
 	    	view.on('show:menu', function(){
-	    		if(! _.isUndefined(me.menu)){
-	    			me.menu.off();
-	    			delete me.menu;
-	    		}
 	    		console.log('Event:show:menu');
-	    		var menu = new Menu({
-    			    el : '#menu',
-    			    overlay : '#menu-overlay',
-	    			menus : [
-	    			    { id : 1, name : 'test'},
-	    			    { id : 2, name : 'other'}
-	    			]
-	    		});
-	    		menu.render();
-	    		menu.on('menu:click', function(itemId){
-	    			console.log('Event:menu:click:' + itemId);
-	    		});
-	    		me.menu = menu;
+	    		me.showDecksViewMenu();
 	    	});
 	    	view.on('show:today-deck', function(){
 	    		console.log('Event:show:today-deck');
@@ -137,6 +126,53 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
 	    	view.on('deck:removed', function(deckName){
 	    		console.log('Event:deck:removed:' + deckName);
 	    	});
+	    },
+	    
+	    showDecksViewMenu : function(){
+    		this._destroyMenu();
+    		var menu = new Menu({
+			    el : '#menu',
+			    overlay : '#menu-overlay',
+    			menus : [
+    			    { id : 1, name : 'test'},
+    			    { id : 2, name : 'other'}
+    			]
+    		});
+    		menu.render();
+    		menu.on('menu:click', function(itemId){
+    			console.log('Event:menu:click:' + itemId);
+    		});
+    		this.menu = menu;
+	    },
+	    
+	    _destroyMenu : function(){
+    		if(! _.isUndefined(this.menu)){
+    			this.menu.off();
+    			delete this.menu;
+    		}
+	    },
+	    
+	    showCardViewMenu : function(){
+	    	this._destroyMenu();
+    		var menu = new Menu({
+			    el : '#menu',
+			    overlay : '#menu-overlay',
+    			menus : [
+    			    { id : 'mode', name : 'review mode'},
+    			    { id : 'shuffle', name : 'shuffle'},
+    			    { id : 'sel-invert', name : 'sel invert'},
+    			    { id : 'sel-clear', name : 'sel clear'},
+    			    { id : 'sel2today', name : 'sel->today'},
+    			    { id : 'deck-info', name : 'deck info'},
+    			    { id : 'delete-card', name : 'delete card'},
+    			    { id : 'help', name : 'help'}
+    			]
+    		});
+    		menu.render();
+    		menu.on('menu:click', function(itemId){
+    			console.log('Event:menu:click:' + itemId);
+    		});
+    		this.menu = menu;
 	    },
 	    
 	    onStartup: function(){
