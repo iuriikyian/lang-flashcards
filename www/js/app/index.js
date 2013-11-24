@@ -57,7 +57,8 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
 	    
 	    showCardView : function(deckName){
 	    	this._destroyCurrentView();
-    		var deck = new Deck(testDeckData);
+	    	var deck = this.decksManager.getDeck('english', deckName);
+    		//var deck = new Deck(testDeckData);
     		var v = new CardView({
     			el : '.body',
     			card : deck.getCurrentCardSideInfo()
@@ -99,7 +100,7 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
 	    	this._destroyCurrentView();
 	    	var view = new DecksView({
 	    		el : '.body',
-	    		decks : this.decksManager.getDeckNames()
+	    		decks : this.decksManager.getDeckNames('english')
 	    	});
 	    	this.view = view;
 	    	view.render();

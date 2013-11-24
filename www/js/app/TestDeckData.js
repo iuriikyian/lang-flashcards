@@ -1,6 +1,7 @@
 define(function(){
 	return {
 		name : 'test-deck',
+		lang : 'testlang',
 		cards : [
 		     {
 		    	'side-1-top' : ['top line'],

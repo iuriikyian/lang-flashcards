@@ -1,10 +1,19 @@
 define(['underscore'], function(_){
 	var Deck = function(options){
-		this.cards = options.cards || [];
+		this.name = options.lang || '';
 		this.name = options.name || '';
-		this.currentIndex = options.currentIndex || 0;
-		this.selectedCards = {};
-		this.flippedCards = {};
+		this.cards = options.cards || [];
+		this.currentIndex = (options.meta && options.meta.currentIndex) || 0;
+		this.selectedCards = (options.meta && options.meta.selectedCards) || {};
+		this.flippedCards = (options.meta && options.meta.flippedCards) || {};
+		
+		this.getMeta = function(){
+			return {
+				currentINdex : this.currentIndex,
+				selectedCards : this.selectedCards,
+				flippedCards : this.flippedCards
+			};
+		};
 		
 		this.cardsCount = function(){
 			return this.cards.length();

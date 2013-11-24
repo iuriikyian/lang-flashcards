@@ -1,26 +1,77 @@
-define(['underscore'], function(_){
-	var testData = {
-		english : [
-		],
-			
-	};
+define(['underscore', 'Deck', 'testStorage'], function(_, Deck, TestStorage){
+	var SEPARATOR = '-';
+	var DECK_CARDS_PREFIX = 'deck-cards' + SEPARATOR;
+	var DECK_META_PREFIX = 'deck-meta' + SEPARATOR;
+	
+	//var storage = localStorage;
+	var storage = TestStorage; // for testing
 	
 	var DecksManager = function(){
-		this.getDeckNames = function(){
-			return [
-			     'deck-1',
-			     'deck-2',
-			     'deck-3'
-			];
+
+		this.getLangs = function(){
+			var keysCount = storage.length;
+			var langs = {};
+			for(var i = 0; i < keysCount ; ++i){
+				var key = storage.key(i);
+				if(key.indexOf(DECK_CARDS_PREFIX) === 0){
+					var langPlusName = key.substr(DECK_CARDS_PREFIX.length);
+					var separatorPos = langPlusName.indexOf(SEPARATOR);
+					var lang = langPlusName.substr(0, separatorPos);
+					langs[lang] = lang;
+				}
+			}
+			return _.keys(langs);
+		};
+
+		this.getDeckNames = function(lang){
+			var langPrefix = lang + SEPARATOR;
+			var keysCount = storage.length;
+			var names = [];
+			for(var i = 0; i < keysCount ; ++i){
+				var key = storage.key(i);
+				if(key.indexOf(DECK_CARDS_PREFIX) === 0){
+					var langPlusName = key.substr(DECK_CARDS_PREFIX.length);
+					if(langPlusName.indexOf(langPrefix) === 0){
+						var name = langPlusName.substr(langPrefix.length);
+						names.push(name);
+					}
+				}
+			}
+			return names;
 		};
 		
-		this.getDeck = function(deckName){
-			return {
-				name : deckName,
-				cards : []
+		this.getDeck = function(lang, deckName){
+			var keysCount = storage.length;
+			var cardsKey = [DECK_CARDS_PREFIX, lang, SEPARATOR, deckName].join('');
+			var metaKey = [DECK_META_PREFIX, lang, SEPARATOR, deckName].join('');
+			var cards;
+			var meta;
+			for(var i = 0; i < keysCount ; ++i){
+				var key = storage.key(i);
+				if(key === cardsKey){
+					cards = storage.getItem(key);
+					continue;
+				}
+				if(key === metaKey){
+					meta = storage.getItem(key);
+					continue;
+				}
+				if(cards && meta){
+					break;
+				}
 			}
-		}
-	}
+			if(cards){
+				var deck = new Deck({
+					lang : lang,
+					name : deckName,
+					cards : cards,
+					meta : meta
+				});
+				return deck;
+			}
+			return null;
+		};
+	};
 	
 	return DecksManager;
 });
