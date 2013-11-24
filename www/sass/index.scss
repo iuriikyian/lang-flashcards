@@ -1,0 +1,96 @@
+// --- set defaults ---
+html,body{
+  margin: 0;
+  border: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+$header-height: 44px;
+$header-border: 2px;
+$header-border-color: #444;
+$header-color: #fff;
+$header-background-color: #222;
+
+@mixin screen-header(){
+  height: $header-height;
+  padding: ($header-height - $button-height) / 2;
+  border-bottom: solid $header-border $header-border-color;
+  text-align: center;
+  font-size: 24px;
+  font-weight: normal;
+  color: $header-color;
+  background-color: $header-background-color;
+}
+
+$button-height: 20px;
+$button-padding: 10px;
+$button-min-width: 40px;
+$button-border-color: #ddd;
+$button-border-radius: 0.5em;
+$button-margin: 0.5em;
+$button-font-size: 18px;
+
+$button-disabled-border-color: #555;
+$button-disabled-color: #555;
+
+$content-background-color: #222;
+$content-color: #fff;
+$content-padding: 4px;
+body {
+  background-color: $content-background-color; 
+}
+
+.screen {
+  width: 100%;
+  height: 100%;
+  .clearfix {
+    clear: both;
+  }
+  .header {
+    @include screen-header();
+    .back-button,
+    .menu-button {
+      font-family: FontAwesome;
+      font-size: 22px !important;
+      height: $button-height;
+      width: $button-min-width - ($button-padding * 2);
+      padding: $button-padding;
+      border: solid 1px $button-border-color;
+      border-radius: $button-border-radius; 
+    }
+    .title {
+      padding: 8px;
+    }
+  }
+  .content {
+    color: $content-color;
+    padding: $content-padding;
+    background-color: $content-background-color;
+    .button{
+      height: $button-height;
+      min-width : $button-min-width;
+      border: solid 1px $button-border-color;
+      border-radius: $button-border-radius;
+      margin: $button-margin 0;
+      text-align: center;
+      padding: $button-padding;
+      font-size: $button-font-size;
+    }
+    .button.disabled {
+      color: $button-disabled-border-color;
+      border-color: $button-disabled-border-color;
+    }
+  }
+  .right {
+    float: right;
+  }
+  .left {
+    float: left;
+  }
+}
+
+@import "decks-list";
+@import "card-view";

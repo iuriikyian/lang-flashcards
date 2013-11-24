@@ -1,0 +1,24 @@
+{
+  "name": "lang-flashcards",
+  "version": "0.0.1",
+  "authors": [
+    "Iurii Kyian <yuriy.kyyan@gmail.com>"
+  ],
+  "description": "language flashcards mobile app",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies" : {
+    "underscore" : "1.5.2",
+    "underscore.deferred" : "*",
+    "zepto" : "1.0.0",
+    "bootstrap" : "3.*",
+    "requirejs" : "*"
+  }
+}

@@ -1,0 +1,77 @@
+.decks-list{
+  .edit,
+  .add-deck,
+  .cancel-edit,
+  .remove-deck {
+    font-family: FontAwesome;
+    font-size: 22px !important;
+  }
+  .separator{
+    $separator-height : $button-height + ($button-padding * 2);
+    width: 100%;
+    height: $separator-height;
+    margin: $button-margin 0;
+    .separator-line{
+      .separator-half {
+        margin-right: $button-min-width + 30px;
+        height: $button-height;
+        border-bottom: solid 1px $header-border-color;
+      }
+    }
+    .new-deck-editor{
+      width: 100%;
+      display: none;
+      .editor{
+        margin-right: $button-min-width + 30px;
+        margin-left: $button-min-width + 30px;
+        padding: 0 7px 0 0px;
+        input{
+          $editor-padding: 1%;
+          width: 100% - (2 * $editor-padding);
+          height: $button-height + ($button-padding * 2) - 5px;
+          font-size: $button-font-size;
+          border-radius: $button-border-radius;
+          padding: 1px $editor-padding;
+        }
+      }
+    }
+    .button {
+      margin: 0;
+      width: $button-min-width;
+      height: $button-height;
+    }
+    tr{
+      height: 46px;
+      padding: 0;
+    }
+  }
+  .deck {
+    margin: 10px 0;
+    
+    .button{
+      margin: 0;
+    }
+    .edit-deck,
+    .remove-deck{
+      display: none;
+    }
+  }
+  // edit mode switch
+  .edit-mode {
+    .separator-line{
+      display: none;
+    }
+    .new-deck-editor,
+    .deck {
+      display: block;
+      .editor,
+      .deck-button{
+        margin-right: $button-min-width + 30px;
+      }
+      .edit-deck,
+      .remove-deck{
+        display: block;
+      }
+    }
+  }
+}

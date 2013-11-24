@@ -1,0 +1,30 @@
+.card-view{
+  .header{
+    .title{
+      padding: 0;
+      .selected{
+        font-family: FontAwesome;
+        font-size: 50px;
+      }
+      .text{
+        display: inline-block;
+        vertical-align: middle;
+        padding-bottom: 35px;
+        margin-left: 10px;
+      }
+    }
+  }
+  .content {
+    .card-side {
+      text-align: center;
+      .top {
+        font-style: italic;
+        font-size: 20px;
+      }
+      .text{
+        font-weight: bold;
+        font-size: 22px;
+      }
+    }
+  }
+}
