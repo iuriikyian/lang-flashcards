@@ -1,0 +1,27 @@
+.menu-overlay{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 99%;
+  height: 99%;
+  opacity : 0.3; 
+}
+
+.menu{
+  position: absolute;
+  right: 0;
+  top: $header-height + ($button-padding * 2) + $header-border;
+  bottom: 0;
+  width: $menu-width;
+  background-color: $menu-background-color;
+  color: $menu-color;
+  .menu-item {
+    border-bottom: solid 1px $menu-border-color;
+    font-size: 20px;
+    padding: 10px;
+  }
+}
+
+.hidden {
+  display: none;
+}

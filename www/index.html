@@ -27,13 +27,9 @@
         <title>Hello World</title>
     </head>
     <body>
-        <div class="app">
-            <h1>PhoneGap</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
-        </div>
+        <div class="body"></div>
+        <div id="menu-overlay" class="menu-overlay hidden"></div>
+        <div id="menu" class="menu hidden"></div>
         <!--script type="text/javascript" src="phonegap.js"></script-->
         <script src="js/lib/require.js" data-main="js/config.js"></script>
         <!--script type="text/javascript" src="js/index.js"></script>
@@ -44,7 +40,7 @@
     <script type="text/html" id="decksList">
     	<div class="decks-list screen">
 	    	<div class="header">
-	    		<div class="menu-button fa-bars right"></div>
+	    		<div class="button menu-button fa-bars right"></div>
 	    		<div class="title">
 	    			<%= title %>	
 	    		</div>
@@ -84,11 +80,16 @@
 			<div class="button deck-button" data-target="<%= deck %>"><%= deck %></div>
 		</div>
     </script>
+    <script type="text/html" id="menuTemplate">
+			<% _.each(menus, function(menu){ %>
+				<div class="menu-item" data-target="<%= menu.id %>"><%= menu.name %></div>
+			<% }); %>
+    </script>
     <script type="text/html" id="cardView">
     	<div class="card-view screen">
 	    	<div class="header">
-	    		<div class="back-button fa-arrow-left left"></div>
-	    		<div class="menu-button fa-bars right"></div>
+	    		<div class="button back-button fa-arrow-left left"></div>
+	    		<div class="button menu-button fa-bars right"></div>
 	    		<div class="title">
 	    			<span class="selected <% if(card.selected){ %> fa-check-square-o <% }else{%> fa-square-o <% } %>"></span>
 	    			<span class="text"><%= card.deckName %> - <%= card.index + 1 %>/<%= card.deckSize %>-<%= card.flipped ? 'B' : 'F' %></span>

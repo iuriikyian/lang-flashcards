@@ -1,5 +1,5 @@
 /* line 2, ../sass/index.scss */
-html, body {
+html, body, .body {
   margin: 0;
   border: 0;
   padding: 0;
@@ -8,21 +8,22 @@ html, body {
   overflow: hidden;
 }
 
-/* line 42, ../sass/index.scss */
-body {
+/* line 48, ../sass/index.scss */
+body,
+.body {
   background-color: #222222;
 }
 
-/* line 46, ../sass/index.scss */
+/* line 52, ../sass/index.scss */
 .screen {
   width: 100%;
   height: 100%;
 }
-/* line 49, ../sass/index.scss */
+/* line 55, ../sass/index.scss */
 .screen .clearfix {
   clear: both;
 }
-/* line 52, ../sass/index.scss */
+/* line 58, ../sass/index.scss */
 .screen .header {
   height: 44px;
   padding: 12px;
@@ -33,7 +34,7 @@ body {
   color: white;
   background-color: #222222;
 }
-/* line 55, ../sass/index.scss */
+/* line 61, ../sass/index.scss */
 .screen .header .back-button,
 .screen .header .menu-button {
   font-family: FontAwesome;
@@ -44,17 +45,17 @@ body {
   border: solid 1px #dddddd;
   border-radius: 0.5em;
 }
-/* line 64, ../sass/index.scss */
+/* line 70, ../sass/index.scss */
 .screen .header .title {
   padding: 8px;
 }
-/* line 68, ../sass/index.scss */
+/* line 74, ../sass/index.scss */
 .screen .content {
   color: white;
   padding: 4px;
   background-color: #222222;
 }
-/* line 72, ../sass/index.scss */
+/* line 78, ../sass/index.scss */
 .screen .content .button {
   height: 20px;
   min-width: 40px;
@@ -65,16 +66,16 @@ body {
   padding: 10px;
   font-size: 18px;
 }
-/* line 82, ../sass/index.scss */
-.screen .content .button.disabled {
+/* line 89, ../sass/index.scss */
+.screen .button.disabled {
   color: #555555;
   border-color: #555555;
 }
-/* line 87, ../sass/index.scss */
+/* line 93, ../sass/index.scss */
 .screen .right {
   float: right;
 }
-/* line 90, ../sass/index.scss */
+/* line 96, ../sass/index.scss */
 .screen .left {
   float: left;
 }
@@ -195,4 +196,36 @@ body {
 .card-view .content .card-side .text {
   font-weight: bold;
   font-size: 22px;
+}
+
+/* line 1, ../sass/_menu.scss */
+.menu-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 99%;
+  height: 99%;
+  opacity: 0.3;
+}
+
+/* line 10, ../sass/_menu.scss */
+.menu {
+  position: absolute;
+  right: 0;
+  top: 66px;
+  bottom: 0;
+  width: 200px;
+  background-color: #555555;
+  color: #eeeeee;
+}
+/* line 18, ../sass/_menu.scss */
+.menu .menu-item {
+  border-bottom: solid 1px #111111;
+  font-size: 20px;
+  padding: 10px;
+}
+
+/* line 25, ../sass/_menu.scss */
+.hidden {
+  display: none;
 }

@@ -20,6 +20,7 @@ define(['underscore', 'zepto', 'backbone'], function(_, $, Backbone){
 		},
 		
 		render : function(){
+			$(this.el).empty();
 			$(this.el).append(this.template({
 				title: 'flashcards',
 				decks : this.decks,
@@ -27,6 +28,9 @@ define(['underscore', 'zepto', 'backbone'], function(_, $, Backbone){
 		},
 		
 		_onShowMenu : function(){
+			if(this.$('.content').hasClass(EDIT_MODE_CLASS)){
+				return;
+			}
 			this.trigger('show:menu', {});
 		},
 		
@@ -41,12 +45,14 @@ define(['underscore', 'zepto', 'backbone'], function(_, $, Backbone){
 			this.$('.content').addClass(EDIT_MODE_CLASS);
 			this.$('.content .today-button').addClass('disabled');
 			this.$('.content .deck-button').addClass('disabled');
+			this.$('.header .menu-button').addClass('disabled');
 		},
 		
 		_onCancelEdit : function(){
 			this.$('.content').removeClass(EDIT_MODE_CLASS);
 			this.$('.content .today-button').removeClass('disabled');
 			this.$('.content .deck-button').removeClass('disabled');
+			this.$('.header .menu-button').removeClass('disabled');
 		},
 		
 		_onShowDeck : function(evt){

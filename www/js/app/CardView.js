@@ -13,6 +13,7 @@ define(['underscore', 'zepto', 'backbone'], function(_, $, Backbone){
 			this.card = options.card;
 		},
 		render : function(){
+			$(this.el).empty();
 			$(this.el).append(this.template({
 				card : this.card,
 			}));

@@ -16,8 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck', 'TestDeckData'], 
-		function(_, $, DecksManager, DecksView, CardView, Deck, testDeckData){
+require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck', 'Menu', 'TestDeckData'], 
+		function(_, $, DecksManager, DecksView, CardView, Deck, Menu, testDeckData){
 	var app = {
 	    // Application Constructor
 	    initialize: function() {
@@ -59,12 +59,10 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
 	    	this._destroyCurrentView();
     		var deck = new Deck(testDeckData);
     		var v = new CardView({
-    			el : 'body',
+    			el : '.body',
     			card : deck.getCurrentCardSideInfo()
     		});
     		this.view = v;
-    		
-    		$('body').empty();
 	    	v.render();
 	    	var me = this;
 	    	v.on('back', function(){
@@ -74,21 +72,18 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
 	    	v.on('card:show-next', function(){
 	    		deck.gotoNext();
 	    		v.setCard(deck.getCurrentCardSideInfo());
-	    		$('body').empty();
 		    	v.render();
 	    		console.log('Event:card:show-next');
 	    	});
 	    	v.on('card:show-prev', function(){
 	    		deck.gotoPrev();
 	    		v.setCard(deck.getCurrentCardSideInfo());
-	    		$('body').empty();
 		    	v.render();
 	    		console.log('Event:card:show-prev');
 	    	});
 	    	v.on('card:flip', function(){
 	    		deck.flipCard();
 	    		v.setCard(deck.getCurrentCardSideInfo());
-	    		$('body').empty();
 		    	v.render();
 	    		console.log('Event:card:flip');
 	    	});
@@ -103,14 +98,30 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
 	    	var me = this;
 	    	this._destroyCurrentView();
 	    	var view = new DecksView({
-	    		el : 'body',
+	    		el : '.body',
 	    		decks : this.decksManager.getDeckNames()
 	    	});
 	    	this.view = view;
-	    	$('body').empty();
 	    	view.render();
 	    	view.on('show:menu', function(){
+	    		if(! _.isUndefined(me.menu)){
+	    			me.menu.off();
+	    			delete me.menu;
+	    		}
 	    		console.log('Event:show:menu');
+	    		var menu = new Menu({
+    			    el : '#menu',
+    			    overlay : '#menu-overlay',
+	    			menus : [
+	    			    { id : 1, name : 'test'},
+	    			    { id : 2, name : 'other'}
+	    			]
+	    		});
+	    		menu.render();
+	    		menu.on('menu:click', function(itemId){
+	    			console.log('Event:menu:click:' + itemId);
+	    		});
+	    		me.menu = menu;
 	    	});
 	    	view.on('show:today-deck', function(){
 	    		console.log('Event:show:today-deck');

@@ -1,5 +1,5 @@
 // --- set defaults ---
-html,body{
+html,body, .body{
   margin: 0;
   border: 0;
   padding: 0;
@@ -39,7 +39,13 @@ $button-disabled-color: #555;
 $content-background-color: #222;
 $content-color: #fff;
 $content-padding: 4px;
-body {
+
+$menu-width: 200px;
+$menu-color: #eee;
+$menu-background-color: #555;
+$menu-border-color: #111;
+body,
+.body {
   background-color: $content-background-color; 
 }
 
@@ -79,10 +85,10 @@ body {
       padding: $button-padding;
       font-size: $button-font-size;
     }
-    .button.disabled {
-      color: $button-disabled-border-color;
-      border-color: $button-disabled-border-color;
-    }
+  }
+  .button.disabled {
+    color: $button-disabled-border-color;
+    border-color: $button-disabled-border-color;
   }
   .right {
     float: right;
@@ -94,3 +100,4 @@ body {
 
 @import "decks-list";
 @import "card-view";
+@import "menu";
