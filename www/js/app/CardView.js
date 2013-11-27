@@ -41,10 +41,10 @@ define(['underscore', 'zepto', 'backbone'], function(_, $, Backbone){
 		
 		_onContentClick : function(evt){
 			var width = $(window).width();
-			if(evt.offsetX > width * 0.9){
+			if(evt.clientX > width * 0.9){
 				return this.trigger('card:show-next');
 			}
-			if(evt.offsetX < width * 0.1){
+			if(evt.clientX < width * 0.1){
 				return this.trigger('card:show-prev');
 			}
 			return this.trigger('card:flip');
