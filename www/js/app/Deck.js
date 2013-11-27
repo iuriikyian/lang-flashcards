@@ -1,4 +1,5 @@
-define(['underscore'], function(_){
+define(['underscore', 'backbone'], function(_, Backbone){
+	
 	var Deck = function(options){
 		this.name = options.lang || '';
 		this.name = options.name || '';
@@ -6,6 +7,8 @@ define(['underscore'], function(_){
 		this.currentIndex = (options.meta && options.meta.currentIndex) || 0;
 		this.selectedCards = (options.meta && options.meta.selectedCards) || {};
 		this.flippedCards = (options.meta && options.meta.flippedCards) || {};
+
+		_.extend(this, Backbone.Events);
 		
 		this.getMeta = function(){
 			return {
@@ -59,6 +62,7 @@ define(['underscore'], function(_){
 			if(this.currentIndex >= this.cards.length){
 				this.currentIndex = 0;
 			}
+			this.trigger('changed');
 		};
 		
 		this.gotoPrev = function(){
@@ -69,6 +73,7 @@ define(['underscore'], function(_){
 			if(this.currentIndex < 0){
 				this.currentIndex = this.cards.length - 1;
 			}
+			this.trigger('changed');
 		};
 		
 		this.flipCard = function(){
@@ -80,6 +85,7 @@ define(['underscore'], function(_){
 			}else{
 				this.flippedCards[this.currentIndex] = true;
 			}
+			this.trigger('changed');
 		};
 		
 		this.selectCard = function(){
@@ -91,6 +97,24 @@ define(['underscore'], function(_){
 			}else{
 				this.selectedCards[this.currentIndex] = true;
 			}
+			this.trigger('changed');
+		};
+		
+		this.clearSelection = function(){
+			this.selectedCards = {};
+			this.trigger('changed');
+		};
+
+		this.invertSelection = function(){
+			var newSelection = {};
+			var me = this;
+			_.each(this.cards, function(card, idx){
+				if(!this.selectedCards[idx]){
+					newSelection[idx] = true;
+				}
+			}, this);
+			this.selectedCards = newSelection;
+			this.trigger('changed');
 		};
 		
 		this.getCurrentCardSideInfo = function(){
@@ -135,6 +159,8 @@ define(['underscore'], function(_){
 			}
 		};
 	};
+
+	
 	
 	return Deck;
 });

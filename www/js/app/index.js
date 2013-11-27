@@ -73,29 +73,28 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
 	    	});
 	    	view.on('show:menu', function(){
 	    		console.log('Event:show:menu');
-	    		me.showCardViewMenu();
+	    		me.showCardViewMenu(deck);
 	    	});
 	    	view.on('card:show-next', function(){
 	    		deck.gotoNext();
-	    		view.setCard(deck.getCurrentCardSideInfo());
-		    	view.render();
 	    		console.log('Event:card:show-next');
 	    	});
 	    	view.on('card:show-prev', function(){
 	    		deck.gotoPrev();
-	    		view.setCard(deck.getCurrentCardSideInfo());
-		    	view.render();
 	    		console.log('Event:card:show-prev');
 	    	});
 	    	view.on('card:flip', function(){
 	    		deck.flipCard();
-	    		view.setCard(deck.getCurrentCardSideInfo());
-		    	view.render();
 	    		console.log('Event:card:flip');
 	    	});
 	    	view.on('card:toggle-select', function(newValue){
 	    		deck.selectCard(newValue);
 	    		console.log('Event:card:toggle-select');
+	    	});
+	    	deck.on('changed', function(){
+	    		console.log('Event: deck:change');
+	    		view.setCard(deck.getCurrentCardSideInfo());
+		    	view.render();
 	    	});
 	    	
 	    },
@@ -152,7 +151,7 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
     		}
 	    },
 	    
-	    showCardViewMenu : function(){
+	    showCardViewMenu : function(deck){
 	    	this._destroyMenu();
     		var menu = new Menu({
 			    el : '#menu',
@@ -170,6 +169,14 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
     		});
     		menu.render();
     		menu.on('menu:click', function(itemId){
+    			switch(itemId){
+    				case 'sel-invert':
+    					deck.invertSelection();
+    					break;
+    				case 'sel-clear':
+    					deck.clearSelection();
+    					break;
+    			}
     			console.log('Event:menu:click:' + itemId);
     		});
     		this.menu = menu;
