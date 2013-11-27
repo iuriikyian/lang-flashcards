@@ -30,6 +30,7 @@
         <div class="body"></div>
         <div id="menu-overlay" class="menu-overlay hidden"></div>
         <div id="menu" class="menu hidden"></div>
+        <div id="dialog" class="dialog hidden"></div>
         <!--script type="text/javascript" src="phonegap.js"></script-->
         <script src="js/lib/require.js" data-main="js/config.js"></script>
         <!--script type="text/javascript" src="js/index.js"></script>
@@ -85,34 +86,89 @@
 				<div class="menu-item" data-target="<%= menu.id %>"><%= menu.name %></div>
 			<% }); %>
     </script>
+    <script type="text/html" id="deckInfoTemplate">
+    	<div class="title">Deck Information
+    		<div class="button close fa-ban"></div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="line">
+    		<span class="label">Name:</span>
+    		<span class="value"><%= name %></span>
+    	</div>
+    	<div class="line">
+    		<span class="label">Language:</span>
+    		<span class="value"><%= lang %></span>
+    	</div>
+    	<div class="line">
+    		<span class="label">Cards total:</span>
+    		<span class="value"><%= cardsCount %></span>
+    	</div>
+    	<div class="line">
+    		<span class="label">Cards selected:</span>
+    		<span class="value"><%= cardsSelected %></span>
+    	</div>
+    </script>
+    <script type="text/html" id="reviewModeTemplate">
+    	<div class="title">Review Mode
+    		<div class="button close fa-ban"></div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="option">
+    		<div class="state <% if(mode === 'plain'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='plain'></div>PLAIN
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="option">
+    		<div class="state <% if(mode === 'front'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='front'></div>FRONT
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="option">
+    		<div class="state <% if(mode === 'back'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='back'></div>BACK
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="option">
+    		<div class="state <% if(mode === 'random'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='random'></div>RANDOM
+    		<div class="clearfix"></div>
+    	</div>
+    </script>
     <script type="text/html" id="cardView">
     	<div class="card-view screen">
 	    	<div class="header">
 	    		<div class="button back-button fa-arrow-left left"></div>
 	    		<div class="button menu-button fa-bars right"></div>
 	    		<div class="title">
-	    			<span class="selected <% if(card.selected){ %> fa-check-square-o <% }else{%> fa-square-o <% } %>"></span>
-	    			<span class="text"><%= card.deckName %> - <%= card.index + 1 %>/<%= card.deckSize %>-<%= card.flipped ? 'B' : 'F' %></span>
+	    			<% if(card.deckSize) {%>
+	    				<span class="selected <% if(card.selected){ %> fa-check-square-o <% }else{%> fa-square-o <% } %>"></span>
+	    			<%};%>
+	    			<span class="text">
+	    				<%= card.deckName %>
+	    				<% if(card.deckSize) {%> 
+	    				- <%= card.index + 1 %>/<%= card.deckSize %>-<%= card.flipped ? 'B' : 'F' %>
+	    				<%};%>
+	    			</span>
 	    		</div>
 	    		<div class="clearfix"></div>
 	    	</div>
 	    	<div class="content">
 		    	<div class="card-side">
-		    	<% if(card.top){
-		    		card.top.forEach(function(line){ %>
-		    			<div class="top"><%= line %></div>
-		    	<%	});
-		    		} %>
-		    	<% if(card.text){
-		    		card.text.forEach(function(line){ %>
-		    			<div class="text"><%= line %></div>
-		    	<%	});
-		    		} %>
-		    	<% if(card.bottom){
-		    		card.bottom.forEach(function(line){ %>
-		    			<div class="bottom"><%= line %></div>
-		    	<%	});
-		    		} %>
+		    	<% if(card.deckSize) {%>
+			    	<% if(card.top){
+			    		card.top.forEach(function(line){ %>
+			    			<div class="top"><%= line %></div>
+			    	<%	});
+			    		} %>
+			    	<% if(card.text){
+			    		card.text.forEach(function(line){ %>
+			    			<div class="text"><%= line %></div>
+			    	<%	});
+			    		} %>
+			    	<% if(card.bottom){
+			    		card.bottom.forEach(function(line){ %>
+			    			<div class="bottom"><%= line %></div>
+			    	<%	});
+			    		} %>
+		    	<% }else{ %>
+		    		<div class="text">Deck is EMPTY</div>
+		    	<%};%>
 		    	</div>
 		    	</div>
 	    	</div>

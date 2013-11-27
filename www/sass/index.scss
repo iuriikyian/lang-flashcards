@@ -49,6 +49,27 @@ body,
   background-color: $content-background-color; 
 }
 
+@mixin square-button(){
+  font-family: FontAwesome;
+  font-size: 22px !important;
+  height: $button-height;
+  width: $button-min-width - ($button-padding * 2);
+  padding: $button-padding;
+  border: solid 1px $button-border-color;
+  border-radius: $button-border-radius; 
+}
+
+@mixin button(){
+  height: $button-height;
+  min-width : $button-min-width;
+  border: solid 1px $button-border-color;
+  border-radius: $button-border-radius;
+  margin: $button-margin 0;
+  text-align: center;
+  padding: $button-padding;
+  font-size: $button-font-size;
+}
+
 .screen {
   width: 100%;
   height: 100%;
@@ -59,14 +80,15 @@ body,
     @include screen-header();
     .back-button,
     .menu-button {
-      font-family: FontAwesome;
+      @include square-button();
+/*      font-family: FontAwesome;
       font-size: 22px !important;
       height: $button-height;
       width: $button-min-width - ($button-padding * 2);
       padding: $button-padding;
       border: solid 1px $button-border-color;
       border-radius: $button-border-radius; 
-    }
+*/    }
     .title {
       padding: 8px;
     }
@@ -76,7 +98,8 @@ body,
     padding: $content-padding;
     background-color: $content-background-color;
     .button{
-      height: $button-height;
+      @include button();
+/*      height: $button-height;
       min-width : $button-min-width;
       border: solid 1px $button-border-color;
       border-radius: $button-border-radius;
@@ -84,7 +107,7 @@ body,
       text-align: center;
       padding: $button-padding;
       font-size: $button-font-size;
-    }
+*/    }
   }
   .button.disabled {
     color: $button-disabled-border-color;
@@ -98,6 +121,12 @@ body,
   }
 }
 
+.clearfix {
+  clear: both;
+}
+
 @import "decks-list";
 @import "card-view";
 @import "menu";
+@import "deck-info-dialog";
+@import "review-mode-dialog";

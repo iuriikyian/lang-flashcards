@@ -16,11 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck', 'Menu', 'TestDeckData'], 
-		function(_, $, DecksManager, DecksView, CardView, Deck, Menu, testDeckData){
+require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 
+         'Deck', 'Menu', 'DeckInfoDialog', 'ReviewModeDialog', 'TestDeckData'], 
+		function(_, $, DecksManager, DecksView, CardView, Deck, 
+				Menu, DeckInfoDialog, ReviewModeDialog, testDeckData){
 	var app = {
 	    // Application Constructor
 	    initialize: function() {
+	    	this.lang = 'english';
 	    	this.decksManager = new DecksManager();
 	        this.bindEvents();
 	        
@@ -58,7 +61,7 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
 	    // empty name means 'today' deck
 	    showCardView : function(deckName){
 	    	this._destroyCurrentView();
-	    	var deck = this.decksManager.getDeck('english', deckName);
+	    	var deck = this.decksManager.getDeck(this.lang, deckName);
     		//var deck = new Deck(testDeckData);
     		var view = new CardView({
     			el : '.body',
@@ -68,6 +71,7 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
 	    	view.render();
 	    	var me = this;
 	    	view.on('back', function(){
+	    		me.decksManager.saveDeckState(deck);
 	    		me.showDecksView();
 	    		console.log('Event:back');
 	    	});
@@ -104,7 +108,7 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
 	    	this._destroyCurrentView();
 	    	var view = new DecksView({
 	    		el : '.body',
-	    		decks : this.decksManager.getDeckNames('english')
+	    		decks : this.decksManager.getDeckNames(this.lang)
 	    	});
 	    	this.view = view;
 	    	view.render();
@@ -114,6 +118,7 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
 	    	});
 	    	view.on('show:today-deck', function(){
 	    		console.log('Event:show:today-deck');
+	    		me.showCardView('today');
 	    	});
 	    	view.on('show:deck', function(deckName){
 	    		console.log('Event:show:deck:' + deckName);
@@ -151,6 +156,13 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
     		}
 	    },
 	    
+	    _destroyDialog : function(){
+    		if(! _.isUndefined(this.dialog)){
+    			this.dialog.off();
+    			delete this.dialog;
+    		}
+	    },
+	    
 	    showCardViewMenu : function(deck){
 	    	this._destroyMenu();
     		var menu = new Menu({
@@ -163,18 +175,60 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 'Deck',
     			    { id : 'sel-clear', name : 'sel clear'},
     			    { id : 'sel2today', name : 'sel->today'},
     			    { id : 'deck-info', name : 'deck info'},
-    			    { id : 'delete-card', name : 'delete card'},
-    			    { id : 'help', name : 'help'}
+    			    { id : 'delete-card', name : 'delete card'}
     			]
     		});
     		menu.render();
+    		var me = this;
     		menu.on('menu:click', function(itemId){
     			switch(itemId){
+    				case 'mode':
+    					me._destroyDialog();
+    					me.dialog = new ReviewModeDialog({
+	   						 el : '#dialog',
+							 overlay : '#menu-overlay',
+    						mode : deck.mode
+    					});
+    					me._destroyMenu();
+    					me.dialog.render();
+    					me.dialog.on('mode-selected', function(mode){
+    						deck.setMode(mode);
+    						me._destroyDialog();
+    					});
+    					break;
+    				case 'shuffle':
+    					deck.shuffle();
+    					break;
     				case 'sel-invert':
     					deck.invertSelection();
     					break;
     				case 'sel-clear':
     					deck.clearSelection();
+    					break;
+    				case 'sel2today':
+    					var cards = deck.removeSelectedCards();
+    					if(cards.length > 0){
+    						var todayDeck = me.decksManager.getDeck(me.lang, 'today');
+    						todayDeck.insertCards(cards);
+    						me.decksManager.saveDeckStateWithCards(deck);
+    						me.decksManager.saveDeckCards(todayDeck);
+    					}
+    					break;
+    				case 'deck-info':
+    					me.dialog = new DeckInfoDialog({
+    						 el : '#dialog',
+    						 overlay : '#menu-overlay',
+    						 info : deck.getDeckInfo()
+    					});
+    					me._destroyMenu();
+    					me.dialog.render();
+    					me.dialog.on('close', function(){
+    						me._destroyDialog();
+    					});
+    					break;
+    				case 'delete-card':
+    					deck.deleteCurrentCard();
+    					me.decksManager.saveDeckStateWithCards(deck);
     					break;
     			}
     			console.log('Event:menu:click:' + itemId);

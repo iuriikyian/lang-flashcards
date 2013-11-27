@@ -39,13 +39,21 @@ define(['underscore', 'Deck', 'testStorage'], function(_, Deck, TestStorage){
 			return names;
 		};
 		
+		this._getDeckCardsKey = function(lang, name){
+			return [DECK_CARDS_PREFIX, lang, SEPARATOR, name].join('');
+		};
+
+		this._getDeckMetaKey = function(lang, name){
+			return [DECK_META_PREFIX, lang, SEPARATOR, name].join('');
+		};
+		
 		this.getDeck = function(lang, deckName){
-			if(!deckName){
+			if(deckName === 'today'){
 				return this.getTodayDeck(lang);
 			}
 			var keysCount = storage.length;
-			var cardsKey = [DECK_CARDS_PREFIX, lang, SEPARATOR, deckName].join('');
-			var metaKey = [DECK_META_PREFIX, lang, SEPARATOR, deckName].join('');
+			var cardsKey = this._getDeckCardsKey(lang, deckName);
+			var metaKey = this._getDeckMetaKey(lang, deckName);
 			var cards;
 			var meta;
 			for(var i = 0; i < keysCount ; ++i){
@@ -74,19 +82,41 @@ define(['underscore', 'Deck', 'testStorage'], function(_, Deck, TestStorage){
 			return null;
 		};
 		
-		this.getTodayDeck = function(lang){
-			var cards = storage.getItem(TODAY_CARDS_PREFIX + lang);
-			if(cards){
-				var meta = storage.getItem(TODAY_META_PREFIX + lang);
-				var deck = new Deck({
-					lang : lang,
-					name : 'today',
-					cards : cards,
-					meta : meta
-				});
-				return deck;
+		// saves only deck navigation state
+		this.saveDeckState = function(deck){
+			if(!deck){
+				return;
 			}
-			return null;
+			var metaKey = this._getDeckMetaKey(deck.lang, deck.name);
+			storage.setItem(metaKey, deck.getMeta());
+			//TODO: use JSON stringify for real storage
+		};
+
+		this.saveDeckCards = function(deck){
+			var cardsKey = this._getDeckCardsKey(deck.lang, deck.name);
+			storage.setItem(cardsKey, deck.getCards());
+			//TODO: use JSON stringify for real storage
+		};
+		
+		// saves deck navigation state and cards (usefull after deck content changes)
+		this.saveDeckStateWithCards = function(deck){
+			this.saveDeckState(deck);
+			this.saveDeckCards(deck);
+		};
+		
+		this.getTodayDeck = function(lang){
+			var cards = storage.getItem(this._getDeckCardsKey(lang, 'today'));
+			if(!cards){
+				cards = [];
+			}
+			var meta = storage.getItem(this._getDeckMetaKey(lang, 'today'));
+			var deck = new Deck({
+				lang : lang,
+				name : 'today',
+				cards : cards,
+				meta : meta
+			});
+			return deck;
 		};
 	};
 	

@@ -1,0 +1,10 @@
+.dialog {
+  .option {
+    @include button();
+    .state{
+      float: left;
+      font-family: FontAwesome;
+      font-size: 22px !important;
+    }
+  }
+}

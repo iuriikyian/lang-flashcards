@@ -1,0 +1,25 @@
+.dialog {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 10%;
+  background-color: $menu-background-color;
+  color: $menu-color;
+  padding: 10px;
+  .title {
+    height: $button-height + (2 * $button-padding);
+    font-size: 22px;
+    .close {
+      float: right;
+      @include square-button();
+    }  
+  }
+  .line {
+    font-size: 18px;
+    .label {
+      display: inline-block;
+      width: 150px;
+      font-weight: bold;
+    }
+  }
+}
