@@ -1,0 +1,17 @@
+.dialog {
+  .variant {
+    @include button();
+    .checkbox{
+      float: left;
+      font-family: FontAwesome;
+      font-size: 22px !important;
+    }
+  }
+  .commands {
+    .button{
+      @include button();
+      width: 100px;
+      margin: 0 auto;
+    }
+  }
+}

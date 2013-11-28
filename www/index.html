@@ -174,4 +174,19 @@
 	    	</div>
     	</div>
     </script>    
+    <script type="text/html" id="selectItemTemplate">
+    	<div class="title"><%= title %>
+    		<div class="button close fa-ban"></div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<% for(var i = 0; i < items.length; ++i){ %>
+	    	<div class="variant">
+    			<div class="checkbox fa-square-o"  data-target='<%= items[i] %>'></div><%= items[i] %>
+    			<div class="clearfix"></div>
+    		</div>
+    	<% }; %>
+    	<div class="commands">
+    		<div class="button select">select</div>
+    	</div>
+    </script>
 </html>

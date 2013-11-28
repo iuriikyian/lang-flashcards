@@ -16,10 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView', 
-         'Deck', 'Menu', 'DeckInfoDialog', 'ReviewModeDialog', 'TestDeckData'], 
-		function(_, $, DecksManager, DecksView, CardView, Deck, 
-				Menu, DeckInfoDialog, ReviewModeDialog, testDeckData){
+require(['underscore', 'zepto', 'DecksManager', 
+         'DecksView', 'CardView', 'Deck',
+         'Menu', 'DeckInfoDialog', 'ReviewModeDialog',
+         'SelectItemDialog', 'TestDeckData'], 
+		function(_, $, DecksManager, 
+				DecksView, CardView, Deck, 
+				Menu, DeckInfoDialog, ReviewModeDialog, 
+				SelectItemDialog, testDeckData){
 	var app = {
 	    // Application Constructor
 	    initialize: function() {
@@ -77,7 +81,7 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView',
 	    	});
 	    	view.on('show:menu', function(){
 	    		console.log('Event:show:menu');
-	    		me.showCardViewMenu(deck);
+	    		me.showCardViewMenu(deck, deckName === 'today');
 	    	});
 	    	view.on('card:show-next', function(){
 	    		deck.gotoNext();
@@ -163,20 +167,29 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView',
     		}
 	    },
 	    
-	    showCardViewMenu : function(deck){
+	    showCardViewMenu : function(deck, isTodayDeck){
+			var menus = [
+			    { id : 'mode', name : 'review mode', order : 10},
+			    { id : 'shuffle', name : 'shuffle', order : 20},
+			    { id : 'sel-invert', name : 'sel invert', order : 30},
+			    { id : 'sel-clear', name : 'sel clear', order : 40},
+			    { id : 'deck-info', name : 'deck info', order : 50},
+			    { id : 'delete-card', name : 'delete card', order : 60}
+			];
+			if(isTodayDeck){
+				menus.push({ id : 'sel2deck', name : 'sel->deck', order : 45});
+				menus.push({ id : 'sel2keep', name : 'sel->keep', order : 48});
+				menus.push({ id : 'import-from-web', name : 'from web', order : 70});
+			}else{
+				menus.push({ id : 'sel2today', name : 'sel->today', order : 45});
+			}
+			menus.sort(function(a, b){return a.order > b.order ? 1 : (a.order < b.order ? -1 : 0); });
+				
 	    	this._destroyMenu();
     		var menu = new Menu({
 			    el : '#menu',
 			    overlay : '#menu-overlay',
-    			menus : [
-    			    { id : 'mode', name : 'review mode'},
-    			    { id : 'shuffle', name : 'shuffle'},
-    			    { id : 'sel-invert', name : 'sel invert'},
-    			    { id : 'sel-clear', name : 'sel clear'},
-    			    { id : 'sel2today', name : 'sel->today'},
-    			    { id : 'deck-info', name : 'deck info'},
-    			    { id : 'delete-card', name : 'delete card'}
-    			]
+    			menus : menus
     		});
     		menu.render();
     		var me = this;
@@ -213,6 +226,34 @@ require(['underscore', 'zepto', 'DecksManager', 'DecksView', 'CardView',
     						me.decksManager.saveDeckStateWithCards(deck);
     						me.decksManager.saveDeckCards(todayDeck);
     					}
+    					break;
+    				case 'sel2deck':
+    					var deckNames = me.decksManager.getDeckNames(me.lang);
+    					me._destroyDialog();
+    					me.dialog = new SelectItemDialog({
+	   						el : '#dialog',
+							overlay : '#menu-overlay',
+							title : 'Select target Deck',
+    						items : deckNames
+    					});
+    					me._destroyMenu();
+    					me.dialog.render();
+    					me.dialog.on('selected', function(deckName){
+    						var targetDeck = me.decksManager.getDeck(me.lang, deckName);
+    						if(targetDeck){
+    							var cards = deck.removeSelectedCards();
+    							if(cards.length > 0){
+    								targetDeck.insertCards(cards);
+    								me.decksManager.saveDeckCards(targetDeck);
+    								me.decksManager.saveDeckStateWithCards(deck);
+    							}else{
+    								alert('nothing moved');
+    							}
+    						}else{
+    							alert('target deck is not found');
+    						}
+    						me._destroyDialog();
+    					});
     					break;
     				case 'deck-info':
     					me.dialog = new DeckInfoDialog({
