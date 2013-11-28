@@ -57,7 +57,7 @@ require(['underscore', 'zepto', 'DecksManager',
 	    
 	    _destroyCurrentView : function(){
 	    	if(!_.isUndefined(this.view)){
-	    		this.view.off();
+	    		this.view.undelegateEvents();
 	    		delete this.view;
 	    	}
 	    },
@@ -112,7 +112,8 @@ require(['underscore', 'zepto', 'DecksManager',
 	    	this._destroyCurrentView();
 	    	var view = new DecksView({
 	    		el : '.body',
-	    		decks : this.decksManager.getDeckNames(this.lang)
+	    		decks : this.decksManager.getDeckNames(this.lang),
+	    		lang : this.lang
 	    	});
 	    	this.view = view;
 	    	view.render();
@@ -128,11 +129,15 @@ require(['underscore', 'zepto', 'DecksManager',
 	    		console.log('Event:show:deck:' + deckName);
 	    		me.showCardView(deckName);
 	    	});
-	    	view.on('deck:created', function(deckName){
-	    		console.log('Event:deck:created:' + deckName);
+	    	view.on('deck:create', function(deckName){
+	    		console.log('Event:deck:create:' + deckName);
+	    		me.decksManager.createDeck(me.lang, deckName);
+	    		me.showDecksView();
 	    	});
-	    	view.on('deck:removed', function(deckName){
-	    		console.log('Event:deck:removed:' + deckName);
+	    	view.on('deck:remove', function(deckName){
+	    		console.log('Event:deck:remove:' + deckName);
+	    		me.decksManager.removeDeck(me.lang, deckName);
+	    		me.showDecksView();
 	    	});
 	    },
 	    
@@ -142,13 +147,42 @@ require(['underscore', 'zepto', 'DecksManager',
 			    el : '#menu',
 			    overlay : '#menu-overlay',
     			menus : [
-    			    { id : 1, name : 'test'},
+    			    { id : 'lang', name : 'change lang'},
     			    { id : 2, name : 'other'}
     			]
     		});
     		menu.render();
-    		menu.on('menu:click', function(itemId){
-    			console.log('Event:menu:click:' + itemId);
+    		var me = this;
+    		menu.on('menu:click', function(menuId){
+    			console.log('Event:menu:click:' + menuId);
+    			switch(menuId){
+    				case 'lang':
+    					var langs = me.decksManager.getLangs();
+    					me._destroyDialog();
+    					me.dialog = new SelectItemDialog({
+	   						el : '#dialog',
+							overlay : '#menu-overlay',
+							title : 'Select language to switch on',
+    						items : langs,
+    						canCreate : true,
+    						actionName : 'select'
+    					});
+    					me._destroyMenu();
+    					me.dialog.render();
+    					me.dialog.on('selected', function(lang){
+    						console.log('Event:selected:lang:' + lang);
+    						me.lang = lang;
+    						me.showDecksView();
+    					});
+    					me.dialog.on('create', function(lang){
+    						console.log('Event:create:lang:' + lang);
+    						var deck = me.decksManager.getTodayDeck(lang);
+    						me.decksManager.saveDeckCards(deck);
+    						me.lang = lang;
+    						me.showDecksView();
+    					});
+    					break;
+    			}
     		});
     		this.menu = menu;
 	    },
@@ -233,8 +267,9 @@ require(['underscore', 'zepto', 'DecksManager',
     					me.dialog = new SelectItemDialog({
 	   						el : '#dialog',
 							overlay : '#menu-overlay',
-							title : 'Select target Deck',
-    						items : deckNames
+							title : 'Select target Deck for cards',
+    						items : deckNames,
+    						actionName : 'move'
     					});
     					me._destroyMenu();
     					me.dialog.render();

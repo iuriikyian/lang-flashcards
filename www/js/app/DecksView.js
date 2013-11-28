@@ -17,12 +17,13 @@ define(['underscore', 'zepto', 'backbone'], function(_, $, Backbone){
 		
 		initialize : function(options){
 			this.decks = options.decks;
+			this.lang = options.lang;
 		},
 		
 		render : function(){
 			$(this.el).empty();
 			$(this.el).append(this.template({
-				title: 'flashcards',
+				title: 'flashcards (' + this.lang + ')',
 				decks : this.decks,
 			}));
 		},
@@ -65,8 +66,7 @@ define(['underscore', 'zepto', 'backbone'], function(_, $, Backbone){
 		_onRemoveDeck : function(evt){
 			var deck2remove = $(evt.target).attr('data-target');
 			this.decks = _.filter(this.decks, function(deck){ return deck !== deck2remove;});
-			this.$('.deck[data-target="' + deck2remove + '"]').remove();
-			this.trigger('deck:removed', deck2remove);
+			this.trigger('deck:remove', deck2remove);
 		},
 		
 		_onAddDeck : function(){
@@ -87,11 +87,7 @@ define(['underscore', 'zepto', 'backbone'], function(_, $, Backbone){
 				return;
 			}
 			this._onCancelEdit();
-			this.decks.push(name);
-			this.$('.decks-list').append(this.deckItemTemplate({
-				deck: name
-			}));
-			this.trigger('deck:created', name);
+			this.trigger('deck:create', name);
 		}
 	});
 	

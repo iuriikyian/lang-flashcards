@@ -9,6 +9,9 @@
   .title {
     height: $button-height + (2 * $button-padding);
     font-size: 22px;
+    .text {
+      padding-right: $button-min-width + $button-padding;  
+    }
     .close {
       float: right;
       @include square-button();

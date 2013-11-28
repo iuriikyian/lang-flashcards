@@ -55,7 +55,12 @@ define(['underscore'], function(_){
 			return testData[key];
 		},
 		setItem : function(key, value){
-			return testData[key] = value;
+			testData[key] = value;
+			this.length = _.keys(testData).length;
+		},
+		removeItem : function(key){
+			delete testData[key];
+			this.length = _.keys(testData).length;
 		}
 	};
 });

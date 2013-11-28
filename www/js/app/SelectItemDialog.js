@@ -13,6 +13,8 @@ define(['underscore', 'zepto', 'backbone'],
 		initialize : function(options){
 			this.title = options.title;
 			this.items = options.items;
+			this.canCreate = options.canCreate || false;
+			this.actionName = options.actionName || 'select';
 			this.overlay = options.overlay;
 		},
 		
@@ -32,9 +34,17 @@ define(['underscore', 'zepto', 'backbone'],
 				return; // nothing selected
 			}
 			var variant = $selected.attr('data-target');
-			this.$el.addClass(HIDDEN_CLASS);
-			$(this.overlay).addClass(HIDDEN_CLASS);
-			this.trigger('selected', variant);
+			if(variant){
+				this._onClose();
+				this.trigger('selected', variant);
+			}else{
+				variant = $selected.parent().find('.new-item').val();
+				if(!variant){
+					return; // nothing entered
+				}
+				this._onClose();
+				this.trigger('create', variant);
+			}
 		},
 		
 		render : function(){
@@ -42,7 +52,9 @@ define(['underscore', 'zepto', 'backbone'],
 			$(this.el).empty();
 			$(this.el).append(this.template({
 				title : this.title,
-				items : this.items
+				items : this.items,
+				actionName : this.actionName,
+				canCreate : this.canCreate
 			}));
 			var me = this;
 			$(this.overlay)

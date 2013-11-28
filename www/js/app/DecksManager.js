@@ -32,7 +32,9 @@ define(['underscore', 'Deck', 'KeepDeck', 'testStorage'], function(_, Deck, Keep
 				var key = storage.key(i);
 				if(key.indexOf(prefix) === 0){
 					var name = key.substr(prefix.length);
-					names.push(name);
+					if(name !== 'today'){
+						names.push(name);
+					}
 				}
 			}
 			return names;
@@ -81,6 +83,17 @@ define(['underscore', 'Deck', 'KeepDeck', 'testStorage'], function(_, Deck, Keep
 			return null;
 		};
 		
+		this.createDeck = function(lang, deckName){
+			var cardsKey = this._getDeckCardsKey(lang, deckName);
+			storage.setItem(cardsKey, []);
+		};
+		
+		this.removeDeck = function(lang, deckName){
+			var cardsKey = this._getDeckCardsKey(lang, deckName);
+			var metaKey = this._getDeckMetaKey(lang, deckName);
+			storage.removeItem(metaKey);
+			storage.removeItem(cardsKey);
+		};
 		// saves only deck navigation state
 		this.saveDeckState = function(deck){
 			if(!deck){
