@@ -2,6 +2,7 @@ define(['underscore'], function(_){
 	var testData = {
 		'deck-cards-english-deck1' : [
 		       {
+		    	   reviews : 3,
 		    	   'side-1' : ['card-1'],
 		    	   'side-2' : ['card-1(2)']
 		       },

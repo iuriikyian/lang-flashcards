@@ -5,6 +5,9 @@
       .selected{
         font-family: FontAwesome;
         font-size: 50px;
+        width: 50px;
+        display: inline-block;
+        text-align: left;
       }
       .text{
         display: inline-block;
@@ -16,7 +19,16 @@
   }
   .content {
     .card-side {
+      positions: relative;
       text-align: center;
+      .reviews {
+        position: absolute;
+        left: 0;
+        top: $header-height + $button-height;
+        font-family: FontAwesome;
+        font-size: 16px;
+        padding: 10px 0 0 10px;
+      }
       .top {
         font-style: italic;
         font-size: 20px;

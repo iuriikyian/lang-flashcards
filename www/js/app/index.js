@@ -227,7 +227,7 @@ require(['underscore', 'zepto', 'DecksManager',
     						me.decksManager.saveDeckCards(todayDeck);
     					}
     					break;
-    				case 'sel2deck':
+    				case 'sel2deck': // from today deck
     					var deckNames = me.decksManager.getDeckNames(me.lang);
     					me._destroyDialog();
     					me.dialog = new SelectItemDialog({
@@ -243,6 +243,13 @@ require(['underscore', 'zepto', 'DecksManager',
     						if(targetDeck){
     							var cards = deck.removeSelectedCards();
     							if(cards.length > 0){
+    								// strip reviews counts for cards moved into study decks
+    								_.each(cards, function(card){
+    									if(!_.isUndefined(card.reviews)){
+    										delete card.reviews;
+    									}
+    								});
+    								//console.log(cards);
     								targetDeck.insertCards(cards);
     								me.decksManager.saveDeckCards(targetDeck);
     								me.decksManager.saveDeckStateWithCards(deck);
@@ -254,6 +261,15 @@ require(['underscore', 'zepto', 'DecksManager',
     						}
     						me._destroyDialog();
     					});
+    					break;
+    				case 'sel2keep': // from today-deck
+    					var cards = deck.removeSelectedCards();
+    					console.log('cards to keep:');
+    					console.log(cards);
+    					if(cards.length){
+    						me.decksManager.keepCards(cards);
+    						me.decksManager.saveDeckStateWithCards(deck);
+    					}
     					break;
     				case 'deck-info':
     					me.dialog = new DeckInfoDialog({

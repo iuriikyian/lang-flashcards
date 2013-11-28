@@ -150,26 +150,32 @@
 	    	</div>
 	    	<div class="content">
 		    	<div class="card-side">
-		    	<% if(card.deckSize) {%>
-			    	<% if(card.top){
-			    		card.top.forEach(function(line){ %>
-			    			<div class="top"><%= line %></div>
-			    	<%	});
-			    		} %>
-			    	<% if(card.text){
-			    		card.text.forEach(function(line){ %>
-			    			<div class="text"><%= line %></div>
-			    	<%	});
-			    		} %>
-			    	<% if(card.bottom){
-			    		card.bottom.forEach(function(line){ %>
-			    			<div class="bottom"><%= line %></div>
-			    	<%	});
-			    		} %>
-		    	<% }else{ %>
-		    		<div class="text">Deck is EMPTY</div>
-		    	<%};%>
-		    	</div>
+		    		<% if(card.reviews) { %>
+		    			<div class="reviews">
+		    				<% for(var i = 0; i < card.reviews; ++i ){ %>
+		    					<span class="fa-asterisk"></span>
+		    				<% } %>
+		    			</div>	
+		    		<% }; %>
+			    	<% if(card.deckSize) {%>
+				    	<% if(card.top){
+				    		card.top.forEach(function(line){ %>
+				    			<div class="top"><%= line %></div>
+				    	<%	});
+				    		} %>
+				    	<% if(card.text){
+				    		card.text.forEach(function(line){ %>
+				    			<div class="text"><%= line %></div>
+				    	<%	});
+				    		} %>
+				    	<% if(card.bottom){
+				    		card.bottom.forEach(function(line){ %>
+				    			<div class="bottom"><%= line %></div>
+				    	<%	});
+				    		} %>
+			    	<% }else{ %>
+			    		<div class="text">Deck is EMPTY</div>
+			    	<%};%>
 		    	</div>
 	    	</div>
     	</div>

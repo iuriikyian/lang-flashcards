@@ -238,7 +238,8 @@ define(['underscore', 'backbone'], function(_, Backbone){
 					deckSize : this.cards.length,
 					index : this.currentIndex,
 					selected : ! _.isUndefined(this.selectedCards[this.currentIndex]),
-					flipped : ! _.isUndefined(this.flippedCards[this.currentIndex])
+					flipped : ! _.isUndefined(this.flippedCards[this.currentIndex]),
+					reviews : card.reviews
 				};
 				var prefix = res.flipped ? 'side-2' : 'side-1';
 				var top = card[prefix + '-top']; 

@@ -1,9 +1,8 @@
-define(['underscore', 'Deck', 'testStorage'], function(_, Deck, TestStorage){
+define(['underscore', 'Deck', 'KeepDeck', 'testStorage'], function(_, Deck, KeepDeck, TestStorage){
 	var SEPARATOR = '-';
 	var DECK_CARDS_PREFIX = 'deck-cards' + SEPARATOR;
 	var DECK_META_PREFIX = 'deck-meta' + SEPARATOR;
-	var TODAY_CARDS_PREFIX = 'today-cards' + SEPARATOR;
-	var TODAY_META_PREFIX = 'today-meta' + SEPARATOR;
+	var KEPT_CARDS_PREFIX = 'keep-cards' + SEPARATOR;
 	
 	//var storage = localStorage;
 	var storage = TestStorage; // for testing
@@ -116,7 +115,49 @@ define(['underscore', 'Deck', 'testStorage'], function(_, Deck, TestStorage){
 				cards : cards,
 				meta : meta
 			});
+			var newCards = this._getNewTodayCards(lang);
+			if(newCards.length > 0){
+				_.each(newCards, function(card){
+					deck.cards.push(card);
+				});
+				storage.setItem(this._getDeckCardsKey(lang, 'today'), deck.cards);
+			}
 			return deck;
+		};
+		
+		this._getKeedDeckKey = function(lang){
+			return KEPT_CARDS_PREFIX + lang;
+		},
+		
+		this.keepCards = function(lang, cards){
+			if(cards && cards.length > 0){
+				var key = this._getKeedDeckKey(lang);
+				var keepCards = storage.getItem(key);
+				if(!keepCards){
+					keepCards = [];
+				}
+				var keepDeck = new KeepDeck({
+					cards : keepCards
+				});
+				keepDeck.putCards(cards);
+				storage.setItem(key, keepDeck.getCardsToKeep());
+			}
+		};
+		
+		this._getNewTodayCards = function(lang){
+			var key = this._getKeedDeckKey(lang);
+			var cards = storage.getItem(key);
+			if(cards){
+				var keepDeck = new KeepDeck({
+					cards : cards
+				});
+				var newCards = keepDeck.getTodayCards();
+				if(newCards.length){
+					storage.setItem(key, keepDeck.getCardsToKeep());
+					return newCards;
+				}
+			}
+			return [];
 		};
 	};
 	
