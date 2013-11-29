@@ -1,11 +1,11 @@
-define(['underscore', 'Deck', 'KeepDeck', 'testStorage'], function(_, Deck, KeepDeck, TestStorage){
+define(['underscore', 'Deck', 'KeepDeck', 'testStorage', 'storage'], function(_, Deck, KeepDeck, TestStorage, storage){
 	var SEPARATOR = '-';
 	var DECK_CARDS_PREFIX = 'deck-cards' + SEPARATOR;
 	var DECK_META_PREFIX = 'deck-meta' + SEPARATOR;
 	var KEPT_CARDS_PREFIX = 'keep-cards' + SEPARATOR;
 	
-	//var storage = localStorage;
-	var storage = TestStorage; // for testing
+//	var storage = localStorage;
+	//var storage = TestStorage; // for testing
 	
 	var DecksManager = function(){
 
