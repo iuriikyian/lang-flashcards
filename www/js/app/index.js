@@ -17,11 +17,11 @@
  * under the License.
  */
 require(['underscore', 'zepto', 'DecksManager', 
-         'DecksView', 'CardView', 'Deck',
+         'DecksView', 'CardView', 'LoadingCardsView', 'Deck',
          'Menu', 'DeckInfoDialog', 'ReviewModeDialog',
          'SelectItemDialog', 'TestDeckData'], 
 		function(_, $, DecksManager, 
-				DecksView, CardView, Deck, 
+				DecksView, CardView, LoadingCardsView, Deck, 
 				Menu, DeckInfoDialog, ReviewModeDialog, 
 				SelectItemDialog, testDeckData){
 	var app = {
@@ -322,10 +322,34 @@ require(['underscore', 'zepto', 'DecksManager',
     					deck.deleteCurrentCard();
     					me.decksManager.saveDeckStateWithCards(deck);
     					break;
+    				case 'import-from-web': // from 'today deck view
+    					me.loadingCardsView(deck);
+    					break;
     			}
     			console.log('Event:menu:click:' + itemId);
     		});
     		this.menu = menu;
+	    },
+	    
+	    loadingCardsView : function(todayDeck){
+	    	var me = this;
+	    	this._destroyCurrentView();
+	    	var view = new LoadingCardsView({
+	    		el : '.body',
+	    		lang : this.lang
+	    	});
+	    	this.view = view;
+	    	view.render();
+	    	view.queryLanguages();
+	    	view.on('back', function(){
+	    		console.log('Event:back');
+	    		me.showCardView(todayDeck.name);
+	    	});
+	    	view.on('cards-loaded', function(cards){
+	    		todayDeck.insertCards(cards);
+	    		me.decksManager.saveDeckCards(todayDeck);
+	    		me.showCardView(todayDeck.name);
+	    	});
 	    },
 	    
 	    onStartup: function(){

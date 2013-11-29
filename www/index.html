@@ -205,4 +205,30 @@
     		<div class="button select"><%= actionName %></div>
     	</div>
     </script>
+    <script type="text/html" id="importFromWebTemplate">
+    	<div class="import screen">
+	    	<div class="header">
+	    		<div class="button back-button fa-arrow-left left"></div>
+	    		<div class="title">Cards Import (<%= lang %>)</div>
+	    		<div class="clearfix"></div>
+	    	</div>
+	    	<div class="content">
+		    	<div class="loading">
+		    		<div class="">Connecting server... </div>
+		    	</div>
+		    	<div class="languages hidden">
+		    		<div class="message">Select source language</div>
+		    		<div class="langs-list"></div>
+		    	</div>
+		    	<div class="decks hidden">
+		    		<div class="message">Select language: <span class="sourceLang"</span></div>
+		    		<div class="message">Select deck to import</div>
+		    		<div class="decks-list"></div>
+		    	</div>
+		    </div>
+		</div>
+    </script>
+    <script type="text/html" id="buttonTemplate">
+    	<div class="button item-button" data-target="<%= item %>"><%= item %></div>
+    </script>
 </html>
