@@ -16,7 +16,7 @@ define(['underscore', 'zepto', 'backbone'], function(_, $, Backbone){
 		},
 		
 		initialize : function(options){
-			this.decks = options.decks;
+			this.decks = options.decks || [];
 			this.lang = options.lang;
 		},
 		

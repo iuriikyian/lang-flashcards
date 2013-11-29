@@ -31,7 +31,7 @@ function(_, $, Backbone){
 				me._showLanguages(data);
 			});
 			querying.fail(function(err){
-				alert(error);
+				alert(err);
 			});
 		},
 		
@@ -74,7 +74,7 @@ function(_, $, Backbone){
 				me._showDecks(lang, decks);
 			});
 			querying.fail(function(err){
-				alert(error);
+				alert(err);
 			});
 		},
 		
