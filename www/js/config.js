@@ -7,7 +7,9 @@ require.config({
         zepto                   : '../lib/zepto',
         underscore              : '../lib/underscore',
         'underscore.deferred'   : '../lib/underscore.deferred',
-        backbone				: '../lib/backbone'
+        backbone				: '../lib/backbone',
+        hammer                  : '../lib/hammer',
+        'zepto.hammer'          : '../lib/zepto.hammer'
     },
 
     shim   : {
@@ -26,13 +28,23 @@ require.config({
         backbone : {
         	deps: ['underscore', 'zepto'],
         	exports: 'Backbone'
+        },
+        
+        hammer: {
+            exports: 'Hammer'
+        },
+
+        'zepto.hammer': {
+            deps: ['zepto', 'hammer']
         }
+
     },
     map    : {
         '*': {
             jquery: 'zepto',
             $: 'zepto',
-            _: 'underscore'
+            _: 'underscore',
+            "$.hammer": 'zepto.hammer'
         }
     }
 });

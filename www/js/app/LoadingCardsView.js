@@ -1,16 +1,17 @@
-define(['underscore', 'zepto', 'backbone', 'underscore.deferred'], 
+define(['underscore', 'zepto', 'backbone', 'underscore.deferred', 'zepto.hammer'], 
 function(_, $, Backbone){
 	
 	var SERVER_URL = 'https://script.google.com/macros/s/AKfycbxeEg8kcHw0tJ1qC8HE5Y47QOao05DV1H7NxGOjxX26hdPVezw/exec?path=';
 	LoadingCardsView = Backbone.View.extend({
 		template : _.template($('#importFromWebTemplate').html()),
 		buttonTemplate : _.template($('#buttonTemplate').html()),
-		events : {
-			'click .header .back-button' : '_onBack'
-		},
 		
 		initialize : function(options){
 			this.lang = options.lang;
+		},
+		
+		_initTouchEvents : function(){
+			this.$('.header .back-button').hammer().on('tap', _.bind(this._onBack, this));
 		},
 		
 		render : function(){
@@ -18,10 +19,17 @@ function(_, $, Backbone){
 			$(this.el).append(this.template({
 				lang : this.lang
 			}));
+			this._initTouchEvents();
 		},
 		
 		_onBack : function(){
-			this.trigger('back', {});
+			if( this.$('.decks').hasClass('hidden')){
+				this.trigger('back', {});
+			}else{
+				this.$('.decks').addClass('hidden');
+				this.$('.languages').removeClass('hidden');
+			}
+			
 		},
 		
 		queryLanguages : function(){
@@ -56,11 +64,10 @@ function(_, $, Backbone){
 			}, this);
 			this.$('.loading').addClass('hidden');
 			var me = this;
-			this.$('.languages .langs-list')
-				.empty()
-				.append(parts.join(''))
-				.on('click', function(evt){
+			this.$('.languages .langs-list').empty().append(parts.join(''));
+			this.$('.languages .langs-list .button').hammer().on('tap', function(evt){
 					console.log(evt);
+					$(evt.target).find('.loading').addClass('loading-active');
 					var selectedLang = $(evt.target).attr('data-target');
 					me.queryDecks(selectedLang);
 				});
@@ -71,25 +78,28 @@ function(_, $, Backbone){
 			var querying = this._queryDecks(lang);
 			var me = this;
 			querying.done(function(decks){
+				me._removeLoadingIndicator();
 				me._showDecks(lang, decks);
 			});
 			querying.fail(function(err){
+				me._removeLoadingIndicator();
 				alert(err);
 			});
 		},
 		
 		_showDecks : function(lang, decks){
+			this.$('.header .title .step').text('2/2');
+			this.$('.decks .message .sourceLang').text(lang);
 			var parts = [];
 			_.each(decks, function(deck){
 				parts.push(this.buttonTemplate({item : deck}));
 			}, this);
 			this.$('.languages').addClass('hidden');
 			var me = this;
-			this.$('.decks .decks-list')
-				.empty()
-				.append(parts.join(''))
-				.on('click', function(evt){
+			this.$('.decks .decks-list').empty().append(parts.join(''));
+			this.$('.decks .decks-list .button').hammer().on('click', function(evt){
 					console.log(evt);
+					$(evt.target).find('.loading').addClass('loading-active');
 					var selectedDeck = $(evt.target).attr('data-target');
 					me.loadDeck(lang, selectedDeck);
 				});
@@ -115,9 +125,11 @@ function(_, $, Backbone){
 			var loading = this._loadDeck(lang, deckName);
 			var me = this;
 			loading.done(function(cards){
+				me._removeLoadingIndicator();
 				me.trigger('cards-loaded', cards);
 			});
 			loading.fail(function(err){
+				me._removeLoadingIndicator();
 				alert(err);
 			});
 		},
@@ -135,6 +147,10 @@ function(_, $, Backbone){
 				}
 			});
 			return dfd.promise();
+		},
+		
+		_removeLoadingIndicator : function(){
+			this.$('.loading-active').removeClass('loading-active');
 		}
 	});
 	

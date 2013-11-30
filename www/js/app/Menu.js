@@ -1,17 +1,18 @@
-define(['underscore', 'zepto', 'backbone'], 
+define(['underscore', 'zepto', 'backbone', 'zepto.hammer'], 
 		function(_, $, Backbone){
 	var HIDDEN_CLASS = 'hidden';
 	
 	var Menu = Backbone.View.extend({
 		template : _.template($('#menuTemplate').html()),
-		events : {
-			'click .menu .menu-item' : '_onMenuClick'
-		},
 		
 		initialize : function(options){
 			this.menus = options.menus;
 			this.overlay = options.overlay;
 		},
+		
+		_initTouchEvents : function(){
+			this.$('.menu .menu-item').hammer().on('tap', _.bind(this._onMenuClick, this));
+		},		
 		
 		_onMenuClick : function(evt){
 			var menuId = $(evt.target).attr('data-target');
@@ -30,13 +31,11 @@ define(['underscore', 'zepto', 'backbone'],
 			$(this.el).append(this.template({
 				menus : this.menus,
 			}));
-			var me = this;
 			$(this.overlay)
 				.removeClass(HIDDEN_CLASS)
-				.on('click', function(){
-					me._hideMenu();
-				});
+				.hammer().on('tap', _.bind(this._hideMenu, this));
 			this.$el.removeClass(HIDDEN_CLASS);
+			this._initTouchEvents();
 		}
 	});
 	

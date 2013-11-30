@@ -1,17 +1,18 @@
-define(['underscore', 'zepto', 'backbone'], 
+define(['underscore', 'zepto', 'backbone', 'zepto.hammer'], 
 		function(_, $, Backbone){
 	var HIDDEN_CLASS = 'hidden';
 	
 	var DeckInfoDialog = Backbone.View.extend({
 		template : _.template($('#deckInfoTemplate').html()),
-		events : {
-			'click .title .close' : '_onClose'
-		},
-		
+
 		initialize : function(options){
 			this.info = options.info;
 			this.overlay = options.overlay;
 		},
+		
+		_initTouchEvents : function(){
+			this.$('.title .close').hammer().on('tap', _.bind(this._onClose, this));
+		},		
 		
 		_onClose : function(evt){
 			this.$el.addClass(HIDDEN_CLASS);
@@ -19,16 +20,13 @@ define(['underscore', 'zepto', 'backbone'],
 		},
 		
 		render : function(){
-			//$(this.el).off();
 			$(this.el).empty();
 			$(this.el).append(this.template(this.info));
-			var me = this;
 			$(this.overlay)
 				.removeClass(HIDDEN_CLASS)
-				.on('click', function(){
-					me._onClose();
-				});
+				.hammer().on('tap', _.bind(this._onClose, this));
 			this.$el.removeClass(HIDDEN_CLASS);
+			this._initTouchEvents();
 		}
 	});
 	

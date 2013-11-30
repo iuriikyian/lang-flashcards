@@ -1,7 +1,9 @@
 define(['underscore'], function(_){
 	var storage = localStorage;
 	return {
-		length : storage.length,
+		getKeysCount : function(){
+			return storage.length;
+		},
 		key : function(idx){
 			return storage.key(idx);
 		},
@@ -15,6 +17,12 @@ define(['underscore'], function(_){
 		setItem : function(key, value){
 			storage.setItem(key, JSON.stringify(value));
 		},
-		removeItem : storage.removeItem
+		removeItem : function(key){
+			try{ // to catch exception throw on Android for not existent key
+				storage.removeItem(key);
+			}catch(err){
+				//do nothing
+			}
+		}
 	};
 });

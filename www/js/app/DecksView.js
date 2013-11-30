@@ -1,23 +1,25 @@
-define(['underscore', 'zepto', 'backbone'], function(_, $, Backbone){
+define(['underscore', 'zepto', 'backbone', 'zepto.hammer'], function(_, $, Backbone){
 	var TEMPLATE_ID = 'decksList';
 	var EDIT_MODE_CLASS = 'edit-mode';
 	
 	var DecksView = Backbone.View.extend({
 		template : _.template($('#decksList').html()),
 		deckItemTemplate : _.template($('#deckItem').html()),
-		events : {
-			'click .header .menu-button' : '_onShowMenu',
-			'click .content .today-button' : '_onShowTodayDeck',
-			'click .content .edit' : '_onEdit',
-			'click .content .cancel-edit' : '_onCancelEdit',
-			'click .content .deck-button' : '_onShowDeck',
-			'click .content .add-deck' : '_onAddDeck',
-			'click .content .remove-deck' : '_onRemoveDeck'
-		},
 		
 		initialize : function(options){
 			this.decks = options.decks || [];
 			this.lang = options.lang;
+		},
+		
+		_initTouchEvents : function(){
+			this.$('.header .menu-button').hammer().on('tap', _.bind(this._onShowMenu, this));
+			var $content = this.$('.content'); 
+			$content.find('.today-button').hammer().on('tap', _.bind(this._onShowTodayDeck, this));
+			$content.find('.edit').hammer().on('tap', _.bind(this._onEdit, this));
+			$content.find('.cancel-edit').hammer().on('tap', _.bind(this._onCancelEdit, this));
+			$content.find('.deck-button').hammer().on('tap', _.bind(this._onShowDeck, this));
+			$content.find('.add-deck').hammer().on('tap', _.bind(this._onAddDeck, this));
+			$content.find('.remove-deck').hammer().on('tap', _.bind(this._onRemoveDeck, this));
 		},
 		
 		render : function(){
@@ -26,6 +28,7 @@ define(['underscore', 'zepto', 'backbone'], function(_, $, Backbone){
 				title: 'flashcards (' + this.lang + ')',
 				decks : this.decks,
 			}));
+			this._initTouchEvents();
 		},
 		
 		_onShowMenu : function(){

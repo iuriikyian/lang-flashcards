@@ -47,7 +47,9 @@ define(['underscore'], function(_){
    		 }
 	};
 	return {
-		length : 4,
+		getKeysCount : function(){
+			return _.keys(testData).length;
+		},
 		key : function(idx){
 			return _.keys(testData)[idx];
 		},

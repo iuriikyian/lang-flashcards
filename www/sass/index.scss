@@ -81,14 +81,7 @@ body,
     .back-button,
     .menu-button {
       @include square-button();
-/*      font-family: FontAwesome;
-      font-size: 22px !important;
-      height: $button-height;
-      width: $button-min-width - ($button-padding * 2);
-      padding: $button-padding;
-      border: solid 1px $button-border-color;
-      border-radius: $button-border-radius; 
-*/    }
+    }
     .title {
       padding: 8px;
     }
@@ -98,16 +91,19 @@ body,
     padding: $content-padding;
     background-color: $content-background-color;
     .button{
+      position: relative;
       @include button();
-/*      height: $button-height;
-      min-width : $button-min-width;
-      border: solid 1px $button-border-color;
-      border-radius: $button-border-radius;
-      margin: $button-margin 0;
-      text-align: center;
-      padding: $button-padding;
-      font-size: $button-font-size;
-*/    }
+      .loading{
+        position: absolute;
+        left: 5px;
+        bottom: 5px;
+        width: 16px;
+        height: 11px;
+      }
+      .loading-active {
+        background-image: inline-image('ajax-pulse.gif');
+      }
+    }
   }
   .button.disabled {
     color: $button-disabled-border-color;
@@ -131,3 +127,4 @@ body,
 @import "deck-info-dialog";
 @import "review-mode-dialog";
 @import "select-item-dialog";
+@import "loading-cards-view";

@@ -4,13 +4,12 @@ define(['underscore', 'Deck', 'KeepDeck', 'testStorage', 'storage'], function(_,
 	var DECK_META_PREFIX = 'deck-meta' + SEPARATOR;
 	var KEPT_CARDS_PREFIX = 'keep-cards' + SEPARATOR;
 	
-//	var storage = localStorage;
 	//var storage = TestStorage; // for testing
 	
 	var DecksManager = function(){
 
 		this.getLangs = function(){
-			var keysCount = storage.length;
+			var keysCount = storage.getKeysCount();
 			var langs = {};
 			for(var i = 0; i < keysCount ; ++i){
 				var key = storage.key(i);
@@ -26,7 +25,7 @@ define(['underscore', 'Deck', 'KeepDeck', 'testStorage', 'storage'], function(_,
 
 		this.getDeckNames = function(lang){
 			var prefix = [DECK_CARDS_PREFIX, lang, SEPARATOR].join('');
-			var keysCount = storage.length;
+			var keysCount = storage.getKeysCount();
 			var names = [];
 			for(var i = 0; i < keysCount ; ++i){
 				var key = storage.key(i);
@@ -52,7 +51,7 @@ define(['underscore', 'Deck', 'KeepDeck', 'testStorage', 'storage'], function(_,
 			if(deckName === 'today'){
 				return this.getTodayDeck(lang);
 			}
-			var keysCount = storage.length;
+			var keysCount = storage.getKeysCount();
 			var cardsKey = this._getDeckCardsKey(lang, deckName);
 			var metaKey = this._getDeckMetaKey(lang, deckName);
 			var cards;
@@ -101,13 +100,11 @@ define(['underscore', 'Deck', 'KeepDeck', 'testStorage', 'storage'], function(_,
 			}
 			var metaKey = this._getDeckMetaKey(deck.lang, deck.name);
 			storage.setItem(metaKey, deck.getMeta());
-			//TODO: use JSON stringify for real storage
 		};
 
 		this.saveDeckCards = function(deck){
 			var cardsKey = this._getDeckCardsKey(deck.lang, deck.name);
 			storage.setItem(cardsKey, deck.getCards());
-			//TODO: use JSON stringify for real storage
 		};
 		
 		// saves deck navigation state and cards (usefull after deck content changes)

@@ -1,18 +1,19 @@
-define(['underscore', 'zepto', 'backbone'], 
+define(['underscore', 'zepto', 'backbone', 'zepto.hammer'], 
 		function(_, $, Backbone){
 	var HIDDEN_CLASS = 'hidden';
 	
 	var ReviewModeDialog = Backbone.View.extend({
 		template : _.template($('#reviewModeTemplate').html()),
-		events : {
-			'click .option' : '_onSelectMode',
-			'click .title .close' : '_onClose'
-		},
-		
+
 		initialize : function(options){
 			this.mode = options.mode;
 			this.overlay = options.overlay;
 		},
+		
+		_initTouchEvents : function(){
+			this.$('.option').hammer().on('tap', _.bind(this._onSelectMode, this));
+			this.$('.title .close').hammer().on('tap', _.bind(this._onClose, this));
+		},		
 		
 		_onSelectMode : function(evt){
 			var mode = $(evt.currentTarget).find('.state').attr('data-mode');
@@ -29,13 +30,11 @@ define(['underscore', 'zepto', 'backbone'],
 			//$(this.el).off();
 			$(this.el).empty();
 			$(this.el).append(this.template({mode : this.mode}));
-			var me = this;
 			$(this.overlay)
 				.removeClass(HIDDEN_CLASS)
-				.on('click', function(){
-					me._onClose();
-				});
+				.hammer().on('tap', _.bind(this._onClose, this));
 			this.$el.removeClass(HIDDEN_CLASS);
+			this._initTouchEvents();
 		}
 	});
 	

@@ -1,17 +1,20 @@
-define(['underscore', 'zepto', 'backbone'], function(_, $, Backbone){
+define(['underscore', 'zepto', 'backbone', 'zepto.hammer'], function(_, $, Backbone){
 	
 	var CardView = Backbone.View.extend({
 		template : _.template($('#cardView').html()),
 		
-		events : {
-			'click .content' : '_onContentClick',
-			'click .header .back-button' : '_onBack',
-			'click .header .menu-button' : '_onShowMenu',			
-			'click .header .title .selected' : '_onToggleSelected'
-		},
 		initialize : function(options){
 			this.card = options.card;
 		},
+		
+		_initTouchEvents : function(){
+			this.$('.content').hammer().on('tap', _.bind(this._onContentClick, this));
+			var $header = this.$('.header'); 
+			$header.find('.back-button').hammer().on('tap', _.bind(this._onBack, this));
+			$header.find('.menu-button').hammer().on('tap', _.bind(this._onShowMenu, this));			
+			$header.find('.title .selected').hammer().on('tap', _.bind(this._onToggleSelected, this));
+		},
+		
 		render : function(){
 			$(this.el).empty();
 			$(this.el).append(this.template({
@@ -27,7 +30,7 @@ define(['underscore', 'zepto', 'backbone'], function(_, $, Backbone){
 			$cardSide.css({
 				'padding-top' : ((contentHeight - linesHeight) / 2) + 'px' 
 			});
-			
+			this._initTouchEvents();
 		},
 		setCard : function(card){
 			this.card = card;
@@ -41,10 +44,11 @@ define(['underscore', 'zepto', 'backbone'], function(_, $, Backbone){
 		
 		_onContentClick : function(evt){
 			var width = $(window).width();
-			if(evt.clientX > width * 0.9){
+			var xPos = evt.gesture.center.pageX;
+			if(xPos > width * 0.9){
 				return this.trigger('card:show-next');
 			}
-			if(evt.clientX < width * 0.1){
+			if(xPos < width * 0.1){
 				return this.trigger('card:show-prev');
 			}
 			return this.trigger('card:flip');
