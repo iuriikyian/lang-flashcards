@@ -8,22 +8,55 @@ html,body, .body{
   overflow: hidden;
 }
 
-$header-height: 44px;
+ // --- HTC one X (1280x720) styles --- begin
+$header-height: 88px;
+$header-border: 3px;
+$header-border-color: #444;
+$header-color: #fff;
+$header-background-color: #222;
+$header-font-size: 48px;
+
+$button-height: 40px;
+$button-padding: 20px;
+$button-min-width: 80px;
+$button-border-color: #ddd;
+$button-border-radius: 0.3em;
+$button-margin: 1em;
+$button-font-size: 36px;
+
+$button-disabled-border-color: #555;
+$button-disabled-color: #555;
+
+$content-background-color: #222;
+$content-color: #fff;
+$content-padding: 8px;
+
+$menu-width: 400px;
+$menu-color: #eee;
+$menu-background-color: #555;
+$menu-border-color: #111;
+
+$dialog-title-font-size: 44px;
+$dialog-padding: 20px;
+$dialog-line-font-size: 36px;
+$dialog-line-label-width: 200px;
+$dialog-variant-height: 60px;
+$dialog-new-item-font-size: 32px;
+
+$menu-item-font-size: 40px;
+$menu-padding: 20px;
+
+$card-text-font-size: 44px;
+$card-notes-text-font-size: 40px;
+
+// --- HTC one styles --- end
+
+/*$header-height: 44px;
 $header-border: 2px;
 $header-border-color: #444;
 $header-color: #fff;
 $header-background-color: #222;
-
-@mixin screen-header(){
-  height: $header-height;
-  padding: ($header-height - $button-height) / 2;
-  border-bottom: solid $header-border $header-border-color;
-  text-align: center;
-  font-size: 24px;
-  font-weight: normal;
-  color: $header-color;
-  background-color: $header-background-color;
-}
+$header-font-size: 24px;
 
 $button-height: 20px;
 $button-padding: 10px;
@@ -44,6 +77,33 @@ $menu-width: 200px;
 $menu-color: #eee;
 $menu-background-color: #555;
 $menu-border-color: #111;
+
+$dialog-title-font-size: 22px;
+$dialog-padding: 10px;
+$dialog-line-font-size: 18px;
+$dialog-line-label-width: 150px;
+$dialog-variant-height: 30px;
+$dialog-new-item-font-size: 16px;
+
+$menu-item-font-size: 20px;
+$menu-padding: 10px;
+
+$card-text-font-size: 22px;
+$card-notes-text-font-size: 20px;
+*/
+@mixin screen-header(){
+  height: $header-height;
+  padding: ($header-height - $button-height) / 2;
+  border-bottom: solid $header-border $header-border-color;
+  text-align: center;
+  font-size: $header-font-size;
+  font-weight: normal;
+  color: $header-color;
+  background-color: $header-background-color;
+}
+
+
+
 body,
 .body {
   background-color: $content-background-color; 
@@ -51,7 +111,7 @@ body,
 
 @mixin square-button(){
   font-family: FontAwesome;
-  font-size: 22px !important;
+  font-size: $dialog-title-font-size !important;
   height: $button-height;
   width: $button-min-width - ($button-padding * 2);
   padding: $button-padding;

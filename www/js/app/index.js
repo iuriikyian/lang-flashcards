@@ -147,8 +147,7 @@ require(['underscore', 'zepto', 'DecksManager',
 			    el : '#menu',
 			    overlay : '#menu-overlay',
     			menus : [
-    			    { id : 'lang', name : 'change lang'},
-    			    { id : 2, name : 'other'}
+    			    { id : 'lang', name : 'change lang'}
     			]
     		});
     		menu.render();

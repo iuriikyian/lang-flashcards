@@ -5,10 +5,10 @@
   top: 10%;
   background-color: $menu-background-color;
   color: $menu-color;
-  padding: 10px;
+  padding: $dialog-padding;
   .title {
     height: $button-height + (2 * $button-padding);
-    font-size: 22px;
+    font-size: $dialog-title-font-size;
     .text {
       padding-right: $button-min-width + $button-padding;  
     }
@@ -18,10 +18,10 @@
     }  
   }
   .line {
-    font-size: 18px;
+    font-size: $dialog-line-font-size;
     .label {
       display: inline-block;
-      width: 150px;
+      width: $dialog-line-label-width;
       font-weight: bold;
     }
   }

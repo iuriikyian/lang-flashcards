@@ -11,15 +11,14 @@
   position: absolute;
   right: 0;
   top: $header-height + ($button-padding * 2) + $header-border;
-  bottom: 0;
   width: $menu-width;
   background-color: $menu-background-color;
   color: $menu-color;
   overflow-y: scroll;
   .menu-item {
     border-bottom: solid 1px $menu-border-color;
-    font-size: 20px;
-    padding: 10px;
+    font-size: $menu-item-font-size;
+    padding: $menu-padding;
   }
 }
 

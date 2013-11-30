@@ -36,6 +36,12 @@ define(['underscore', 'zepto', 'backbone', 'zepto.hammer'],
 				.hammer().on('tap', _.bind(this._hideMenu, this));
 			this.$el.removeClass(HIDDEN_CLASS);
 			this._initTouchEvents();
+			var pos = this.$el.position();
+			var height = $(window).height();
+			var maxHeight = height - pos.top;
+			this.$el.css({
+				'max-height' : '' + maxHeight + 'px'
+			});
 		}
 	});
 	

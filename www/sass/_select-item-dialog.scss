@@ -1,16 +1,16 @@
 .dialog {
   .variant {
     @include button();
-    height: 30px;
+    height: $dialog-variant-height;
     .checkbox{
       float: left;
       font-family: FontAwesome;
-      font-size: 30px !important;
-      width: 30px;
+      font-size: $dialog-variant-height !important;
+      width: $dialog-variant-height;
       text-align: left;
     }
     .new-item{
-      font-size: 16px;
+      font-size: $dialog-new-item-font-size;
       width: 60%;
     }
   }
