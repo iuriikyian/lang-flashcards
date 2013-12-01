@@ -53,8 +53,7 @@ require(['underscore', 'zepto', 'DecksManager', 'MainRouter'],
 	    
 	    onStartup: function(){
 	    	Backbone.history.start({
-	    		hashChange : true,
-	    		root : "decks/" + this.lang
+	    		hashChange : true
 	    	});
 	    },
 	    

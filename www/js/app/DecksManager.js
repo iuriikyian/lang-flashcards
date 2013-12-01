@@ -1,8 +1,10 @@
 define(['underscore', 'Deck', 'KeepDeck', 'testStorage', 'storage'], function(_, Deck, KeepDeck, TestStorage, storage){
+	var DEFAULT_LANG = 'english';
 	var SEPARATOR = '-';
 	var DECK_CARDS_PREFIX = 'deck-cards' + SEPARATOR;
 	var DECK_META_PREFIX = 'deck-meta' + SEPARATOR;
 	var KEPT_CARDS_PREFIX = 'keep-cards' + SEPARATOR;
+	var CURRENT_LANG_KEY = 'current-lang';
 	
 	//var storage = TestStorage; // for testing
 	
@@ -168,6 +170,14 @@ define(['underscore', 'Deck', 'KeepDeck', 'testStorage', 'storage'], function(_,
 				}
 			}
 			return [];
+		};
+		
+		this.getCurrentLang = function(){
+			return storage.getItem(CURRENT_LANG_KEY) || DEFAULT_LANG;
+		};
+		
+		this.setCurrentLang = function(lang){
+			storage.setItem(CURRENT_LANG_KEY, lang);
 		};
 	};
 	
