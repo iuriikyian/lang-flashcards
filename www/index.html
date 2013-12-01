@@ -24,7 +24,7 @@
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/font-awesome.css" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Hello World</title>
+        <title>lang-flashcards</title>
     </head>
     <body>
         <div class="body"></div>
@@ -49,24 +49,10 @@
 	    	</div>
 	    	<div class="content">
 	    		<div class="button today-button">today</div>
-	    		<div class="separator">
-	    			<div class="separator-line">
-		    			<div class="button edit fa-edit right"></div>
-		    			<div class="separator-half"></div>
-		    		</div>
-		    		<div class="new-deck-editor">
-		    			<div class="button add-deck fa-plus left"></div>
-		    			<div class="button cancel-edit fa-ban right"></div>
-		    			<div class="editor">
-		    				<input type="text" class="new-deck-name"/>
-		    			</div>
-		    			<div class="clearfix"></div>
-		    		</div>
-		    	</div>
+	    		<div class="separator"></div>
 	    		<div class="decks-list">
 	    			<% _.each(decks, function(deck){ %>
 	    				<div class="deck" data-target="<%= deck %>">
-	    					<div class="button remove-deck fa-minus right" data-target="<%= deck %>"></div>
 		    				<div class="button deck-button" data-target="<%= deck %>"><%= deck %></div>
 		    				<div class="clearfix"></div>
 	    				</div>	    				
@@ -74,12 +60,6 @@
 	    		</div>
 	    	</div>
     	</div>
-    </script>
-    <script type="text/html" id="deckItem">
-    	<div class="deck" data-target="<%= deck %>">
-			<div class="button remove-deck right" data-target="<%= deck %>">-</div>
-			<div class="button deck-button" data-target="<%= deck %>"><%= deck %></div>
-		</div>
     </script>
     <script type="text/html" id="menuTemplate">
 			<% _.each(menus, function(menu){ %>
@@ -203,6 +183,19 @@
 		<% }; %>
     	<div class="commands">
     		<div class="button select"><%= actionName %></div>
+    	</div>
+    </script>
+    <script type="text/html" id="createItemTemplate">
+    	<div class="title">
+    		<div class="button close fa-ban"></div>
+    		<div class="text"><%= title %></div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="editor">
+    		<input type="text" class="new-item-name"/>	
+    	</div>
+    	<div class="commands">
+    		<div class="button create">create</div>
     	</div>
     </script>
     <script type="text/html" id="importFromWebTemplate">

@@ -21,7 +21,7 @@ $button-padding: 20px;
 $button-min-width: 80px;
 $button-border-color: #ddd;
 $button-border-radius: 0.3em;
-$button-margin: 1em;
+$button-margin: 0.3em;
 $button-font-size: 36px;
 
 $button-disabled-border-color: #555;
@@ -150,6 +150,7 @@ body,
     color: $content-color;
     padding: $content-padding;
     background-color: $content-background-color;
+    overflow-y: scroll;
     .button{
       position: relative;
       @include button();
@@ -188,3 +189,4 @@ body,
 @import "review-mode-dialog";
 @import "select-item-dialog";
 @import "loading-cards-view";
+@import "create-item-dialog";

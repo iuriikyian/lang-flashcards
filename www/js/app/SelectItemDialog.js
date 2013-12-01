@@ -11,6 +11,7 @@ define(['underscore', 'zepto', 'backbone', 'zepto.hammer'],
 			this.canCreate = options.canCreate || false;
 			this.actionName = options.actionName || 'select';
 			this.overlay = options.overlay;
+			this.multipleSelect = options.multipleSelect;
 		},
 		
 		_initTouchEvents : function(){
@@ -20,8 +21,12 @@ define(['underscore', 'zepto', 'backbone', 'zepto.hammer'],
 		},		
 		
 		_onSelectVariant : function(evt){
-			this.$('.variant .checkbox').removeClass('fa-check-square-o').addClass('fa-square-o');
-			$(evt.currentTarget).find('.checkbox').removeClass('fa-square-o').addClass('fa-check-square-o');
+			if(this.multipleSelect){
+				$(evt.currentTarget).find('.checkbox').toggleClass('fa-square-o').toggleClass('fa-check-square-o');
+			}else{
+				this.$('.variant .checkbox').removeClass('fa-check-square-o').addClass('fa-square-o');
+				$(evt.currentTarget).find('.checkbox').removeClass('fa-square-o').addClass('fa-check-square-o');
+			}
 		},
 		
 		_onClose : function(evt){
@@ -34,17 +39,25 @@ define(['underscore', 'zepto', 'backbone', 'zepto.hammer'],
 			if($selected.length == 0){
 				return; // nothing selected
 			}
-			var variant = $selected.attr('data-target');
-			if(variant){
-				this._onClose();
-				this.trigger('selected', variant);
+			if(this.multipleSelect){
+				var items = [];
+				$selected.each(function(idx, item){
+					items.push($(item).attr('data-target'));
+				});
+				this.trigger('selected', items);
 			}else{
-				variant = $selected.parent().find('.new-item').val();
-				if(!variant){
-					return; // nothing entered
+				var variant = $selected.attr('data-target');
+				if(variant){
+					this._onClose();
+					this.trigger('selected', variant);
+				}else{
+					variant = $selected.parent().find('.new-item').val();
+					if(!variant){
+						return; // nothing entered
+					}
+					this._onClose();
+					this.trigger('create', variant);
 				}
-				this._onClose();
-				this.trigger('create', variant);
 			}
 		},
 		

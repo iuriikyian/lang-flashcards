@@ -7,34 +7,10 @@
     font-size: $dialog-title-font-size !important;
   }
   .separator{
-    $separator-height : $button-height + ($button-padding * 2);
+    //$separator-height : $button-height + ($button-padding * 2);
     width: 100%;
-    height: $separator-height;
-    margin: $button-margin 0;
-    .separator-line{
-      .separator-half {
-        margin-right: $button-min-width * 2;
-        height: $button-height;
-        border-bottom: solid 1px $header-border-color;
-      }
-    }
-    .new-deck-editor{
-      width: 100%;
-      display: none;
-      .editor{
-        margin-right: $button-min-width * 2;
-        margin-left: $button-min-width * 2;
-        padding: 0 7px 0 0px;
-        input{
-          $editor-padding: 1%;
-          width: 100% - (2 * $editor-padding);
-          height: $button-height + ($button-padding * 2) - 5px;
-          font-size: $button-font-size;
-          border-radius: $button-border-radius;
-          padding: 1px $editor-padding;
-        }
-      }
-    }
+    border-bottom: solid 1px $header-border-color;
+    margin: $button-padding 0;
     .button {
       margin: 0;
       width: $button-min-width;
@@ -50,28 +26,6 @@
     
     .button{
       margin: 0;
-    }
-    .edit-deck,
-    .remove-deck{
-      display: none;
-    }
-  }
-  // edit mode switch
-  .edit-mode {
-    .separator-line{
-      display: none;
-    }
-    .new-deck-editor,
-    .deck {
-      display: block;
-      .editor,
-      .deck-button{
-        margin-right: $button-min-width + 30px;
-      }
-      .edit-deck,
-      .remove-deck{
-        display: block;
-      }
     }
   }
 }

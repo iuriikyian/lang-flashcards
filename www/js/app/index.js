@@ -19,11 +19,11 @@
 require(['underscore', 'zepto', 'DecksManager', 
          'DecksView', 'CardView', 'LoadingCardsView', 'Deck',
          'Menu', 'DeckInfoDialog', 'ReviewModeDialog',
-         'SelectItemDialog', 'TestDeckData'], 
+         'SelectItemDialog', 'CreateItemDialog', 'TestDeckData'], 
 		function(_, $, DecksManager, 
 				DecksView, CardView, LoadingCardsView, Deck, 
 				Menu, DeckInfoDialog, ReviewModeDialog, 
-				SelectItemDialog, testDeckData){
+				SelectItemDialog, CreateItemDialog, testDeckData){
 	var app = {
 	    // Application Constructor
 	    initialize: function() {
@@ -129,16 +129,6 @@ require(['underscore', 'zepto', 'DecksManager',
 	    		console.log('Event:show:deck:' + deckName);
 	    		me.showCardView(deckName);
 	    	});
-	    	view.on('deck:create', function(deckName){
-	    		console.log('Event:deck:create:' + deckName);
-	    		me.decksManager.createDeck(me.lang, deckName);
-	    		me.showDecksView();
-	    	});
-	    	view.on('deck:remove', function(deckName){
-	    		console.log('Event:deck:remove:' + deckName);
-	    		me.decksManager.removeDeck(me.lang, deckName);
-	    		me.showDecksView();
-	    	});
 	    },
 	    
 	    showDecksViewMenu : function(){
@@ -147,7 +137,9 @@ require(['underscore', 'zepto', 'DecksManager',
 			    el : '#menu',
 			    overlay : '#menu-overlay',
     			menus : [
-    			    { id : 'lang', name : 'change lang'}
+    			    { id : 'lang', name : 'change lang'},
+    			    { id : 'create-deck', name : 'create deck'},
+    			    { id : 'remove-decks', name : 'remove decks'}
     			]
     		});
     		menu.render();
@@ -179,6 +171,45 @@ require(['underscore', 'zepto', 'DecksManager',
     						me.decksManager.saveDeckCards(deck);
     						me.lang = lang;
     						me.showDecksView();
+    					});
+    					break;
+    				case 'create-deck':
+    					me._destroyDialog();
+    					me.dialog = new CreateItemDialog({
+	   						el : '#dialog',
+							overlay : '#menu-overlay',
+							title : 'Create new deck'
+    					});
+    					me._destroyMenu();
+    					me.dialog.render();
+    					me.dialog.on('create', function(deckName){
+    						console.log('Event:create:' + deckName);
+    						var decks = me.decksManager.getDeckNames(me.lang);
+    						if(_.indexOf(decks, deckName) !== -1){
+    							alert('Deck with name "' + deckName + '" already exists');
+    							return;
+    						}
+    						me.decksManager.createDeck(me.lang, deckName);
+    						me.dialog.close();
+							me.showDecksView();
+    					});
+    					break;
+    				case 'remove-decks':
+    					var deckNames = me.decksManager.getDeckNames(me.lang);
+    					me._destroyDialog();
+    					me.dialog = new SelectItemDialog({
+	   						el : '#dialog',
+							overlay : '#menu-overlay',
+							title : 'Select target Decks to remove',
+    						items : deckNames,
+    						multipleSelect : true,
+    						actionName : 'remove'
+    					});
+    					me._destroyMenu();
+    					me.dialog.render();
+    					me.dialog.on('selected', function(deckNames){
+    						console.log('Event:selected');
+    						console.log(deckNames);
     					});
     					break;
     			}
