@@ -124,7 +124,9 @@
 	    			<span class="text">
 	    				<%= card.deckName %>
 	    				<% if(card.deckSize) {%> 
-	    				- <%= card.index + 1 %>/<%= card.deckSize %>-<%= card.flipped ? 'B' : 'F' %>
+	    				: <span class="side <%= card.flipped ? 'side-back' : 'side-front' %>">
+	    					<%= card.index + 1 %>/<%= card.deckSize %>
+	    				  </span>
 	    				<%};%>
 	    			</span>
 	    		</div>
@@ -198,11 +200,11 @@
     		<div class="button create">create</div>
     	</div>
     </script>
-    <script type="text/html" id="importFromWebTemplate">
+    <script type="text/html" id="importFromWebLangsTemplate">
     	<div class="import screen">
 	    	<div class="header">
 	    		<div class="button back-button fa-arrow-left left"></div>
-	    		<div class="title">Cards Import [<span class="step">1/2</span>] -> today(<%= lang %>) </div>
+	    		<div class="title">Cards Import [1/2]</div>
 	    		<div class="clearfix"></div>
 	    	</div>
 	    	<div class="content">
@@ -213,10 +215,28 @@
 		    		<div class="message">Select source language</div>
 		    		<div class="langs-list"></div>
 		    	</div>
-		    	<div class="decks hidden">
-		    		<div class="message">Selected language: <span class="sourceLang"</span></div>
+		    </div>
+		</div>
+    </script>
+    <script type="text/html" id="importFromWebDecksTemplate">
+    	<div class="import screen">
+	    	<div class="header">
+	    		<div class="button back-button fa-arrow-left left"></div>
+	    		<div class="title">Cards Import [2/2]</div>
+	    		<div class="clearfix"></div>
+	    	</div>
+	    	<div class="content">
+		    	<div class="decks">
+		    		<div class="message">Selected language: <span class="sourceLang"><%= lang %></span></div>
 		    		<div class="message">Select deck to import</div>
-		    		<div class="decks-list"></div>
+		    		<div class="decks-list">
+		    			<% _.each(decks, function(deck){ %>
+					    	<div class="button item-button" data-target="<%= deck %>">
+					    		<%= deck %>
+					    		<div class="loading"></div>
+					    	</div>
+		    			<% }); %>
+		    		</div>
 		    	</div>
 		    </div>
 		</div>

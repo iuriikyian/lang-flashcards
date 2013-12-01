@@ -44,7 +44,10 @@ define(['underscore', 'zepto', 'backbone', 'zepto.hammer'],
 				$selected.each(function(idx, item){
 					items.push($(item).attr('data-target'));
 				});
-				this.trigger('selected', items);
+				if(items.length){
+					this._onClose();
+					this.trigger('selected', items);
+				}
 			}else{
 				var variant = $selected.attr('data-target');
 				if(variant){

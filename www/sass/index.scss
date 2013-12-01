@@ -1,3 +1,5 @@
+@import "compass/css3/box-shadow";
+
 // --- set defaults ---
 html,body, .body{
   margin: 0;
@@ -23,6 +25,9 @@ $button-border-color: #ddd;
 $button-border-radius: 0.3em;
 $button-margin: 0.3em;
 $button-font-size: 36px;
+$button-background-color: #444;
+$button-shadow-size: 5px;
+$button-shadow-color: #000;
 
 $button-disabled-border-color: #555;
 $button-disabled-color: #555;
@@ -39,7 +44,7 @@ $menu-border-color: #111;
 $dialog-title-font-size: 44px;
 $dialog-padding: 20px;
 $dialog-line-font-size: 36px;
-$dialog-line-label-width: 200px;
+$dialog-line-label-width: 300px;
 $dialog-variant-height: 60px;
 $dialog-new-item-font-size: 32px;
 
@@ -48,7 +53,9 @@ $menu-padding: 20px;
 
 $card-text-font-size: 44px;
 $card-notes-text-font-size: 40px;
-
+$card-select-font-size: 100px;
+$card-name-padding-bottom: 70px;
+$card-reviews-font-size: 32px;
 // --- HTC one styles --- end
 
 /*$header-height: 44px;
@@ -90,6 +97,9 @@ $menu-padding: 10px;
 
 $card-text-font-size: 22px;
 $card-notes-text-font-size: 20px;
+$card-select-font-size: 50px;
+$card-name-padding-bottom: 35px;
+$card-reviews-font-size: 16px;
 */
 @mixin screen-header(){
   height: $header-height;
@@ -116,7 +126,9 @@ body,
   width: $button-min-width - ($button-padding * 2);
   padding: $button-padding;
   border: solid 1px $button-border-color;
-  border-radius: $button-border-radius; 
+  border-radius: $button-border-radius;
+  background-color: $button-background-color;
+  @include single-box-shadow($button-shadow-color, $button-shadow-size, $button-shadow-size);
 }
 
 @mixin button(){
@@ -128,6 +140,8 @@ body,
   text-align: center;
   padding: $button-padding;
   font-size: $button-font-size;
+  background-color: $button-background-color;
+  @include single-box-shadow($button-shadow-color, $button-shadow-size, $button-shadow-size);
 }
 
 .screen {

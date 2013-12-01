@@ -286,8 +286,6 @@ define(['underscore', 'backbone'], function(_, Backbone){
 			}
 		};
 	};
-
-	
 	
 	return Deck;
 });
