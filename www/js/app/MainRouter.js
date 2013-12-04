@@ -1,17 +1,15 @@
 define(['underscore', 'zepto', 'backbone',
         'DecksManager', 'DecksView', 'Menu', 'CardsServerAgent',
-        'CardView', 'LoadingCards1View', 'LoadingCards2View',
+        'CardView', 'LoadingCards1Dialog', 'LoadingCards2Dialog',
         'SelectItemDialog', 'CreateItemDialog', 'ReviewModeDialog', 'DeckInfoDialog'
         ], function(_, $, Backbone, 
         		DecksManager, DecksView, Menu, CardsServerAgent,
-        		CardView, LoadingCards1View, LoadingCards2View,
+        		CardView, LoadingCards1Dialog, LoadingCards2Dialog,
         		SelectItemDialog, CreateItemDialog, ReviewModeDialog, DeckInfoDialog){
 	var MainRouter = Backbone.Router.extend({
 		routes : {
-			"" : "onShowDecksList",
-			"cards/:deck" : "onShowDeckCards",
-			"load-cards" : "onShowLoadCards1",
-			"load-cards/:fromLang" : "onNavigateBack" //"onShowLoadCards2"
+			"" : "onShowDecksList"//,
+//			"cards/:deck" : "onShowDeckCards"
 		},
 		
 		initialize : function(options){
@@ -44,11 +42,13 @@ define(['underscore', 'zepto', 'backbone',
 	    	});
 	    	view.on('show:today-deck', function(){
 	    		console.log('Event:show:today-deck');
-	    		me.navigate('cards/today', {trigger:true});
+	    		me.onShowDeckCards('today');
+	    		//me.navigate('cards/today', {trigger:true});
 	    	});
 	    	view.on('show:deck', function(deckName){
 	    		console.log('Event:show:deck:' + deckName);
-	    		me.navigate(['cards', deckName].join('/'), {trigger:true});
+	    		me.onShowDeckCards(deckName);
+	    		//me.navigate(['cards', deckName].join('/'), {trigger:true});
 	    	});
 		},
 		
@@ -63,10 +63,10 @@ define(['underscore', 'zepto', 'backbone',
     		this.view = view;
 	    	view.render();
 	    	var me = this;
-	    	view.on('back', function(){
+	    	view.on('home', function(){
 	    		me.decksManager.saveDeckState(deck);
-	    		console.log('Event:back');
-	    		window.history.back();
+	    		console.log('Event:home');
+	    		me.onShowDecksList();
 	    	});
 	    	view.on('show:menu', function(){
 	    		console.log('Event:show:menu');
@@ -121,7 +121,7 @@ define(['underscore', 'zepto', 'backbone',
 							title : 'Select lang',
     						items : langs,
     						canCreate : true,
-    						actionName : 'switch on'
+    						actionName : 'switch'
     					});
     					me._destroyMenu();
     					me.dialog.render();
@@ -309,7 +309,7 @@ define(['underscore', 'zepto', 'backbone',
     					me.decksManager.saveDeckStateWithCards(deck);
     					break;
     				case 'import-from-web': // from 'today deck view
-    					me.navigate('load-cards', {trigger : true});
+    					me.onShowLoadCards1(deck);
     					break;
     			}
     			console.log('Event:menu:click:' + itemId);
@@ -317,58 +317,54 @@ define(['underscore', 'zepto', 'backbone',
     		this.menu = menu;
 	    },
 	    
-	    onShowLoadCards1 : function(){
+	    onShowLoadCards1 : function(targetDeck){
 	    	var me = this;
-	    	this._destroyCurrentView();
-	    	var view = new LoadingCards1View({
-	    		el : '.body'
+	    	me._destroyMenu();
+	    	var dialog = new LoadingCards1Dialog({
+					el : '#dialog',
+					overlay : '#menu-overlay'
 	    	});
-	    	this.view = view;
-	    	view.render();
+	    	this.dialog = dialog;
+	    	dialog.render();
 	    	var lang = this.decksManager.getCurrentLang();
 	    	var fetching = this.cardsServerAgent.fetchLanguages();
 	    	fetching.done(function(langs){
-	    		view.showLanguages(langs);
+	    		dialog.showLanguages(langs);
 	    	});
 	    	fetching.fail(function(err){
 	    		alert(err);
 	    	});
-	    	view.on('back', function(){
-	    		console.log('Event:back');
-	    		window.history.back();
+	    	dialog.on('close', function(){
+	    		me._destroyDialog();
 	    	});
-	    	view.on('load-decks', function(lang){
-	    		me.navigate(['load-cards', lang].join('/'), {trigger: true});
+	    	dialog.on('load-decks', function(lang){
+	    		me.onShowLoadCards2(lang, targetDeck);
 	    	});
-	    	// set next step for navigation
-	    	me.route("load-cards/:fromLang", "onShowLoadCards2");
 	    },
 		
-	    onShowLoadCards2 : function(fromLang){
+	    onShowLoadCards2 : function(fromLang, targetDeck){
 	    	var me = this;
 	    	var fetching = this.cardsServerAgent.fetchDecks(fromLang);
 	    	fetching.done(function(decks){
-		    	me._destroyCurrentView();
-		    	var view = new LoadingCards2View({
-		    		el : '.body',
+	    		me._destroyDialog();
+		    	var dialog = new LoadingCards2Dialog({
+					el : '#dialog',
+					overlay : '#menu-overlay',
 		    		lang : fromLang,
 		    		decks : decks
 		    	});
-		    	me.view = view;
-		    	view.render();
-		    	view.on('back', function(){
-		    		console.log('Event:back');
-		    		window.history.back();
+		    	me.dialog = dialog;
+		    	dialog.render();
+		    	dialog.on('close', function(){
+		    		me._destroyDialog();
 		    	});
-		    	view.on('load-cards', function(lang, deckName){
+		    	dialog.on('load-cards', function(lang, deckName){
 		    		var cardsFetching = me.cardsServerAgent.fetchCards(lang, deckName);
 		    		cardsFetching.done(function(cards){
 		    			var lang = me.decksManager.getCurrentLang();
-		    			var todayDeck = me.decksManager.getDeck(lang, 'today'); 
-			    		todayDeck.insertCards(cards);
-			    		me.decksManager.saveDeckCards(todayDeck);
-			    		me.route("load-cards/:fromLang", "onNavigateBack"); // set skip hook
-			    		me.navigate('cards/today', {trigger:true});
+			    		targetDeck.insertCards(cards);
+			    		me.decksManager.saveDeckCards(targetDeck);
+			    		me.dialog.close();
 		    		});
 		    		cardsFetching.fail(function(err){
 		    			alert(err);
@@ -378,7 +374,6 @@ define(['underscore', 'zepto', 'backbone',
 	    	fetching.fail(function(err){
 	    		alert(err);
 	    	});
-	    	var me = this;
 	    },
 	    
 	    _destroyCurrentView : function(){
@@ -400,7 +395,7 @@ define(['underscore', 'zepto', 'backbone',
     			this.dialog.off();
     			delete this.dialog;
     		}
-	    },
+	    }
 		
 	});
 	

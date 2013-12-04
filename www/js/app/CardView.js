@@ -10,7 +10,7 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'zepto.hammer'], function
 		_initTouchEvents : function(){
 			this.$('.content').hammer().on('tap', _.bind(this._onContentClick, this));
 			var $header = this.$('.header'); 
-			$header.find('.back-button').hammer().on('tap', _.bind(this._onBack, this));
+			$header.find('.home-button').hammer().on('tap', _.bind(this._onHome, this));
 			$header.find('.menu-button').hammer().on('tap', _.bind(this._onShowMenu, this));			
 			this.$('.content .selected').hammer().on('tap', _.bind(this._onToggleSelected, this));
 		},
@@ -36,8 +36,8 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'zepto.hammer'], function
 		setCard : function(card){
 			this.card = card;
 		},
-		_onBack : function(){
-			this.trigger('back', {});
+		_onHome : function(){
+			this.trigger('home', {});
 		},
 		_onShowMenu : function(){
 			this.trigger('show:menu', {});

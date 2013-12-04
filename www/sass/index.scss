@@ -156,7 +156,7 @@ body,
   .header {
     position: relative;
     @include screen-header();
-    .back-button,
+    .home-button,
     .menu-button {
       @include square-button();
     }

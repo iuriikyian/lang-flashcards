@@ -13,7 +13,11 @@ define(['underscore', 'zepto', 'backbone', 'zepto.hammer'],
 		_initTouchEvents : function(){
 			this.$('.title .close').hammer().on('tap', _.bind(this._onClose, this));
 		},		
-		
+
+		close : function(){
+			this._onClose();
+		},
+
 		_onClose : function(evt){
 			this.$el.addClass(HIDDEN_CLASS);
 			$(this.overlay).addClass(HIDDEN_CLASS);

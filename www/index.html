@@ -118,6 +118,7 @@
 	    		<% if(showBackButton) {%>
 	    			<div class="button back-button fa-arrow-left left"></div>
 	    		<% } %>
+	    		<div class="button home-button fa-home left"></div>
 	    		<div class="button menu-button fa-bars right"></div>
 	    		<div class="title">
 	    			<span class="text">
@@ -181,7 +182,7 @@
     	<% if(canCreate){ %>
 	    	<div class="variant">
 				<div class="checkbox fa-square-o"  data-target=''></div>
-				New: <input class="new-item"/>
+				<input class="new-item"/>
 				<div class="clearfix"></div>
 			</div>
 		<% }; %>
@@ -203,45 +204,41 @@
     	</div>
     </script>
     <script type="text/html" id="importFromWebLangsTemplate">
-    	<div class="import screen">
-	    	<div class="header">
-	    		<div class="button back-button fa-arrow-left left"></div>
-	    		<div class="title">Cards Import [1/2]</div>
-	    		<div class="clearfix"></div>
+    	<div class="title">
+    		<div class="button close fa-ban"></div>
+    		<div class="text">Cards Import [1/2]</div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="content">
+	    	<div class="loading">
+	    		<div class="message">Connecting to the server <span class="connecting"></span></div>
 	    	</div>
-	    	<div class="content">
-		    	<div class="loading">
-		    		<div class="message">Connecting to the server <span class="connecting"></span></div>
-		    	</div>
-		    	<div class="languages hidden">
-		    		<div class="message">Select source language</div>
-		    		<div class="langs-list"></div>
-		    	</div>
-		    </div>
-		</div>
+	    	<div class="languages hidden">
+	    		<div class="message">Select source language</div>
+	    		<div class="langs-list"></div>
+	    	</div>
+	    </div>
     </script>
     <script type="text/html" id="importFromWebDecksTemplate">
-    	<div class="import screen">
-	    	<div class="header">
-	    		<div class="button back-button fa-arrow-left left"></div>
-	    		<div class="title">Cards Import [2/2]</div>
-	    		<div class="clearfix"></div>
+    	<div class="title">
+    		<div class="button close fa-ban"></div>
+    		<div class="text">Cards Import [2/2]</div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="content">
+	    	<div class="decks">
+	    		<div class="message">Selected language: <span class="sourceLang"><%= lang %></span></div>
+	    		<div class="message">Select deck to import</div>
+	    		<div class="decks-list">
+	    			<% _.each(decks, function(deck){ %>
+				    	<div class="button item-button" data-target="<%= deck %>">
+				    		<%= deck %>
+				    		<div class="loading"></div>
+				    	</div>
+	    			<% }); %>
+	    		</div>
 	    	</div>
-	    	<div class="content">
-		    	<div class="decks">
-		    		<div class="message">Selected language: <span class="sourceLang"><%= lang %></span></div>
-		    		<div class="message">Select deck to import</div>
-		    		<div class="decks-list">
-		    			<% _.each(decks, function(deck){ %>
-					    	<div class="button item-button" data-target="<%= deck %>">
-					    		<%= deck %>
-					    		<div class="loading"></div>
-					    	</div>
-		    			<% }); %>
-		    		</div>
-		    	</div>
-		    </div>
-		</div>
+	    </div>
     </script>
     <script type="text/html" id="buttonTemplate">
     	<div class="button item-button" data-target="<%= item %>">
