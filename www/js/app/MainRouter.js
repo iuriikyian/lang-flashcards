@@ -25,6 +25,20 @@ define(['underscore', 'zepto', 'backbone',
 			window.history.back();
 		},
 		
+		onBackbutton : function(){
+			console.log('back button handler called');
+			if(! _.isUndefined(this.dialog)){
+				this.dialog.close();
+				return;
+			}
+			if(this.view.name === 'card-view'){
+				this.view.willBeClosed();
+				this.onShowDecksList();
+				return;
+			}
+			window.navigator.device.exitApp();
+		},
+		
 		onShowDecksList : function(){
 	    	var me = this;
 	    	this._destroyCurrentView();
@@ -63,6 +77,9 @@ define(['underscore', 'zepto', 'backbone',
     		this.view = view;
 	    	view.render();
 	    	var me = this;
+	    	view.on('save-deck-state', function(){
+	    		me.decksManager.saveDeckState(deck);
+	    	});
 	    	view.on('home', function(){
 	    		me.decksManager.saveDeckState(deck);
 	    		console.log('Event:home');

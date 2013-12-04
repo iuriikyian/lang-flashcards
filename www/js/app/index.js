@@ -45,6 +45,7 @@ require(['underscore', 'zepto', 'DecksManager', 'MainRouter'],
 	    // function, we must explicity call 'app.receivedEvent(...);'
 	    onDeviceReady: function() {
 	        app.receivedEvent('deviceready');
+	        document.addEventListener('backbutton', app.router.onBackbutton(), true)
 	    },
 	    // for in browser testing
 	    onDocumentReady: function(){

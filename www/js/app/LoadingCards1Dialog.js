@@ -1,36 +1,19 @@
-define(['underscore', 'zepto', 'backbone', 'underscore.deferred', 'zepto.hammer'], 
-function(_, $, Backbone){
-	var HIDDEN_CLASS = 'hidden'; 
-	var SERVER_URL = 'https://script.google.com/macros/s/AKfycbxeEg8kcHw0tJ1qC8HE5Y47QOao05DV1H7NxGOjxX26hdPVezw/exec?path=';
-	var LoadingCards1Dialog = Backbone.View.extend({
+define(['underscore', 'zepto', 'BaseDialog'], 
+function(_, $, BaseDialog){
+	var HIDDEN_CLASS = 'hidden';
+	
+	var LoadingCards1Dialog = BaseDialog.extend({
 		template : _.template($('#importFromWebLangsTemplate').html()),
 		buttonTemplate : _.template($('#buttonTemplate').html()),
 		
 		initialize : function(options){
 			this.lang = options.lang;
-			this.overlay = options.overlay;
-		},
-		
-		_initTouchEvents : function(){
-			this.$('.title .close').hammer().on('tap', _.bind(this._onClose, this));
 		},
 		
 		render : function(){
-			$(this.el).empty();
-			$(this.el).append(this.template({
+			this._base_render({
 				lang : this.lang
-			}));
-			$(this.overlay)
-				.removeClass(HIDDEN_CLASS)
-				.hammer().on('tap', _.bind(this._onClose, this));
-			this.$el.removeClass(HIDDEN_CLASS);
-			this._initTouchEvents();
-		},
-		
-		_onClose : function(){
-			this.$el.addClass(HIDDEN_CLASS);
-			$(this.overlay).addClass(HIDDEN_CLASS);
-			this.trigger('close', {});
+			});
 		},
 		
 		showLanguages : function(languages){

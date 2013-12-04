@@ -44,6 +44,9 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'zepto.hammer'], function
 		},
 		
 		_onContentClick : function(evt){
+			if($(evt.target).hasClass('selected')){
+				return;
+			}
 			var width = $(window).width();
 			var xPos = evt.gesture.center.pageX;
 			if(xPos > width * 0.8){
@@ -54,7 +57,8 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'zepto.hammer'], function
 			}
 			return this.trigger('card:flip');
 		},
-		_onToggleSelected : function(){
+		_onToggleSelected : function(evt){
+			evt.preventDefault();
 			var $selected = this.$('.content .selected');
 			$selected.toggleClass('fa-square-o');
 			$selected.toggleClass('fa-check-square-o');
