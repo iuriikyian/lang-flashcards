@@ -52,4 +52,18 @@ require.config({
 /**
  * Run the App!
  */
-require(['app']);
+
+console.log('start of app loading');
+require(['zepto'], function($){
+	$(function(){
+		console.log('document loaded');
+		if(false){ // web testing
+			require(['app']);
+		}
+		document.addEventListener('deviceready', function(){
+			console.log('Event:deviceready');
+			require(['app']);
+		}, false);
+		console.log('deviceready listener added');
+	});
+});

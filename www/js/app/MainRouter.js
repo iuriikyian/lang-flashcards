@@ -8,8 +8,7 @@ define(['underscore', 'zepto', 'backbone',
         		SelectItemDialog, CreateItemDialog, ReviewModeDialog, DeckInfoDialog){
 	var MainRouter = Backbone.Router.extend({
 		routes : {
-			"" : "onShowDecksList"//,
-//			"cards/:deck" : "onShowDeckCards"
+			"" : "onShowDecksList"
 		},
 		
 		initialize : function(options){
@@ -25,10 +24,11 @@ define(['underscore', 'zepto', 'backbone',
 			window.history.back();
 		},
 		
-		onBackbutton : function(){
+		onBackbutton : function(evt){
 			console.log('back button handler called');
 			if(! _.isUndefined(this.dialog)){
 				this.dialog.close();
+				this._destroyDialog();
 				return;
 			}
 			if(this.view.name === 'card-view'){
@@ -36,7 +36,7 @@ define(['underscore', 'zepto', 'backbone',
 				this.onShowDecksList();
 				return;
 			}
-			window.navigator.device.exitApp();
+			navigator.app.exitApp();
 		},
 		
 		onShowDecksList : function(){
@@ -131,10 +131,8 @@ define(['underscore', 'zepto', 'backbone',
     			switch(menuId){
     				case 'lang':
     					var langs = me.decksManager.getLangs();
-    					me._destroyDialog();
     					me.dialog = new SelectItemDialog({
 	   						el : '#dialog',
-							overlay : '#menu-overlay',
 							title : 'Select lang',
     						items : langs,
     						canCreate : true,
@@ -145,6 +143,7 @@ define(['underscore', 'zepto', 'backbone',
     					me.dialog.on('selected', function(lang){
     						console.log('Event:selected:lang:' + lang);
     						me.decksManager.setCurrentLang(lang);
+    						me._destroyDialog();
     						me.onShowDecksList();
     					});
     					me.dialog.on('create', function(lang){
@@ -152,18 +151,20 @@ define(['underscore', 'zepto', 'backbone',
     						me.decksManager.setCurrentLang(lang);
     						var deck = me.decksManager.getTodayDeck(lang);
     						me.decksManager.saveDeckCards(deck);
+    						me._destroyDialog();
     						me.onShowDecksList();
     					});
     					break;
     				case 'create-deck':
-    					me._destroyDialog();
     					me.dialog = new CreateItemDialog({
 	   						el : '#dialog',
-							overlay : '#menu-overlay',
 							title : 'Create Deck'
     					});
     					me._destroyMenu();
     					me.dialog.render();
+    					me.dialog.on('close', function(){
+    						me._destroyDialog();
+    					});
     					me.dialog.on('create', function(deckName){
     						console.log('Event:create:' + deckName);
     						var decks = me.decksManager.getDeckNames(lang);
@@ -173,15 +174,14 @@ define(['underscore', 'zepto', 'backbone',
     						}
     						me.decksManager.createDeck(lang, deckName);
     						me.dialog.close();
+    						me._destroyDialog();
 							me.onShowDecksList();
     					});
     					break;
     				case 'remove-decks':
     					var deckNames = me.decksManager.getDeckNames(lang);
-    					me._destroyDialog();
     					me.dialog = new SelectItemDialog({
 	   						el : '#dialog',
-							overlay : '#menu-overlay',
 							title : 'Select Decks',
     						items : deckNames,
     						multipleSelect : true,
@@ -189,12 +189,16 @@ define(['underscore', 'zepto', 'backbone',
     					});
     					me._destroyMenu();
     					me.dialog.render();
+    					me.dialog.on('close', function(){
+    						me._destroyDialog();
+    					});
     					me.dialog.on('selected', function(deckNames){
     						console.log('Event:selected');
     						console.log(deckNames);
     						_.each(deckNames, function(deckName){
     							me.decksManager.removeDeck(lang, deckName);
     						});
+    						me._destroyDialog();
     						me.onShowDecksList();
     					});
     					break;
@@ -233,14 +237,15 @@ define(['underscore', 'zepto', 'backbone',
     		menu.on('menu:click', function(itemId){
     			switch(itemId){
     				case 'mode':
-    					me._destroyDialog();
     					me.dialog = new ReviewModeDialog({
 	   						 el : '#dialog',
-							 overlay : '#menu-overlay',
     						mode : deck.mode
     					});
     					me._destroyMenu();
     					me.dialog.render();
+    					me.dialog.on('close', function(){
+    						me._destroyDialog();
+    					});
     					me.dialog.on('mode-selected', function(mode){
     						deck.setMode(mode);
     						me._destroyDialog();
@@ -266,16 +271,17 @@ define(['underscore', 'zepto', 'backbone',
     					break;
     				case 'sel2deck': // from today deck
     					var deckNames = me.decksManager.getDeckNames(lang);
-    					me._destroyDialog();
     					me.dialog = new SelectItemDialog({
 	   						el : '#dialog',
-							overlay : '#menu-overlay',
 							title : 'Select target Deck for cards',
     						items : deckNames,
     						actionName : 'move'
     					});
     					me._destroyMenu();
     					me.dialog.render();
+    					me.dialog.on('close', function(){
+    						me._destroyDialog();
+    					});
     					me.dialog.on('selected', function(deckName){
     						var targetDeck = me.decksManager.getDeck(lang, deckName);
     						if(targetDeck){
@@ -312,7 +318,6 @@ define(['underscore', 'zepto', 'backbone',
     				case 'deck-info':
     					me.dialog = new DeckInfoDialog({
     						 el : '#dialog',
-    						 overlay : '#menu-overlay',
     						 info : deck.getDeckInfo()
     					});
     					me._destroyMenu();
@@ -338,8 +343,7 @@ define(['underscore', 'zepto', 'backbone',
 	    	var me = this;
 	    	me._destroyMenu();
 	    	var dialog = new LoadingCards1Dialog({
-					el : '#dialog',
-					overlay : '#menu-overlay'
+					el : '#dialog'
 	    	});
 	    	this.dialog = dialog;
 	    	dialog.render();
@@ -382,6 +386,7 @@ define(['underscore', 'zepto', 'backbone',
 			    		targetDeck.insertCards(cards);
 			    		me.decksManager.saveDeckCards(targetDeck);
 			    		me.dialog.close();
+			    		me._destroyDialog();
 		    		});
 		    		cardsFetching.fail(function(err){
 		    			alert(err);

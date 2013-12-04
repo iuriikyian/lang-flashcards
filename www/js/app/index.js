@@ -18,57 +18,46 @@
  */
 require(['underscore', 'zepto', 'DecksManager', 'MainRouter'], 
 		function(_, $, DecksManager, MainRouter){
-	var app = {
-	    // Application Constructor
-	    initialize: function() {
+	
+	var App = function(){
+		this.initialize = function(){
+			console.log('initialize start');
 	    	this.lang = 'english';
 	    	this.decksManager = new DecksManager();
 	        this.router = new MainRouter({
 	        	decksManager : this.decksManager
 	        });
 	        this.bindEvents();
-	    },
-	    // Bind Event Listeners
-	    //
-	    // Bind any events that are required on startup. Common events are:
-	    // 'load', 'deviceready', 'offline', and 'online'.
-	    bindEvents: function() {
-	        document.addEventListener('deviceready', this.onDeviceReady, false);
-	        var me = this;
-	        $(function(){
-	        	me.onStartup();
-	        });
-	    },
-	    // deviceready Event Handler
-	    //
-	    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-	    // function, we must explicity call 'app.receivedEvent(...);'
-	    onDeviceReady: function() {
-	        app.receivedEvent('deviceready');
-	        document.addEventListener('backbutton', app.router.onBackbutton(), true)
-	    },
-	    // for in browser testing
-	    onDocumentReady: function(){
-	    	app.receivedEvent('deviceready');
-	    },
-	    
-	    onStartup: function(){
+	        this.onStartup();
+	        console.log('initialize end');
+		};
+		
+		this.bindEvents = function(){
+			console.log('installing backbutton handler');
+			var me = this;
+	        document.addEventListener('backbutton', function(evt){
+	        	console.log('backbutton event called');
+	        	me.onBackbutton(evt);
+	        	console.log('backbutton event end');
+	        }, true);	        
+			console.log('backbutton handler installed');
+		};
+		
+	    this.onStartup = function(){
+	    	console.log('onStartup start');
 	    	Backbone.history.start({
 	    		hashChange : true
 	    	});
-	    },
+	    	console.log('onStartup end');
+	    };
 	    
-	    // Update DOM on a Received Event
-	    receivedEvent: function(id) {
-	        var parentElement = document.getElementById(id);
-	        var listeningElement = parentElement.querySelector('.listening');
-	        var receivedElement = parentElement.querySelector('.received');
-
-	        listeningElement.setAttribute('style', 'display:none;');
-	        receivedElement.setAttribute('style', 'display:block;');
-
-	        console.log('Received Event: ' + id);
-	    }
+		this.onBackbutton = function(){
+			console.log('onBackbutton start');
+			this.router.onBackbutton();
+			console.log('onBackbutton end');
+		};
 	};
+	
+	var app = new App();
 	app.initialize();
 });

@@ -2,6 +2,7 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'zepto.hammer'], function
 	
 	var CardView = Backbone.View.extend({
 		template : _.template($('#cardView').html()),
+		name : 'card-view',
 		
 		initialize : function(options){
 			this.card = options.card;
@@ -13,6 +14,10 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'zepto.hammer'], function
 			$header.find('.home-button').hammer().on('tap', _.bind(this._onHome, this));
 			$header.find('.menu-button').hammer().on('tap', _.bind(this._onShowMenu, this));			
 			this.$('.content .selected').hammer().on('tap', _.bind(this._onToggleSelected, this));
+		},
+		
+		willBeClosed : function(){
+			this.trigger('save-deck-state', {});
 		},
 		
 		render : function(){

@@ -4,6 +4,7 @@ define(['underscore', 'zepto', 'backbone', 'zepto.hammer'], function(_, $, Backb
 	
 	var DecksView = Backbone.View.extend({
 		template : _.template($('#decksList').html()),
+		name : 'decks-view',
 		
 		initialize : function(options){
 			this.decks = options.decks || [];
