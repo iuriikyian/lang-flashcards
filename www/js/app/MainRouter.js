@@ -103,7 +103,7 @@ define(['underscore', 'zepto', 'backbone',
     			menus : [
     			    { id : 'lang', name : 'change lang'},
     			    { id : 'create-deck', name : 'create deck'},
-    			    { id : 'remove-decks', name : 'remove decks'}
+    			    { id : 'remove-decks', name : 'delete decks'}
     			]
     		});
     		menu.render();
@@ -118,10 +118,10 @@ define(['underscore', 'zepto', 'backbone',
     					me.dialog = new SelectItemDialog({
 	   						el : '#dialog',
 							overlay : '#menu-overlay',
-							title : 'Select language to switch on',
+							title : 'Select lang',
     						items : langs,
     						canCreate : true,
-    						actionName : 'select'
+    						actionName : 'switch on'
     					});
     					me._destroyMenu();
     					me.dialog.render();
@@ -143,7 +143,7 @@ define(['underscore', 'zepto', 'backbone',
     					me.dialog = new CreateItemDialog({
 	   						el : '#dialog',
 							overlay : '#menu-overlay',
-							title : 'Create new deck'
+							title : 'Create Deck'
     					});
     					me._destroyMenu();
     					me.dialog.render();
@@ -165,7 +165,7 @@ define(['underscore', 'zepto', 'backbone',
     					me.dialog = new SelectItemDialog({
 	   						el : '#dialog',
 							overlay : '#menu-overlay',
-							title : 'Select target Decks to remove',
+							title : 'Select Decks',
     						items : deckNames,
     						multipleSelect : true,
     						actionName : 'remove'

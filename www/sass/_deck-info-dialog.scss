@@ -6,11 +6,14 @@
   background-color: $menu-background-color;
   color: $menu-color;
   padding: $dialog-padding;
+  min-width: $dialog-min-width;
   .title {
     height: $button-height + (2 * $button-padding);
     font-size: $dialog-title-font-size;
     .text {
-      padding-right: $button-min-width + $button-padding;  
+      height: $dialog-title-height;
+      overflow: hidden;
+      text-overflow:ellipsis;  
     }
     .close {
       float: right;

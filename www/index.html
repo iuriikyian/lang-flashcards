@@ -115,12 +115,11 @@
     <script type="text/html" id="cardView">
     	<div class="card-view screen">
 	    	<div class="header">
-	    		<div class="button back-button fa-arrow-left left"></div>
+	    		<% if(showBackButton) {%>
+	    			<div class="button back-button fa-arrow-left left"></div>
+	    		<% } %>
 	    		<div class="button menu-button fa-bars right"></div>
 	    		<div class="title">
-	    			<% if(card.deckSize) {%>
-	    				<span class="selected <% if(card.selected){ %> fa-check-square-o <% }else{%> fa-square-o <% } %>"></span>
-	    			<%};%>
 	    			<span class="text">
 	    				<%= card.deckName %>
 	    				<% if(card.deckSize) {%> 
@@ -133,6 +132,9 @@
 	    		<div class="clearfix"></div>
 	    	</div>
 	    	<div class="content">
+		    	<% if(card.deckSize) {%>
+					<div class="selected <% if(card.selected){ %> fa-check-square-o <% }else{%> fa-square-o <% } %>"></div>
+				<% } %>
 		    	<div class="card-side">
 		    		<% if(card.reviews) { %>
 		    			<div class="reviews">
@@ -142,7 +144,7 @@
 		    			</div>	
 		    		<% }; %>
 			    	<% if(card.deckSize) {%>
-				    	<% if(card.top){
+    			    	<% if(card.top){
 				    		card.top.forEach(function(line){ %>
 				    			<div class="top"><%= line %></div>
 				    	<%	});

@@ -1,4 +1,4 @@
-define(['underscore', 'zepto', 'backbone', 'zepto.hammer'], function(_, $, Backbone){
+define(['underscore', 'zepto', 'backbone', 'settings', 'zepto.hammer'], function(_, $, Backbone, settings){
 	
 	var CardView = Backbone.View.extend({
 		template : _.template($('#cardView').html()),
@@ -12,13 +12,14 @@ define(['underscore', 'zepto', 'backbone', 'zepto.hammer'], function(_, $, Backb
 			var $header = this.$('.header'); 
 			$header.find('.back-button').hammer().on('tap', _.bind(this._onBack, this));
 			$header.find('.menu-button').hammer().on('tap', _.bind(this._onShowMenu, this));			
-			$header.find('.title .selected').hammer().on('tap', _.bind(this._onToggleSelected, this));
+			this.$('.content .selected').hammer().on('tap', _.bind(this._onToggleSelected, this));
 		},
 		
 		render : function(){
 			$(this.el).empty();
 			$(this.el).append(this.template({
 				card : this.card,
+				showBackButton : settings.showBackButton
 			}));
 			var height = $(window).height();
 			var headerHeight = this.$('.header').height();
@@ -45,16 +46,16 @@ define(['underscore', 'zepto', 'backbone', 'zepto.hammer'], function(_, $, Backb
 		_onContentClick : function(evt){
 			var width = $(window).width();
 			var xPos = evt.gesture.center.pageX;
-			if(xPos > width * 0.9){
+			if(xPos > width * 0.8){
 				return this.trigger('card:show-next');
 			}
-			if(xPos < width * 0.1){
+			if(xPos < width * 0.2){
 				return this.trigger('card:show-prev');
 			}
 			return this.trigger('card:flip');
 		},
 		_onToggleSelected : function(){
-			var $selected = this.$('.header .title .selected');
+			var $selected = this.$('.content .selected');
 			$selected.toggleClass('fa-square-o');
 			$selected.toggleClass('fa-check-square-o');
 			this.trigger('card:toggle-select', $selected.hasClass('fa-check-square-o'));

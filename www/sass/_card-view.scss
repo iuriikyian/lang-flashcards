@@ -1,18 +1,11 @@
 .card-view{
   .header{
     .title{
-      padding: 0;
-      .selected{
-        font-family: FontAwesome;
-        font-size: $card-select-font-size;
-        width: $card-select-font-size;
-        display: inline-block;
-        text-align: left;
-      }
+//      padding: 0;
       .text{
         display: inline-block;
         vertical-align: middle;
-        padding-bottom: $card-name-padding-bottom;
+//        padding-bottom: $card-name-padding-bottom;
         margin-left: 10px;
         .side-front{
           border-top: solid 2px $header-border-color;
@@ -24,6 +17,17 @@
     }
   }
   .content {
+    position: relative;
+    .selected{
+      position: absolute;
+      left: $header-padding;
+      top: $header-padding;
+      font-family: FontAwesome;
+      font-size: $card-select-font-size;
+      width: $card-select-font-size;
+      display: inline-block;
+      text-align: left;
+    }
     .card-side {
       positions: relative;
       text-align: center;

@@ -11,13 +11,14 @@ html,body, .body{
 }
 
  // --- HTC one X (1280x720) styles --- begin
-$header-height: 88px;
+$header-height: 80px;
 $header-border: 3px;
 $header-border-color: #444;
 $header-color: #fff;
 $header-background-color: #222;
 $header-font-size: 48px;
-
+$header-padding: 8px;
+$header-title-height: 50px;
 $button-height: 40px;
 $button-padding: 20px;
 $button-min-width: 80px;
@@ -36,24 +37,26 @@ $content-background-color: #222;
 $content-color: #fff;
 $content-padding: 8px;
 
-$menu-width: 400px;
+$menu-width: 250px;
 $menu-color: #eee;
 $menu-background-color: #555;
 $menu-border-color: #111;
 
 $dialog-title-font-size: 44px;
+$dialog-title-height: 50px;
 $dialog-padding: 20px;
 $dialog-line-font-size: 36px;
-$dialog-line-label-width: 300px;
+$dialog-line-label-width: 250px;
 $dialog-variant-height: 60px;
 $dialog-new-item-font-size: 32px;
+$dialog-min-width: 300px;
 
 $menu-item-font-size: 40px;
 $menu-padding: 20px;
 
 $card-text-font-size: 44px;
 $card-notes-text-font-size: 40px;
-$card-select-font-size: 100px;
+$card-select-font-size: 80px;
 $card-name-padding-bottom: 70px;
 $card-reviews-font-size: 32px;
 // --- HTC one styles --- end
@@ -103,7 +106,7 @@ $card-reviews-font-size: 16px;
 */
 @mixin screen-header(){
   height: $header-height;
-  padding: ($header-height - $button-height) / 2;
+  padding: $header-padding;
   border-bottom: solid $header-border $header-border-color;
   text-align: center;
   font-size: $header-font-size;
@@ -151,13 +154,26 @@ body,
     clear: both;
   }
   .header {
+    position: relative;
     @include screen-header();
     .back-button,
     .menu-button {
       @include square-button();
     }
+    .menu-button {
+      position: absolute;
+      right: $header-padding;
+      top: $header-padding;
+    }
+    .back-button{
+      position: absolute;
+      left: $header-padding;
+      top: $header-padding;
+    }
     .title {
-      padding: 8px;
+      padding: $header-padding * 2 $header-padding $header-padding;
+      height: $header-title-height;
+      overflow: hidden;
     }
   }
   .content {
