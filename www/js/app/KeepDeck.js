@@ -11,19 +11,19 @@ define(['underscore', 'backbone'], function(_, Backbone){
 				}else{
 					card.reviews += 1;
 				}
-				if(card.reviews < REVIEW_INTERVALS.length){
-					card.nextReview = this._nextReviewDate(card.reviews);
+				if(card.reviews <= REVIEW_INTERVALS.length){
+					card.nextReview = this._nextReviewDate(REVIEW_INTERVALS[card.reviews - 1]);
 					this.cards.push(card);
 				}
 			}, this);
 		};
 		
 		this.getTodayCards = function(){
-			var todayDate = this._date2ISO(new Date());
+			var todayDate = this._date2ISO(this._getCurrentDate());
 			var todayCards = [];
 			var keptCards = [];
 			_.each(this.cards, function(card){
-				if(card.reviewDate < todayDate){
+				if(card.reviewDate <= todayDate){
 					todayCards.push(card);
 				}else{
 					keptCards.push(card);
@@ -37,8 +37,13 @@ define(['underscore', 'backbone'], function(_, Backbone){
 			return this.cards;
 		};
 		
+		this._getCurrentDate = function(){
+			//for redefinition in tests
+			return new Date();
+		};
+		
 		this._nextReviewDate = function(daysInterval){
-			var reviewDate = new Date();
+			var reviewDate = this._getCurrentDate();
 			reviewDate.setDate(reviewDate.getDate() + daysInterval);
 			return this._date2ISO(reviewDate); 
 		};
@@ -47,7 +52,7 @@ define(['underscore', 'backbone'], function(_, Backbone){
 			function padWith0(str){
 				return str[1] ? str : "0" + str[0]; // padding
 			};
-			if(date){
+			if(_.isDate(date)){
 				var mm = padWith0((date.getMonth() + 1).toString()); // getMonth() is zero-based
 				var dd = padWith0(date.getDate().toString());
 				return [date.getFullYear().toString(), mm, dd].join('-');
