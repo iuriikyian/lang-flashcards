@@ -1,4 +1,4 @@
-define(['app/KeepDeck', 'jasmine'], function(KeepDeck){
+define(['KeepDeck', 'jasmine'], function(KeepDeck){
 	describe('KeepDeck', function(){
 		it('conversion date into proper ISO formatted date string', function(){
 			var kd = new KeepDeck({});

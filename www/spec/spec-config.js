@@ -1,17 +1,18 @@
 require.config({
 
-    baseUrl: 'spec',
+    baseUrl: 'js/app',
 
     paths  : {
     	app                     : '../js/app',
-        zepto                   : '../js/lib/zepto',
-        underscore              : '../js/lib/underscore',
-        'underscore.deferred'   : '../js/lib/underscore.deferred',
-        backbone				: '../js/lib/backbone',
-        hammer                  : '../js/lib/hammer',
-        'zepto.hammer'          : '../js/lib/zepto.hammer',
-        jasmine                 : 'lib/jasmine-1.2.0/jasmine',
-        'jasmine-html'          : 'lib/jasmine-1.2.0/jasmine-html'        
+    	spec                    : '../../spec',
+        zepto                   : '../lib/zepto',
+        underscore              : '../lib/underscore',
+        'underscore.deferred'   : '../lib/underscore.deferred',
+        backbone				: '../lib/backbone',
+        hammer                  : '../lib/hammer',
+        'zepto.hammer'          : '../lib/zepto.hammer',
+        jasmine                 : '../../spec/lib/jasmine-1.2.0/jasmine',
+        'jasmine-html'          : '../../spec/lib/jasmine-1.2.0/jasmine-html'        
         	
     },
 
@@ -60,7 +61,8 @@ require.config({
     }
 });
 
-require(['zepto', 'spec-KeepDeck', 'jasmine-html'], function($){
+
+require(['zepto', 'spec/KeepDeck', 'spec/Deck', 'spec/DecksManager', 'jasmine-html'], function($){
     var jasmineEnv = jasmine.getEnv();
     jasmineEnv.updateInterval = 1000;
 
