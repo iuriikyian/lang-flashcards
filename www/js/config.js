@@ -49,6 +49,10 @@ require.config({
     }
 });
 
+var appConfig = {
+	isBrowser : true
+}
+
 /**
  * Run the App!
  */
@@ -57,7 +61,7 @@ console.log('start of app loading');
 require(['zepto'], function($){
 	$(function(){
 		console.log('document loaded');
-		if(false){ // web testing
+		if(appConfig.isBrowser){ // web testing
 			require(['app']);
 		}
 		document.addEventListener('deviceready', function(){

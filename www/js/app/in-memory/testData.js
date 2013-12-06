@@ -1,5 +1,5 @@
 define(['underscore'], function(_){
-	var testData = {
+	return {
 		'deck-cards-english-deck1' : [
 		       {
 		    	   reviews : 3,
@@ -45,24 +45,5 @@ define(['underscore'], function(_){
    			 },
    			 selectedCards : {}
    		 }
-	};
-	return {
-		getKeysCount : function(){
-			return _.keys(testData).length;
-		},
-		key : function(idx){
-			return _.keys(testData)[idx];
-		},
-		getItem : function(key){
-			return testData[key];
-		},
-		setItem : function(key, value){
-			testData[key] = value;
-			this.length = _.keys(testData).length;
-		},
-		removeItem : function(key){
-			delete testData[key];
-			this.length = _.keys(testData).length;
-		}
 	};
 });

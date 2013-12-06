@@ -16,14 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-require(['underscore', 'zepto', 'DecksManager', 'MainRouter'], 
-		function(_, $, DecksManager, MainRouter){
+require(['underscore', 'zepto', 'DecksManager', 'MainRouter', 'in-memory/Storage', 'in-memory/testData'], 
+		function(_, $, DecksManager, MainRouter, InMemoryStorage, testData){
 	
 	var App = function(){
 		this.initialize = function(){
 			console.log('initialize start');
 	    	this.lang = 'english';
-	    	this.decksManager = new DecksManager();
+	    	this.decksManager = new DecksManager(new InMemoryStorage(testData));
 	        this.router = new MainRouter({
 	        	decksManager : this.decksManager
 	        });

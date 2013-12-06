@@ -1,5 +1,6 @@
-define(['underscore', 'Deck', 'KeepDeck', 'testStorage', 'storage'], function(_, Deck, KeepDeck, TestStorage, storage){
-	var DEFAULT_LANG = 'english';
+define(['underscore', 'Deck', 'KeepDeck'], function(_, Deck, KeepDeck){
+	var DEFAULT_LANG = 'default';
+	var TODAY_DECK_NAME = 'today';
 	var SEPARATOR = '-';
 	var DECK_CARDS_PREFIX = 'deck-cards' + SEPARATOR;
 	var DECK_META_PREFIX = 'deck-meta' + SEPARATOR;
@@ -8,7 +9,7 @@ define(['underscore', 'Deck', 'KeepDeck', 'testStorage', 'storage'], function(_,
 	
 	//var storage = TestStorage; // for testing
 	
-	var DecksManager = function(){
+	var DecksManager = function(storage){
 
 		this.getLangs = function(){
 			var keysCount = storage.getKeysCount();
@@ -22,10 +23,17 @@ define(['underscore', 'Deck', 'KeepDeck', 'testStorage', 'storage'], function(_,
 					langs[lang] = lang;
 				}
 			}
-			return _.keys(langs);
+			var res = _.keys(langs);
+			if(res.length === 0){
+				res.push(DEFAULT_LANG);
+			}
+			return res;
 		};
 
 		this.getDeckNames = function(lang){
+			if(!lang){
+				throw new Error('lang is not provided');
+			}
 			var prefix = [DECK_CARDS_PREFIX, lang, SEPARATOR].join('');
 			var keysCount = storage.getKeysCount();
 			var names = [];
@@ -33,7 +41,7 @@ define(['underscore', 'Deck', 'KeepDeck', 'testStorage', 'storage'], function(_,
 				var key = storage.key(i);
 				if(key.indexOf(prefix) === 0){
 					var name = key.substr(prefix.length);
-					if(name !== 'today'){
+					if(name !== TODAY_DECK_NAME){
 						names.push(name);
 					}
 				}
@@ -50,7 +58,10 @@ define(['underscore', 'Deck', 'KeepDeck', 'testStorage', 'storage'], function(_,
 		};
 		
 		this.getDeck = function(lang, deckName){
-			if(deckName === 'today'){
+			if(!lang){
+				throw new Error('lang is not provided');
+			}
+			if(deckName === TODAY_DECK_NAME){
 				return this.getTodayDeck(lang);
 			}
 			var keysCount = storage.getKeysCount();
@@ -177,8 +188,22 @@ define(['underscore', 'Deck', 'KeepDeck', 'testStorage', 'storage'], function(_,
 		};
 		
 		this.setCurrentLang = function(lang){
+			var oldLang = this.getCurrentLang();
+			if(oldLang !== lang){
+				this._createTodayDeckIfNotExists(oldLang); // to keep track of languages
+			}
 			storage.setItem(CURRENT_LANG_KEY, lang);
+			this._createTodayDeckIfNotExists(lang);
 		};
+		
+		this._createTodayDeckIfNotExists = function(lang){
+			var key = this._getDeckCardsKey(lang, TODAY_DECK_NAME);
+			var data = storage.getItem(key);
+			if(!data){
+				var todayDeck = this.getDeck(lang, TODAY_DECK_NAME);
+				this.saveDeckCards(todayDeck);
+			}
+		}
 	};
 	
 	return DecksManager;
