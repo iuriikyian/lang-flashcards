@@ -101,8 +101,8 @@ define(['underscore', 'zepto', 'backbone',
 	    		deck.flipCard();
 	    		console.log('Event:card:flip');
 	    	});
-	    	view.on('card:toggle-select', function(newValue){
-	    		deck.selectCard(newValue);
+	    	view.on('card:toggle-select', function(){
+	    		deck.toggelCardSelection();
 	    		console.log('Event:card:toggle-select');
 	    	});
 	    	deck.on('changed', function(){

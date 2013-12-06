@@ -25,7 +25,7 @@ define(['underscore', 'backbone'], function(_, Backbone){
 		};
 		
 		this.cardsCount = function(){
-			return this.cards.length();
+			return this.cards.length;
 		};
 		
 		this.setMode = function(newMode){
@@ -39,28 +39,6 @@ define(['underscore', 'backbone'], function(_, Backbone){
 				return null;
 			}
 			this._normalizeCurrentIndex();
-			return this.cards[this.currentIndex];
-		};
-		
-		this.getNextCard = function(){
-			if(this.cards.length === 0){
-				return null;
-			}
-			this.currentIndex += 1;
-			if(this.currentIndex > this.cards.length){
-				this.currentIndex = 0;
-			}
-			return this.cards[this.currentIndex];
-		};
-
-		this.getPrevCard = function(){
-			if(this.cards.length === 0){
-				return null;
-			}
-			this.currentIndex -= 1;
-			if(this.currentIndex < 0){
-				this.currentIndex = this.cards.length - 1;
-			}
 			return this.cards[this.currentIndex];
 		};
 		// --- cards access --- end
@@ -138,7 +116,7 @@ define(['underscore', 'backbone'], function(_, Backbone){
 			this.trigger('changed');
 		};
 		
-		this.selectCard = function(){
+		this.toggelCardSelection = function(){
 			if(this.cards.length === 0){
 				return;
 			}
