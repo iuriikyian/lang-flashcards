@@ -203,6 +203,65 @@ define(['underscore', 'Deck', 'KeepDeck'], function(_, Deck, KeepDeck){
 				var todayDeck = this.getDeck(lang, TODAY_DECK_NAME);
 				this.saveDeckCards(todayDeck);
 			}
+		};
+		
+		this.createBackup = function(){
+			var res = {};
+			var keysCount = storage.getKeysCount();
+			for(var i = 0; i < keysCount ; ++i){
+				var key = storage.key(i);
+				if(key.indexOf(DECK_CARDS_PREFIX) === 0){
+					res[key] = storage.getItem(key);
+					continue;
+				}
+				if(key.indexOf(DECK_META_PREFIX) === 0){
+					res[key] = storage.getItem(key);
+					continue;
+				}
+				if(key.indexOf(KEPT_CARDS_PREFIX) === 0){
+					res[key] = storage.getItem(key);
+					continue;
+				}
+				
+				if(key === CURRENT_LANG_KEY){
+					res[key] = storage.getItem(key);
+					continue;
+				}
+			}
+			return JSON.stringify(res);
+		};
+		this.restoreFromBackup = function(backup){
+			try{
+				var data = JSON.parse(backup);
+				this._cleanupDecksData();
+				_.each(_.keys(data), function(key){
+					storage.setItem(key, data[key]);
+				});
+			}catch(e){
+				console.log(e);
+			}
+		}
+		this._cleanupDecksData = function(){
+			var keysToRemove = [CURRENT_LANG_KEY];
+			var keysCount = storage.getKeysCount();
+			for(var i = 0; i < keysCount ; ++i){
+				var key = storage.key(i);
+				if(key.indexOf(DECK_CARDS_PREFIX) === 0){
+					keysToRemove.push(key);
+					continue;
+				}
+				if(key.indexOf(DECK_META_PREFIX) === 0){
+					keysToRemove.push(key);
+					continue;
+				}
+				if(key.indexOf(KEPT_CARDS_PREFIX) === 0){
+					keysToRemove.push(key);
+					continue;
+				}
+			}
+			_.each(keysToRemove, function(key){
+				storage.removeItem(key);
+			});
 		}
 	};
 	

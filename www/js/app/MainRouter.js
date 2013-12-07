@@ -102,7 +102,7 @@ define(['underscore', 'zepto', 'backbone',
 	    		console.log('Event:card:flip');
 	    	});
 	    	view.on('card:toggle-select', function(){
-	    		deck.toggelCardSelection();
+	    		deck.toggleCardSelection();
 	    		console.log('Event:card:toggle-select');
 	    	});
 	    	deck.on('changed', function(){

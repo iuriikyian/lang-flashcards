@@ -116,7 +116,7 @@ define(['underscore', 'backbone'], function(_, Backbone){
 			this.trigger('changed');
 		};
 		
-		this.toggelCardSelection = function(){
+		this.toggleCardSelection = function(){
 			if(this.cards.length === 0){
 				return;
 			}
@@ -232,7 +232,7 @@ define(['underscore', 'backbone'], function(_, Backbone){
 				if(bottom){
 					res.bottom = bottom;
 				}
-				console.log(res);
+				//console.log(res);
 				return res;
 			}else{
 				return {

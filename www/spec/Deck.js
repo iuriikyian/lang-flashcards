@@ -36,11 +36,11 @@ define(['underscore', 'Deck', 'jasmine'], function(_, Deck){
 			expect(_.keys(meta.selectedCards).length).toEqual(0);
 			var cs = d.getCurrentCardSideInfo();
 			expect(cs.selected).toBe(false);
-			d.toggelCardSelection();
+			d.toggleCardSelection();
 			expect(_.keys(meta.selectedCards).length).toEqual(1);
 			cs = d.getCurrentCardSideInfo();
 			expect(cs.selected).toBe(true);
-			d.toggelCardSelection();
+			d.toggleCardSelection();
 			expect(_.keys(meta.selectedCards).length).toEqual(0);
 			cs = d.getCurrentCardSideInfo();
 			expect(cs.selected).toBe(false);
@@ -120,19 +120,19 @@ define(['underscore', 'Deck', 'jasmine'], function(_, Deck){
 		});
 		it('selection can be cleared', function(){
 			var d = new Deck({cards: [{id : 'card1'},{id : 'card2'}]});
-			d.toggelCardSelection();
+			d.toggleCardSelection();
 			d.gotoNext();
-			d.toggelCardSelection();
+			d.toggleCardSelection();
 			expect(_.keys(d.selectedCards).length).toEqual(2);
 			d.clearSelection();
 			expect(_.keys(d.selectedCards).length).toEqual(0);
 		});
 		it('selection can be inverted', function(){
 			var d = new Deck({cards: [{id : 'card1'},{id : 'card2'},{id : 'card3'}]});
-			d.toggelCardSelection();
+			d.toggleCardSelection();
 			d.gotoNext();
 			d.gotoNext();
-			d.toggelCardSelection();
+			d.toggleCardSelection();
 			expect(_.keys(d.selectedCards).length).toEqual(2);
 			d.invertSelection();
 			expect(_.keys(d.selectedCards).length).toEqual(1);
@@ -148,10 +148,10 @@ define(['underscore', 'Deck', 'jasmine'], function(_, Deck){
 		});
 		it('removing selected cards', function(){
 			var d = new Deck({cards: [{id : 'card1'},{id : 'card2'},{id : 'card3'}]});
-			d.toggelCardSelection();
+			d.toggleCardSelection();
 			d.gotoNext();
 			d.gotoNext();
-			d.toggelCardSelection();
+			d.toggleCardSelection();
 			var cards = d.removeSelectedCards();
 			expect(cards.length).toEqual(2);
 			expect(cards[0].id).toEqual('card1');
