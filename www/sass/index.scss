@@ -44,12 +44,13 @@ $menu-border-color: #111;
 
 $dialog-title-font-size: 44px;
 $dialog-title-height: 50px;
-$dialog-padding: 20px;
+$dialog-content-padding: 20px;
 $dialog-line-font-size: 36px;
 $dialog-line-label-width: 250px;
-$dialog-variant-height: 60px;
+$dialog-button-checkbox-height: 46px;
 $dialog-new-item-font-size: 32px;
 $dialog-min-width: 300px;
+$dialog-title-padding-top: 10px;
 
 $menu-item-font-size: 40px;
 $menu-padding: 20px;
@@ -59,6 +60,11 @@ $card-notes-text-font-size: 40px;
 $card-select-font-size: 80px;
 $card-name-padding-bottom: 70px;
 $card-reviews-font-size: 32px;
+
+$notification-font-size: 36px;
+$error-color: red;
+$success-color: green;
+
 // --- HTC one styles --- end
 
 /*$header-height: 44px;
@@ -215,8 +221,10 @@ body,
 @import "decks-list";
 @import "card-view";
 @import "menu";
+@import "dialog";
 @import "deck-info-dialog";
 @import "review-mode-dialog";
 @import "select-item-dialog";
 @import "loading-cards-view";
 @import "create-item-dialog";
+

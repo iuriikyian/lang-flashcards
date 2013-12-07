@@ -1,25 +1,4 @@
 .dialog {
-  position: absolute;
-  left: 10%;
-  right: 10%;
-  top: 10%;
-  background-color: $menu-background-color;
-  color: $menu-color;
-  padding: $dialog-padding;
-  min-width: $dialog-min-width;
-  .title {
-    height: $button-height + (2 * $button-padding);
-    font-size: $dialog-title-font-size;
-    .text {
-      height: $dialog-title-height;
-      overflow: hidden;
-      text-overflow:ellipsis;  
-    }
-    .close {
-      float: right;
-      @include square-button();
-    }  
-  }
   .line {
     font-size: $dialog-line-font-size;
     .label {
@@ -27,5 +6,13 @@
       width: $dialog-line-label-width;
       font-weight: bold;
     }
+  }
+  .errors {
+    color: $error-color;
+    font-size: $notification-font-size;
+  }
+  .result {
+    color: $success-color;
+    font-size: $notification-font-size;
   }
 }

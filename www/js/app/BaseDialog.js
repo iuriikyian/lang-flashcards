@@ -4,7 +4,6 @@ define(['underscore', 'zepto', 'backbone', 'zepto.hammer'],
 	var OVERLAY_SELECTOR = '#menu-overlay';
 	
 	var BaseDialog = Backbone.View.extend({
-//		template : _.template($('#createItemTemplate').html()),
 		
 		initialize : function(options){
 			this.overlay = '#menu-overlay';
@@ -27,8 +26,7 @@ define(['underscore', 'zepto', 'backbone', 'zepto.hammer'],
 				.removeClass(HIDDEN_CLASS)
 				.hammer().on('tap', _.bind(this._onClose, this));
 			this.$el.removeClass(HIDDEN_CLASS);
-			//this._initTouchEvents();
-			this.$('.title .close').hammer().on('tap', _.bind(this._onClose, this));
+			this.$('.header .close').hammer().on('tap', _.bind(this._onClose, this));
 		}
 	});
 	
