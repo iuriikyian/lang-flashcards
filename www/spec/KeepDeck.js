@@ -1,17 +1,5 @@
 define(['KeepDeck', 'jasmine'], function(KeepDeck){
 	describe('KeepDeck', function(){
-		it('conversion date into proper ISO formatted date string', function(){
-			var kd = new KeepDeck({});
-			var d = new Date(2010, 02, 12);
-			expect(kd._date2ISO(d)).toEqual('2010-03-12');
-		});
-		it('handling wrong argument type to produce empty string', function(){
-			var kd = new KeepDeck({});
-			var d = null;
-			expect(kd._date2ISO(d)).toEqual('');
-			d = 'some string';
-			expect(kd._date2ISO(d)).toEqual('');
-		});
 		it('if no cards put in the deck, there is nothing to keep', function(){
 			var kd = new KeepDeck({});
 			expect(kd.getCardsToKeep().length).toEqual(0);

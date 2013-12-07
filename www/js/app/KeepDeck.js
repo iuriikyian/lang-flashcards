@@ -1,4 +1,4 @@
-define(['underscore', 'backbone'], function(_, Backbone){
+define(['underscore', 'backbone', 'utils/date'], function(_, Backbone, DateUtils){
 	var REVIEW_INTERVALS = [1, 3, 6];
 	var KeepDeck = function(options){
 		
@@ -19,7 +19,7 @@ define(['underscore', 'backbone'], function(_, Backbone){
 		};
 		
 		this.getTodayCards = function(){
-			var todayDate = this._date2ISO(this._getCurrentDate());
+			var todayDate = DateUtils.date2ISO(this._getCurrentDate());
 			var todayCards = [];
 			var keptCards = [];
 			_.each(this.cards, function(card){
@@ -45,19 +45,7 @@ define(['underscore', 'backbone'], function(_, Backbone){
 		this._nextReviewDate = function(daysInterval){
 			var reviewDate = this._getCurrentDate();
 			reviewDate.setDate(reviewDate.getDate() + daysInterval);
-			return this._date2ISO(reviewDate); 
-		};
-		
-		this._date2ISO = function(date){
-			function padWith0(str){
-				return str[1] ? str : "0" + str[0]; // padding
-			};
-			if(_.isDate(date)){
-				var mm = padWith0((date.getMonth() + 1).toString()); // getMonth() is zero-based
-				var dd = padWith0(date.getDate().toString());
-				return [date.getFullYear().toString(), mm, dd].join('-');
-			}
-			return '';
+			return DateUtils.date2ISO(reviewDate); 
 		};
 	};
 	

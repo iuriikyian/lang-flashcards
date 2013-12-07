@@ -62,7 +62,7 @@ require.config({
 });
 
 
-require(['zepto', 'spec/KeepDeck', 'spec/Deck', 'spec/DecksManager', 'jasmine-html'], function($){
+require(['zepto', 'spec/KeepDeck', 'spec/Deck', 'spec/DecksManager', 'spec/utils/date', 'jasmine-html'], function($){
     var jasmineEnv = jasmine.getEnv();
     jasmineEnv.updateInterval = 1000;
 
