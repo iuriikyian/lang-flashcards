@@ -31,6 +31,7 @@
         <div id="menu-overlay" class="menu-overlay hidden"></div>
         <div id="menu" class="menu hidden"></div>
         <div id="dialog" class="dialog hidden"></div>
+        <!-- todo: conditional load of phonegap if it is the device -->
         <script type="text/javascript" src="phonegap.js"></script>
         <script src="js/lib/require.js" data-main="js/config.js"></script>
         <!--script type="text/javascript" src="js/index.js"></script>
@@ -67,49 +68,53 @@
 			<% }); %>
     </script>
     <script type="text/html" id="deckInfoTemplate">
-    	<div class="title">
+    	<div class="header">
     		<div class="button close fa-ban"></div>
-    		<div class="text">Deck Information</div>
+    		<div class="title">Deck Information</div>
     		<div class="clearfix"></div>
     	</div>
-    	<div class="line">
-    		<span class="label">Name:</span>
-    		<span class="value"><%= name %></span>
-    	</div>
-    	<div class="line">
-    		<span class="label">Language:</span>
-    		<span class="value"><%= lang %></span>
-    	</div>
-    	<div class="line">
-    		<span class="label">Cards total:</span>
-    		<span class="value"><%= cardsCount %></span>
-    	</div>
-    	<div class="line">
-    		<span class="label">Cards selected:</span>
-    		<span class="value"><%= cardsSelected %></span>
+    	<div class="content">
+	    	<div class="line">
+	    		<span class="label">Name:</span>
+	    		<span class="value"><%= name %></span>
+	    	</div>
+	    	<div class="line">
+	    		<span class="label">Language:</span>
+	    		<span class="value"><%= lang %></span>
+	    	</div>
+	    	<div class="line">
+	    		<span class="label">Cards total:</span>
+	    		<span class="value"><%= cardsCount %></span>
+	    	</div>
+	    	<div class="line">
+	    		<span class="label">Cards selected:</span>
+	    		<span class="value"><%= cardsSelected %></span>
+	    	</div>
     	</div>
     </script>
     <script type="text/html" id="reviewModeTemplate">
-    	<div class="title">
+    	<div class="header">
     		<div class="button close fa-ban"></div>
-    		<div class="text">Review Mode</div>
+    		<div class="title">Review Mode</div>
     		<div class="clearfix"></div>
     	</div>
-    	<div class="option">
-    		<div class="state <% if(mode === 'plain'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='plain'></div>PLAIN
-    		<div class="clearfix"></div>
-    	</div>
-    	<div class="option">
-    		<div class="state <% if(mode === 'front'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='front'></div>FRONT
-    		<div class="clearfix"></div>
-    	</div>
-    	<div class="option">
-    		<div class="state <% if(mode === 'back'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='back'></div>BACK
-    		<div class="clearfix"></div>
-    	</div>
-    	<div class="option">
-    		<div class="state <% if(mode === 'random'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='random'></div>RANDOM
-    		<div class="clearfix"></div>
+    	<div class="content">
+	    	<div class="option">
+	    		<div class="state <% if(mode === 'plain'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='plain'></div>PLAIN
+	    		<div class="clearfix"></div>
+	    	</div>
+	    	<div class="option">
+	    		<div class="state <% if(mode === 'front'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='front'></div>FRONT
+	    		<div class="clearfix"></div>
+	    	</div>
+	    	<div class="option">
+	    		<div class="state <% if(mode === 'back'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='back'></div>BACK
+	    		<div class="clearfix"></div>
+	    	</div>
+	    	<div class="option">
+	    		<div class="state <% if(mode === 'random'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='random'></div>RANDOM
+	    		<div class="clearfix"></div>
+	    	</div>
     	</div>
     </script>
     <script type="text/html" id="cardView">
@@ -168,45 +173,49 @@
     	</div>
     </script>    
     <script type="text/html" id="selectItemTemplate">
-    	<div class="title">
+    	<div class="header">
     		<div class="button close fa-ban"></div>
-    		<div class="text"><%= title %></div>
+    		<div class="title"><%= title %></div>
     		<div class="clearfix"></div>
     	</div>
-    	<% for(var i = 0; i < items.length; ++i){ %>
-	    	<div class="variant">
-    			<div class="checkbox fa-square-o"  data-target='<%= items[i] %>'></div><%= items[i] %>
-    			<div class="clearfix"></div>
-    		</div>
-    	<% }; %>
-    	<% if(canCreate){ %>
-	    	<div class="variant">
-				<div class="checkbox fa-square-o"  data-target=''></div>
-				<input class="new-item"/>
-				<div class="clearfix"></div>
-			</div>
-		<% }; %>
-    	<div class="commands">
-    		<div class="button select"><%= actionName %></div>
+    	<div class="content">
+	    	<% for(var i = 0; i < items.length; ++i){ %>
+		    	<div class="button variant">
+	    			<div class="checkbox fa-square-o"  data-target='<%= items[i] %>'></div><%= items[i] %>
+	    			<div class="clearfix"></div>
+	    		</div>
+	    	<% }; %>
+	    	<% if(canCreate){ %>
+		    	<div class="button variant">
+					<div class="checkbox fa-square-o"  data-target=''></div>
+					<input class="new-item"/>
+					<div class="clearfix"></div>
+				</div>
+			<% }; %>
+	    	<div class="commands">
+	    		<div class="button select"><%= actionName %></div>
+	    	</div>
     	</div>
     </script>
     <script type="text/html" id="createItemTemplate">
-    	<div class="title">
+    	<div class="header">
     		<div class="button close fa-ban"></div>
-    		<div class="text"><%= title %></div>
+    		<div class="title"><%= title %></div>
     		<div class="clearfix"></div>
     	</div>
-    	<div class="editor">
-    		<input type="text" class="new-item-name"/>	
-    	</div>
-    	<div class="commands">
-    		<div class="button create">create</div>
+    	<div class="content">
+	    	<div class="editor">
+	    		<input type="text" class="new-item-name"/>	
+	    	</div>
+	    	<div class="commands">
+	    		<div class="button create">create</div>
+	    	</div>
     	</div>
     </script>
     <script type="text/html" id="importFromWebLangsTemplate">
-    	<div class="title">
+    	<div class="header">
     		<div class="button close fa-ban"></div>
-    		<div class="text">Cards Import [1/2]</div>
+    		<div class="title">Cards Import [1/2]</div>
     		<div class="clearfix"></div>
     	</div>
     	<div class="content">
@@ -220,9 +229,9 @@
 	    </div>
     </script>
     <script type="text/html" id="importFromWebDecksTemplate">
-    	<div class="title">
+    	<div class="header">
     		<div class="button close fa-ban"></div>
-    		<div class="text">Cards Import [2/2]</div>
+    		<div class="title">Cards Import [2/2]</div>
     		<div class="clearfix"></div>
     	</div>
     	<div class="content">
@@ -244,6 +253,58 @@
     	<div class="button item-button" data-target="<%= item %>">
     		<%= item %>
     		<div class="loading"></div>
+    	</div>
+    </script>
+    <script type="text/html" id="createBackupTemplate">
+    	<div class="header">
+    		<div class="button close fa-ban"></div>
+    		<div class="title">Create backup</div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="content">
+	    	<div class="errors hidden"></div>
+	    	<div class="editor">
+	    		Backup name:
+	    		<input type="text" class="new-item-name" value="<%= defaultName%>"/>	
+	    	</div>
+	    	<div class="result hidden">
+	    		Backup created with name: <span class="backup-name"></span>
+	    	</div>
+	    	<div class="commands">
+	    		<div class="button create">
+	    			create
+	    			<div class="loading"></div>
+	    		</div>
+	    	</div>
+    	</div>
+    </script>
+    <script type="text/html" id="restoreBackupTemplate">
+    	<div class="header">
+    		<div class="button close fa-ban"></div>
+    		<div class="title">Backup Restore</div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="content">
+    		<div class="errors hidden"></div>
+	    	<div class="loading-info">
+	    		<div class="message">Connecting to the server <span class="connecting"></span></div>
+	    	</div>
+	    	<div class="backups hidden">
+	    		<div class="message">Select backup to restore:</div>
+	    		<div class="backups-list"></div>
+		    	<div class="commands">
+		    		<div class="button restore">
+		    			restore
+		    			<div class="loading"></div>
+		    		</div>
+		    	</div>
+	    	</div>
+	    </div>
+    </script>
+    <script type="text/html" id="backupButtonTemplate">
+    	<div class="button item-button" data-target="<%= item %>">
+			<div class="checkbox fa-square-o"  data-target='<%= item %>'></div><%= item %>
+			<div class="clearfix"></div>
     	</div>
     </script>
 </html>

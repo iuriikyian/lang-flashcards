@@ -240,7 +240,7 @@ define(['underscore', 'Deck', 'KeepDeck'], function(_, Deck, KeepDeck){
 			}catch(e){
 				console.log(e);
 			}
-		}
+		};
 		this._cleanupDecksData = function(){
 			var keysToRemove = [CURRENT_LANG_KEY];
 			var keysCount = storage.getKeysCount();
@@ -262,7 +262,7 @@ define(['underscore', 'Deck', 'KeepDeck'], function(_, Deck, KeepDeck){
 			_.each(keysToRemove, function(key){
 				storage.removeItem(key);
 			});
-		}
+		};
 	};
 	
 	return DecksManager;

@@ -16,11 +16,11 @@ define(['underscore', 'zepto', 'backbone', 'zepto.hammer'],
 		
 		_onMenuClick : function(evt){
 			var menuId = $(evt.target).attr('data-target');
-			this._hideMenu();
+			this.close();
 			this.trigger('menu:click', menuId);
 		},
 		
-		_hideMenu : function(){
+		close : function(){
 			this.$el.addClass(HIDDEN_CLASS);
 			$(this.overlay).addClass(HIDDEN_CLASS);
 		},
@@ -33,7 +33,7 @@ define(['underscore', 'zepto', 'backbone', 'zepto.hammer'],
 			}));
 			$(this.overlay)
 				.removeClass(HIDDEN_CLASS)
-				.hammer().on('tap', _.bind(this._hideMenu, this));
+				.hammer().on('tap', _.bind(this.close, this));
 			this.$el.removeClass(HIDDEN_CLASS);
 			this._initTouchEvents();
 			var pos = this.$el.position();

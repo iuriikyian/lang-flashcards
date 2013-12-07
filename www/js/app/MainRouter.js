@@ -1,11 +1,20 @@
-define(['underscore', 'zepto', 'backbone',
+define(['underscore', 'zepto', 'backbone', 'utils/date',
         'DecksManager', 'DecksView', 'Menu', 'CardsServerAgent',
         'CardView', 'LoadingCards1Dialog', 'LoadingCards2Dialog',
-        'SelectItemDialog', 'CreateItemDialog', 'ReviewModeDialog', 'DeckInfoDialog'
-        ], function(_, $, Backbone, 
+        'SelectItemDialog', 'CreateItemDialog', 'ReviewModeDialog', 'DeckInfoDialog',
+        'CreateBackupDialog', 'RestoreBackupDialog'
+        ], function(_, $, Backbone, DateUtils,
         		DecksManager, DecksView, Menu, CardsServerAgent,
         		CardView, LoadingCards1Dialog, LoadingCards2Dialog,
-        		SelectItemDialog, CreateItemDialog, ReviewModeDialog, DeckInfoDialog){
+        		SelectItemDialog, CreateItemDialog, ReviewModeDialog, DeckInfoDialog,
+        		CreateBackupDialog, RestoreBackupDialog){
+	function getDeviceId(){
+		if(_.isUndefined(window.device)){
+			return '4129036ec2073b7c'; //'test-4';
+		}
+		return window.device.uuid;
+	}
+	
 	var MainRouter = Backbone.Router.extend({
 		routes : {
 			"" : "onShowDecksList"
@@ -27,8 +36,11 @@ define(['underscore', 'zepto', 'backbone',
 		onBackbutton : function(evt){
 			console.log('back button handler called');
 			if(! _.isUndefined(this.dialog)){
-				this.dialog.close();
 				this._destroyDialog();
+				return;
+			}
+			if(! _.isUndefined(this.menu)){
+				this._destroyMenu();
 				return;
 			}
 			if(this.view.name === 'card-view'){
@@ -120,7 +132,9 @@ define(['underscore', 'zepto', 'backbone',
     			menus : [
     			    { id : 'lang', name : 'change lang'},
     			    { id : 'create-deck', name : 'create deck'},
-    			    { id : 'remove-decks', name : 'delete decks'}
+    			    { id : 'remove-decks', name : 'delete decks'},
+    			    { id : 'backup', name : 'backup'},
+    			    { id : 'restore', name : 'restore'}
     			]
     		});
     		menu.render();
@@ -173,7 +187,6 @@ define(['underscore', 'zepto', 'backbone',
     							return;
     						}
     						me.decksManager.createDeck(lang, deckName);
-    						me.dialog.close();
     						me._destroyDialog();
 							me.onShowDecksList();
     					});
@@ -200,6 +213,56 @@ define(['underscore', 'zepto', 'backbone',
     						});
     						me._destroyDialog();
     						me.onShowDecksList();
+    					});
+    					break;
+    				case 'backup':
+    					me.dialog = new CreateBackupDialog({
+	   						el : '#dialog',
+    						defaultName : DateUtils.datetime2ISO(new Date())
+    					});
+    					me._destroyMenu();
+    					me.dialog.render();
+    					me.dialog.on('close', function(){
+    						me._destroyDialog();
+    					});
+    					me.dialog.on('create', function(backupName){
+    						var data = me.decksManager.createBackup();
+    						var saving = me.cardsServerAgent.saveBackup(getDeviceId(), backupName, data);
+    						saving.done(function(success){
+    							me.dialog.showSuccess();
+    						});
+    						saving.fail(function(err){
+    							me.dialog.showError(err);
+    						});
+    					});
+    					break;
+    				case 'restore':
+    					me.dialog = new RestoreBackupDialog({
+	   						el : '#dialog'
+    					});
+    					me._destroyMenu();
+    					me.dialog.render();
+    					me.dialog.on('close', function(){
+    						me._destroyDialog();
+    					});
+    					me.dialog.on('restore', function(backupName){
+    						var backupFetching = me.cardsServerAgent.fetchBackup(getDeviceId(), backupName);
+    						backupFetching.done(function(data){
+    							console.log(data);
+    							me.decksManager.restoreFromBackup(data);
+        						me._destroyDialog();
+        						me.onShowDecksList();
+    						});
+    						backupFetching.fail(function(err){
+    							me.dialog.showError(err);
+    						});
+    					});
+    					var backupNamesFetching = me.cardsServerAgent.fetchAvailableBackups(getDeviceId());
+    					backupNamesFetching.done(function(names){
+    						me.dialog.showBackups(names);
+    					});
+    					backupNamesFetching.fail(function(err){
+    						me.dialog.showError(err);
     					});
     					break;
     			}
@@ -385,7 +448,6 @@ define(['underscore', 'zepto', 'backbone',
 		    			var lang = me.decksManager.getCurrentLang();
 			    		targetDeck.insertCards(cards);
 			    		me.decksManager.saveDeckCards(targetDeck);
-			    		me.dialog.close();
 			    		me._destroyDialog();
 		    		});
 		    		cardsFetching.fail(function(err){
@@ -407,6 +469,7 @@ define(['underscore', 'zepto', 'backbone',
 	    
 	    _destroyMenu : function(){
     		if(! _.isUndefined(this.menu)){
+    			this.menu.close();
     			this.menu.off();
     			delete this.menu;
     		}
@@ -414,6 +477,7 @@ define(['underscore', 'zepto', 'backbone',
 	    
 	    _destroyDialog : function(){
     		if(! _.isUndefined(this.dialog)){
+    			this.dialog.close();
     			this.dialog.off();
     			delete this.dialog;
     		}
