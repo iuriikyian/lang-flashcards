@@ -228,7 +228,7 @@ define(['underscore', 'backbone'], function(_, Backbone){
 				if(text){
 					res.text = text;
 				}
-				var bottom = card['-bottom']; 
+				var bottom = card[prefix + '-bottom']; 
 				if(bottom){
 					res.bottom = bottom;
 				}
