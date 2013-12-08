@@ -33,7 +33,7 @@
       text-align: center;
       .reviews {
         position: absolute;
-        left: 0;
+        left: $card-select-font-size + $header-padding;
         top: $header-height + $button-height;
         font-family: FontAwesome;
         font-size: $card-reviews-font-size;
@@ -45,7 +45,7 @@
         font-size: $card-notes-text-font-size;
       }
       .text{
-        font-weight: bold;
+        //font-weight: bold;
         font-size: $card-text-font-size;
       }
     }
