@@ -16,9 +16,9 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	}
 	
 	var MainRouter = Backbone.Router.extend({
-		routes : {
-			"" : "onShowDecksList"
-		},
+//		routes : {
+//			"" : "onStart"
+//		},
 		
 		initialize : function(options){
 			this.decksManager = options.decksManager;
@@ -26,11 +26,19 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 		},
 		
 		onStart : function(){
+			var deckName = this.decksManager.getCurrentDeck();
+			if(deckName){
+				if(deckName === 'today'){
+					return this.onShowDeckCards(deckName);
+				}else{
+					var lang = this.decksManager.getCurrentLang();
+					var deckNames = this.decksManager.getDeckNames(lang);
+					if(_.contains(deckNames, deckName)){
+						return this.onShowDeckCards(deckName);
+					}
+				}
+			}
 			this.onShowDecksList();
-		},
-		
-		onNavigateBack : function(){
-			window.history.back();
 		},
 		
 		onBackbutton : function(evt){
@@ -52,6 +60,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 		},
 		
 		onShowDecksList : function(){
+			this.decksManager.setCurrentDeck('');
 	    	var me = this;
 	    	this._destroyCurrentView();
 	    	var lang = this.decksManager.getCurrentLang();
@@ -79,6 +88,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 		},
 		
 		onShowDeckCards : function(deckName){
+			this.decksManager.setCurrentDeck(deckName);
 	    	this._destroyCurrentView();
 	    	var lang = this.decksManager.getCurrentLang();
 	    	var deck = this.decksManager.getDeck(lang, deckName);
@@ -233,6 +243,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     						});
     						saving.fail(function(err){
     							me.dialog.showError(err);
+    							alert(err);
     						});
     					});
     					break;
@@ -255,6 +266,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     						});
     						backupFetching.fail(function(err){
     							me.dialog.showError(err);
+    							alert(err);
     						});
     					});
     					var backupNamesFetching = me.cardsServerAgent.fetchAvailableBackups(getDeviceId());

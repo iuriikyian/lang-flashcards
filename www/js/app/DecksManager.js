@@ -1,11 +1,13 @@
 define(['underscore', 'Deck', 'KeepDeck'], function(_, Deck, KeepDeck){
+	var APP_PREFIX = 'fc-';
 	var DEFAULT_LANG = 'default';
 	var TODAY_DECK_NAME = 'today';
 	var SEPARATOR = '-';
-	var DECK_CARDS_PREFIX = 'deck-cards' + SEPARATOR;
-	var DECK_META_PREFIX = 'deck-meta' + SEPARATOR;
-	var KEPT_CARDS_PREFIX = 'keep-cards' + SEPARATOR;
-	var CURRENT_LANG_KEY = 'current-lang';
+	var DECK_CARDS_PREFIX = APP_PREFIX + 'deck-cards' + SEPARATOR;
+	var DECK_META_PREFIX = APP_PREFIX + 'deck-meta' + SEPARATOR;
+	var KEPT_CARDS_PREFIX = APP_PREFIX + 'keep-cards' + SEPARATOR;
+	var CURRENT_LANG_KEY = APP_PREFIX + 'current-lang';
+	var CURRENT_DECK_KEY = APP_PREFIX + 'current-deck';
 	
 	//var storage = TestStorage; // for testing
 	
@@ -263,6 +265,14 @@ define(['underscore', 'Deck', 'KeepDeck'], function(_, Deck, KeepDeck){
 				storage.removeItem(key);
 			});
 		};
+		
+		this.getCurrentDeck = function(){
+			return storage.getItem(CURRENT_DECK_KEY) || ''
+		};
+		
+		this.setCurrentDeck = function(deckName){
+			return storage.setItem(CURRENT_DECK_KEY, deckName);
+		}
 	};
 	
 	return DecksManager;

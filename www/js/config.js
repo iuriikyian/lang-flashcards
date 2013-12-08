@@ -50,8 +50,8 @@ require.config({
 });
 
 var appConfig = {
-	isBrowser : true
-}
+	isBrowser : false
+};
 
 /**
  * Run the App!

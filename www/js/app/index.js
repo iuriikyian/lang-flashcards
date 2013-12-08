@@ -16,19 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-require(['underscore', 'zepto', 'DecksManager', 'MainRouter', 'in-memory/Storage', 'in-memory/testData'], 
-		function(_, $, DecksManager, MainRouter, InMemoryStorage, testData){
+require(['underscore', 'zepto', 'DecksManager', 'MainRouter',
+         //'in-memory/Storage', 'in-memory/testData',
+         'local/Storage'], 
+		function(_, $, DecksManager, MainRouter, Storage){//, testData){
 	
 	var App = function(){
 		this.initialize = function(){
 			console.log('initialize start');
 	    	this.lang = 'english';
-	    	this.decksManager = new DecksManager(new InMemoryStorage(testData));
+	    	//this.decksManager = new DecksManager(new InMemoryStorage(testData));
+	    	this.decksManager = new DecksManager(new Storage());
 	        this.router = new MainRouter({
 	        	decksManager : this.decksManager
 	        });
 	        this.bindEvents();
-	        this.onStartup();
+	        this.router.onStart();
 	        console.log('initialize end');
 		};
 		
@@ -43,14 +46,6 @@ require(['underscore', 'zepto', 'DecksManager', 'MainRouter', 'in-memory/Storage
 			console.log('backbutton handler installed');
 		};
 		
-	    this.onStartup = function(){
-	    	console.log('onStartup start');
-	    	Backbone.history.start({
-	    		hashChange : true
-	    	});
-	    	console.log('onStartup end');
-	    };
-	    
 		this.onBackbutton = function(){
 			console.log('onBackbutton start');
 			this.router.onBackbutton();
