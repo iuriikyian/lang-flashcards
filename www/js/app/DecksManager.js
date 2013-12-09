@@ -150,13 +150,13 @@ define(['underscore', 'Deck', 'KeepDeck'], function(_, Deck, KeepDeck){
 			return deck;
 		};
 		
-		this._getKeedDeckKey = function(lang){
+		this._getKeepDeckKey = function(lang){
 			return KEPT_CARDS_PREFIX + lang;
 		},
 		
 		this.keepCards = function(lang, cards){
 			if(cards && cards.length > 0){
-				var key = this._getKeedDeckKey(lang);
+				var key = this._getKeepDeckKey(lang);
 				var keepCards = storage.getItem(key);
 				if(!keepCards){
 					keepCards = [];
@@ -170,7 +170,7 @@ define(['underscore', 'Deck', 'KeepDeck'], function(_, Deck, KeepDeck){
 		};
 		
 		this._getNewTodayCards = function(lang){
-			var key = this._getKeedDeckKey(lang);
+			var key = this._getKeepDeckKey(lang);
 			var cards = storage.getItem(key);
 			if(cards){
 				var keepDeck = new KeepDeck({

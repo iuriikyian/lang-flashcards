@@ -386,7 +386,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     					console.log('cards to keep:');
     					console.log(cards);
     					if(cards.length){
-    						me.decksManager.keepCards(cards);
+    						me.decksManager.keepCards(lang, cards);
     						me.decksManager.saveDeckStateWithCards(deck);
     					}
     					break;
