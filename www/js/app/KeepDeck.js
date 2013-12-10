@@ -23,7 +23,7 @@ define(['underscore', 'backbone', 'utils/date'], function(_, Backbone, DateUtils
 			var todayCards = [];
 			var keptCards = [];
 			_.each(this.cards, function(card){
-				if(card.reviewDate <= todayDate){
+				if(card.nextReview <= todayDate){
 					todayCards.push(card);
 				}else{
 					keptCards.push(card);
