@@ -34,10 +34,9 @@
       .reviews {
         position: absolute;
         left: $card-select-font-size + $header-padding;
-        top: $header-height + $button-height;
+        top: $card-review-sign-top;
         font-family: FontAwesome;
         font-size: $card-reviews-font-size;
-        padding: 10px 0 0 10px;
       }
       .top,
       .bottom {
