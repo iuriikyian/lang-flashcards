@@ -1,5 +1,12 @@
 define(['underscore', 'backbone'], function(_, Backbone){
 	
+	var MODE_SIGN = {
+		plain : 'P',
+		front : 'F',
+		back : 'B',
+		random : 'R'
+	};
+	
 	var Deck = function(options){
 		this.lang = options.lang || '';
 		this.name = options.name || '';
@@ -31,6 +38,10 @@ define(['underscore', 'backbone'], function(_, Backbone){
 		this.setMode = function(newMode){
 			this.mode = newMode;
 			this.trigger('changed');
+		};
+		
+		this.getModeSign = function(){
+			return MODE_SIGN[this.mode];
 		};
 		
 		// --- cards access --- begin

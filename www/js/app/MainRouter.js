@@ -289,8 +289,9 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	    },
 		
 	    showCardViewMenu : function(deck, isTodayDeck){
+	    	var modeMenuName = 'review mode (' + deck.getModeSign() + ')';
 			var menus = [
-			    { id : 'mode', name : 'review mode', order : 10},
+			    { id : 'mode', name : modeMenuName, order : 10},
 			    { id : 'shuffle', name : 'shuffle', order : 20},
 			    { id : 'sel-invert', name : 'sel invert', order : 30},
 			    { id : 'sel-clear', name : 'sel clear', order : 40},
