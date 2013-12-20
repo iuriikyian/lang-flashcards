@@ -24,7 +24,8 @@
       top: $header-padding;
       font-family: FontAwesome;
       font-size: $card-select-font-size;
-      width: $card-select-font-size;
+      width: $card-select-font-size * 1.5;
+      height: $card-select-font-size * 1.5;
       display: inline-block;
       text-align: left;
     }
