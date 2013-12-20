@@ -14,6 +14,10 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'zepto.hammer'], function
 			$header.find('.home-button').hammer().on('tap', _.bind(this._onHome, this));
 			$header.find('.menu-button').hammer().on('tap', _.bind(this._onShowMenu, this));			
 			this.$('.content .selected').hammer().on('tap', _.bind(this._onToggleSelected, this));
+			this.$('.content').hammer().on('swipeleft', _.bind(this._onShowNext, this));
+			this.$('.content').hammer().on('swiperight', _.bind(this._onShowPrev, this));
+			this.$('.content').hammer().on('swipeup', _.bind(this._onFlip, this));
+			this.$('.content').hammer().on('swipedown', _.bind(this._onFlip, this));
 		},
 		
 		willBeClosed : function(){
@@ -47,7 +51,15 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'zepto.hammer'], function
 		_onShowMenu : function(){
 			this.trigger('show:menu', {});
 		},
-		
+		_onShowPrev : function(){
+			this.trigger('card:show-prev');
+		},
+		_onShowNext : function(){
+			this.trigger('card:show-next');
+		},
+		_onFlip : function(){
+			this.trigger('card:flip')
+		},
 		_onContentClick : function(evt){
 			if($(evt.target).hasClass('selected')){
 				return;
@@ -55,12 +67,12 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'zepto.hammer'], function
 			var width = $(window).width();
 			var xPos = evt.gesture.center.pageX;
 			if(xPos > width * 0.8){
-				return this.trigger('card:show-next');
+				return this._onShowNext();
 			}
 			if(xPos < width * 0.2){
-				return this.trigger('card:show-prev');
+				return this._onShowPrev();
 			}
-			return this.trigger('card:flip');
+			return this._onFlip();
 		},
 		_onToggleSelected : function(evt){
 			evt.preventDefault();
