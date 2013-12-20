@@ -158,6 +158,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     		var me = this;
     		menu.on('menu:click', function(menuId){
     			console.log('Event:menu:click:' + menuId);
+    			me._destroyMenu();
     			switch(menuId){
     				case 'lang':
     					var langs = me.decksManager.getLangs();
@@ -168,7 +169,6 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     						canCreate : true,
     						actionName : 'switch'
     					});
-    					me._destroyMenu();
     					me.dialog.render();
     					me.dialog.on('selected', function(lang){
     						console.log('Event:selected:lang:' + lang);
@@ -190,7 +190,6 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	   						el : '#dialog',
 							title : 'Create Deck'
     					});
-    					me._destroyMenu();
     					me.dialog.render();
     					me.dialog.on('close', function(){
     						me._destroyDialog();
@@ -216,7 +215,6 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     						multipleSelect : true,
     						actionName : 'remove'
     					});
-    					me._destroyMenu();
     					me.dialog.render();
     					me.dialog.on('close', function(){
     						me._destroyDialog();
@@ -236,7 +234,6 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	   						el : '#dialog',
     						defaultName : DateUtils.datetime2ISO(new Date())
     					});
-    					me._destroyMenu();
     					me.dialog.render();
     					me.dialog.on('close', function(){
     						me._destroyDialog();
@@ -257,7 +254,6 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     					me.dialog = new RestoreBackupDialog({
 	   						el : '#dialog'
     					});
-    					me._destroyMenu();
     					me.dialog.render();
     					me.dialog.on('close', function(){
     						me._destroyDialog();
@@ -317,13 +313,13 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     		var lang = this.decksManager.getCurrentLang();
     		var me = this;
     		menu.on('menu:click', function(itemId){
+    			me._destroyMenu();
     			switch(itemId){
     				case 'mode':
     					me.dialog = new ReviewModeDialog({
 	   						 el : '#dialog',
     						mode : deck.mode
     					});
-    					me._destroyMenu();
     					me.dialog.render();
     					me.dialog.on('close', function(){
     						me._destroyDialog();
@@ -359,7 +355,6 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     						items : deckNames,
     						actionName : 'move'
     					});
-    					me._destroyMenu();
     					me.dialog.render();
     					me.dialog.on('close', function(){
     						me._destroyDialog();
@@ -402,7 +397,6 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     						 el : '#dialog',
     						 info : deck.getDeckInfo()
     					});
-    					me._destroyMenu();
     					me.dialog.render();
     					me.dialog.on('close', function(){
     						me._destroyDialog();
