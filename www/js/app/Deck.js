@@ -215,7 +215,8 @@ define(['underscore', 'backbone'], function(_, Backbone){
 					this.cards[j] = this.cards[k];
 					this.cards[k] = temp;
 				}
-			}			
+			}
+			this._adjustCardSide();
 			this.trigger('changed');
 		};
 		
