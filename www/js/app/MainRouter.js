@@ -59,6 +59,12 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 			navigator.app.exitApp();
 		},
 		
+		onResize : function(){
+			if(this.view){
+				this.view.render();
+			}
+		},
+		
 		onShowDecksList : function(){
 			this.decksManager.setCurrentDeck('');
 	    	var me = this;

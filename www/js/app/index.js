@@ -44,12 +44,19 @@ require(['underscore', 'zepto', 'DecksManager', 'MainRouter',
 	        	console.log('backbutton event end');
 	        }, true);	        
 			console.log('backbutton handler installed');
+			window.addEventListener('resize', function(evt){
+				me.onResize();
+			});
 		};
 		
 		this.onBackbutton = function(){
 			console.log('onBackbutton start');
 			this.router.onBackbutton();
 			console.log('onBackbutton end');
+		};
+		
+		this.onResize = function(){
+			this.router.onResize();
 		};
 	};
 	
