@@ -1,5 +1,5 @@
-define(['underscore', 'zepto', 'BaseDialog', 'utils/utils'], 
-		function(_, $, BaseDialog, utils){
+define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'settings', 'zepto.touch'], 
+		function(_, $, BaseDialog, utils, settings){
 	
 	var CreateBackupDialog = BaseDialog.extend({
 		template : utils.template('create-backup'),
@@ -23,7 +23,7 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils'],
 			this._base_render({
 				defaultName : this.defaultName
 			});
-			this.$('.commands .create').hammer().on('tap', _.bind(this._onCreate, this));
+			this.$('.commands .create').on(settings.tapEvent, _.bind(this._onCreate, this));
 		},
 		
 		showError : function(message){

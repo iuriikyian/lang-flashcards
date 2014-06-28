@@ -1,5 +1,5 @@
-define(['underscore', 'zepto', 'backbone', 'zepto.hammer'], 
-		function(_, $, Backbone){
+define(['underscore', 'zepto', 'backbone', 'settings', 'zepto.touch'], 
+		function(_, $, Backbone, settings){
 	var HIDDEN_CLASS = 'hidden';
 	var OVERLAY_SELECTOR = '#menu-overlay';
 	
@@ -24,9 +24,9 @@ define(['underscore', 'zepto', 'backbone', 'zepto.hammer'],
 			$(this.el).append(this.template(model));
 			$(OVERLAY_SELECTOR)
 				.removeClass(HIDDEN_CLASS)
-				.hammer().on('tap', _.bind(this._onClose, this));
+				.on(settings.tapEvent, _.bind(this._onClose, this));
 			this.$el.removeClass(HIDDEN_CLASS);
-			this.$('.header .close').hammer().on('tap', _.bind(this._onClose, this));
+			this.$('.header .close').on(settings.tapEvent, _.bind(this._onClose, this));
 		}
 	});
 	

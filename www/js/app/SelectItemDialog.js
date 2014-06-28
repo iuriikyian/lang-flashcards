@@ -1,5 +1,5 @@
-define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.hammer'], 
-		function(_, $, BaseDialog, utils){
+define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'settings', 'zepto.touch'], 
+		function(_, $, BaseDialog, utils, settings){
 	var HIDDEN_CLASS = 'hidden';
 	
 	var SelectItemDialog = BaseDialog.extend({
@@ -14,8 +14,8 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.hammer'],
 		},
 		
 		_initTouchEvents : function(){
-			this.$('.variant').hammer().on('tap', _.bind(this._onSelectVariant, this));
-			this.$('.commands .select').hammer().on('tap', _.bind(this._onSelect, this));
+			this.$('.variant').on(settings.tapEvent, _.bind(this._onSelectVariant, this));
+			this.$('.commands .select').on(settings.tapEvent, _.bind(this._onSelect, this));
 		},		
 		
 		_onSelectVariant : function(evt){

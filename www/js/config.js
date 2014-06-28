@@ -8,13 +8,17 @@ require.config({
         underscore              : '../lib/underscore',
         'underscore.deferred'   : '../lib/underscore.deferred',
         backbone				: '../lib/backbone',
-        hammer                  : '../lib/hammer',
-        'zepto.hammer'          : '../lib/zepto.hammer'
+        //hammer                  : '../lib/hammer',
+        //'zepto.hammer'          : '../lib/zepto.hammer'
+        'zepto.touch'          : '../lib/zepto.touch'
     },
 
     shim   : {
         'zepto': {
             exports: '$'
+        },
+        'zepto.touch': {
+            deps: ['zepto']
         },
 
         'underscore': {
@@ -30,27 +34,27 @@ require.config({
         	exports: 'Backbone'
         },
         
-        hammer: {
+        /*hammer: {
             exports: 'Hammer'
         },
 
         'zepto.hammer': {
             deps: ['zepto', 'hammer']
-        }
+        }*/
 
     },
     map    : {
         '*': {
             jquery: 'zepto',
             $: 'zepto',
-            _: 'underscore',
-            "$.hammer": 'zepto.hammer'
+            _: 'underscore'/*,
+            "$.hammer": 'zepto.hammer'*/
         }
     }
 });
 
 var appConfig = {
-	isBrowser : false
+	isBrowser : true
 };
 
 /**

@@ -1,6 +1,7 @@
 define([],function(){
 	return {
-		showBackButton : false
+		showBackButton : false,
+		tapEvent : 'click' //TODO: use tap or click depending on the availability
 	};
 	
 });

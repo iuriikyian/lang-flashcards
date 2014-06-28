@@ -1,5 +1,5 @@
-define(['underscore', 'zepto', 'BaseDialog', 'utils/utils'], 
-function(_, $, BaseDialog, utils){
+define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'settings', 'zepto.touch'], 
+function(_, $, BaseDialog, utils, settings){
 
 	var LoadingCards2Dialog = BaseDialog.extend({
 		template : utils.template('import-from-web-decks'),
@@ -11,13 +11,12 @@ function(_, $, BaseDialog, utils){
 		},
 		
 		_initTouchEvents : function(){
-			var me = this;
-			this.$('.decks .decks-list .button').hammer().on('click', function(evt){
+			this.$('.decks .decks-list .button').on(settings.tapEvent, _.bind(function(evt){
 				console.log(evt);
 				$(evt.target).find('.loading').addClass('loading-active');
 				var selectedDeck = $(evt.target).attr('data-target');
-				me.trigger('load-cards', me.lang, selectedDeck);
-			});
+				this.trigger('load-cards', this.lang, selectedDeck);
+			},this));
 		},
 		
 		render : function(){

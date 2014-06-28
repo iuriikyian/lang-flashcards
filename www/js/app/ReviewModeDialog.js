@@ -1,5 +1,5 @@
-define(['underscore', 'zepto', 'BaseDialog', 'utils/utils'], 
-		function(_, $, BaseDialog, utils){
+define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'settings', 'zepto.touch'], 
+		function(_, $, BaseDialog, utils, settings){
 	
 	var ReviewModeDialog = BaseDialog.extend({
 		template : utils.template('review-mode'),
@@ -16,7 +16,7 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils'],
 		
 		render : function(){
 			this._base_render({mode : this.mode});
-			this.$('.option').hammer().on('tap', _.bind(this._onSelectMode, this));
+			this.$('.option').on(settings.tapEvent, _.bind(this._onSelectMode, this));
 		}
 	});
 	

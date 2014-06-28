@@ -1,5 +1,5 @@
-define(['underscore', 'zepto', 'BaseDialog', 'utils/utils'], 
-function(_, $, BaseDialog, utils){
+define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'], 
+function(_, $, BaseDialog, utils, settings){
 	var HIDDEN_CLASS = 'hidden';
 	
 	var LoadingCards1Dialog = BaseDialog.extend({
@@ -22,14 +22,13 @@ function(_, $, BaseDialog, utils){
 				parts.push(this.buttonTemplate({item : lang}));
 			}, this);
 			this.$('.loading').addClass(HIDDEN_CLASS);
-			var me = this;
 			this.$('.languages .langs-list').empty().append(parts.join(''));
-			this.$('.languages .langs-list .button').hammer().on('tap', function(evt){
-					console.log(evt);
-					$(evt.target).find('.loading').addClass('loading-active');
-					var selectedLang = $(evt.target).attr('data-target');
-					me.trigger('load-decks', selectedLang);
-				});
+			this.$('.languages .langs-list .button').on(settings.tapEvent, _.bind(function(evt){
+				console.log(evt);
+				$(evt.target).find('.loading').addClass('loading-active');
+				var selectedLang = $(evt.target).attr('data-target');
+				this.trigger('load-decks', selectedLang);
+			}, this));
 			this.$('.languages').removeClass(HIDDEN_CLASS);
 		}
 	});

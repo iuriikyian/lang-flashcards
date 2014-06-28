@@ -1,5 +1,5 @@
-define(['underscore', 'zepto', 'utils/utils', 'BaseDialog'], 
-function(_, $, utils, BaseDialog){
+define(['underscore', 'zepto', 'utils/utils', 'BaseDialog', 'settings', 'zepto.touch'], 
+function(_, $, utils, BaseDialog, settings){
 	var HIDDEN_CLASS = 'hidden';
 	
 	var RestoreBackupDialog = BaseDialog.extend({
@@ -14,18 +14,17 @@ function(_, $, utils, BaseDialog){
 			this._base_render({
 				lang : this.lang
 			});
-			var me = this;
-			this.$('.commands .restore').hammer().on('tap', function(evt){
-				var $selected = me.$('.backups .backups-list .button .fa-check-square-o');
+			this.$('.commands .restore').on(settings.tapEvent, _.bind(function(evt){
+				var $selected = this.$('.backups .backups-list .button .fa-check-square-o');
 				if($selected.length === 0){
 					return; // nothing selected
 				}
 				var selectedBackup = $selected.attr('data-target');
 				if(selectedBackup){
-					me.$('.commands .restore .loading').addClass('loading-active');
-					me.trigger('restore', selectedBackup);
+					this.$('.commands .restore .loading').addClass('loading-active');
+					this.trigger('restore', selectedBackup);
 				}
-			});
+			}, this));
 		},
 		
 		showError : function(message){
@@ -39,17 +38,16 @@ function(_, $, utils, BaseDialog){
 				parts.push(this.buttonTemplate({item : backup}));
 			}, this);
 			this.$('.loading-info').addClass(HIDDEN_CLASS);
-			var me = this;
 			this.$('.backups .backups-list').empty().append(parts.join(''));
-			this.$('.backups .backups-list .button').hammer().on('tap', function(evt){
-					console.log(evt);
-					me.$('.backups .backups-list .button .checkbox').removeClass('fa-check-square-o').addClass('fa-square-o');
-					$(evt.currentTarget).find('.checkbox').removeClass('fa-square-o').addClass('fa-check-square-o');
+			this.$('.backups .backups-list .button').on(settings.tapEvent, _.bind(function(evt){
+				console.log(evt);
+				this.$('.backups .backups-list .button .checkbox').removeClass('fa-check-square-o').addClass('fa-square-o');
+				$(evt.currentTarget).find('.checkbox').removeClass('fa-square-o').addClass('fa-check-square-o');
 					
-//					var $buttons = me.$('.backups .backups-list .button');
-//					$(evt.target).find('.loading').addClass('loading-active');
-					var selected = $(evt.target).attr('data-target');
-				});
+//				var $buttons = this.$('.backups .backups-list .button');
+//				$(evt.target).find('.loading').addClass('loading-active');
+				var selected = $(evt.target).attr('data-target');
+			}, this));
 			this.$('.backups').removeClass(HIDDEN_CLASS);
 		}
 	});

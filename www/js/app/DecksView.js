@@ -1,4 +1,5 @@
-define(['underscore', 'zepto', 'backbone', 'utils/utils', 'zepto.hammer'], function(_, $, Backbone, utils){
+define(['underscore', 'zepto', 'backbone', 'utils/utils', 'settings', 'zepto.touch'], 
+	function(_, $, Backbone, utils, settings){
 	var TEMPLATE_ID = 'decksList';
 	var EDIT_MODE_CLASS = 'edit-mode';
 	
@@ -12,10 +13,10 @@ define(['underscore', 'zepto', 'backbone', 'utils/utils', 'zepto.hammer'], funct
 		},
 		
 		_initTouchEvents : function(){
-			this.$('.header .menu-button').hammer().on('tap', _.bind(this._onShowMenu, this));
+			this.$('.header .menu-button').on(settings.tapEvent, _.bind(this._onShowMenu, this));
 			var $content = this.$('.content'); 
-			$content.find('.today-button').hammer().on('tap', _.bind(this._onShowTodayDeck, this));
-			$content.find('.deck-button').hammer().on('tap', _.bind(this._onShowDeck, this));
+			$content.find('.today-button').on(settings.tapEvent, _.bind(this._onShowTodayDeck, this));
+			$content.find('.deck-button').on(settings.tapEvent, _.bind(this._onShowDeck, this));
 		},
 		
 		render : function(){
