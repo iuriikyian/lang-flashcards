@@ -1,8 +1,8 @@
-define(['underscore', 'zepto', 'BaseDialog'], 
-		function(_, $, BaseDialog){
+define(['underscore', 'zepto', 'BaseDialog', 'utils/utils'], 
+		function(_, $, BaseDialog, utils){
 	
 	var CreateBackupDialog = BaseDialog.extend({
-		template : _.template($('#createBackupTemplate').html()),
+		template : utils.template('create-backup'),
 		
 		initialize : function(options){
 			this.defaultName = options.defaultName;

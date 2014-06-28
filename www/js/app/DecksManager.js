@@ -152,7 +152,7 @@ define(['underscore', 'Deck', 'KeepDeck'], function(_, Deck, KeepDeck){
 		
 		this._getKeepDeckKey = function(lang){
 			return KEPT_CARDS_PREFIX + lang;
-		},
+		};
 		
 		this.keepCards = function(lang, cards){
 			if(cards && cards.length > 0){
@@ -267,12 +267,12 @@ define(['underscore', 'Deck', 'KeepDeck'], function(_, Deck, KeepDeck){
 		};
 		
 		this.getCurrentDeck = function(){
-			return storage.getItem(CURRENT_DECK_KEY) || ''
+			return storage.getItem(CURRENT_DECK_KEY) || '';
 		};
 		
 		this.setCurrentDeck = function(deckName){
 			return storage.setItem(CURRENT_DECK_KEY, deckName);
-		}
+		};
 	};
 	
 	return DecksManager;

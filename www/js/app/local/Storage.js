@@ -1,5 +1,5 @@
 define(['underscore'], function(_){
-	var storage = localStorage;
+	var storage = window.localStorage;
 	return function(){
 		this.getKeysCount = function(){
 			return storage.length;

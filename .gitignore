@@ -1,4 +1,5 @@
+.DS_Store
 bower_components/
 .sass-cache/
-.cordova/
 .project
+node_modules/

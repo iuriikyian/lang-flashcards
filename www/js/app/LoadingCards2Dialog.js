@@ -1,9 +1,9 @@
-define(['underscore', 'zepto', 'BaseDialog'], 
-function(_, $, BaseDialog){
+define(['underscore', 'zepto', 'BaseDialog', 'utils/utils'], 
+function(_, $, BaseDialog, utils){
 
 	var LoadingCards2Dialog = BaseDialog.extend({
-		template : _.template($('#importFromWebDecksTemplate').html()),
-		buttonTemplate : _.template($('#buttonTemplate').html()),
+		template : utils.template('import-from-web-decks'),
+		buttonTemplate : utils.template('button'),
 		
 		initialize : function(options){
 			this.lang = options.lang;

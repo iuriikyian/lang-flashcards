@@ -1,10 +1,10 @@
-define(['underscore', 'zepto', 'BaseDialog'], 
-function(_, $, BaseDialog){
+define(['underscore', 'zepto', 'utils/utils', 'BaseDialog'], 
+function(_, $, utils, BaseDialog){
 	var HIDDEN_CLASS = 'hidden';
 	
 	var RestoreBackupDialog = BaseDialog.extend({
-		template : _.template($('#restoreBackupTemplate').html()),
-		buttonTemplate : _.template($('#backupButtonTemplate').html()),
+		template : utils.template('restore-backup'),
+		buttonTemplate : utils.template('backup-button'),
 		
 		initialize : function(options){
 //			this.lang = options.lang;
@@ -17,7 +17,7 @@ function(_, $, BaseDialog){
 			var me = this;
 			this.$('.commands .restore').hammer().on('tap', function(evt){
 				var $selected = me.$('.backups .backups-list .button .fa-check-square-o');
-				if($selected.length == 0){
+				if($selected.length === 0){
 					return; // nothing selected
 				}
 				var selectedBackup = $selected.attr('data-target');

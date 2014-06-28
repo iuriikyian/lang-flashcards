@@ -1,9 +1,9 @@
-define(['underscore', 'zepto', 'backbone', 'zepto.hammer'], function(_, $, Backbone){
+define(['underscore', 'zepto', 'backbone', 'utils/utils', 'zepto.hammer'], function(_, $, Backbone, utils){
 	var TEMPLATE_ID = 'decksList';
 	var EDIT_MODE_CLASS = 'edit-mode';
 	
 	var DecksView = Backbone.View.extend({
-		template : _.template($('#decksList').html()),
+		template : utils.template('decks-list'),
 		name : 'decks-view',
 		
 		initialize : function(options){

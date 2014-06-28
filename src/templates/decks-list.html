@@ -1,0 +1,21 @@
+<div class="decks-list screen">
+	<div class="header">
+		<div class="button menu-button fa-bars right"></div>
+		<div class="title">
+			<%= title %>	
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="content">
+		<div class="button today-button">today</div>
+		<div class="separator"></div>
+		<div class="decks-list">
+			<% _.each(decks, function(deck){ %>
+				<div class="deck" data-target="<%= deck %>">
+    				<div class="button deck-button" data-target="<%= deck %>"><%= deck %></div>
+    				<div class="clearfix"></div>
+				</div>	    				
+			<%})%>
+		</div>
+	</div>
+</div>

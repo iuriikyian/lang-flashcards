@@ -1,9 +1,9 @@
-define(['underscore', 'zepto', 'BaseDialog', 'zepto.hammer'], 
-		function(_, $, BaseDialog){
+define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.hammer'], 
+		function(_, $, BaseDialog, utils){
 	var HIDDEN_CLASS = 'hidden';
 	
 	var SelectItemDialog = BaseDialog.extend({
-		template : _.template($('#selectItemTemplate').html()),
+		template : utils.template('select-item'),
 		
 		initialize : function(options){
 			this.title = options.title;
@@ -29,7 +29,7 @@ define(['underscore', 'zepto', 'BaseDialog', 'zepto.hammer'],
 		
 		_onSelect : function(evt){
 			var $selected = this.$('.variant .fa-check-square-o');
-			if($selected.length == 0){
+			if($selected.length === 0){
 				return; // nothing selected
 			}
 			if(this.multipleSelect){

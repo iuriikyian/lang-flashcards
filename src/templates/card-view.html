@@ -1,0 +1,53 @@
+<div class="card-view screen">
+	<div class="header">
+		<% if(showBackButton) {%>
+			<div class="button back-button fa-arrow-left left"></div>
+		<% } %>
+		<div class="button home-button fa-home left"></div>
+		<div class="button menu-button fa-bars right"></div>
+		<div class="title">
+			<span class="text">
+				<%= card.deckName %>
+				<% if(card.deckSize) {%> 
+				: <span class="side <%= card.flipped ? 'side-back' : 'side-front' %>">
+					<%= card.index + 1 %>/<%= card.deckSize %>
+				  </span>
+				<%};%>
+			</span>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="content">
+    	<% if(card.deckSize) {%>
+			<div class="selected <% if(card.selected){ %> fa-check-square-o <% }else{%> fa-square-o <% } %>"></div>
+		<% } %>
+    	<div class="card-side">
+    		<% if(card.reviews) { %>
+    			<div class="reviews">
+    				<% for(var i = 0; i < card.reviews; ++i ){ %>
+    					<span class="fa-asterisk"></span>
+    				<% } %>
+    			</div>	
+    		<% }; %>
+	    	<% if(card.deckSize) {%>
+		    	<% if(card.top){
+		    		card.top.forEach(function(line){ %>
+		    			<div class="top"><%= line %></div>
+		    	<%	});
+		    		} %>
+		    	<% if(card.text){
+		    		card.text.forEach(function(line){ %>
+		    			<div class="text"><%= line %></div>
+		    	<%	});
+		    		} %>
+		    	<% if(card.bottom){
+		    		card.bottom.forEach(function(line){ %>
+		    			<div class="bottom"><%= line %></div>
+		    	<%	});
+		    		} %>
+	    	<% }else{ %>
+	    		<div class="text">Deck is EMPTY</div>
+	    	<%};%>
+    	</div>
+	</div>
+</div>

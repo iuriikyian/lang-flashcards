@@ -1,8 +1,8 @@
-define(['underscore', 'zepto', 'BaseDialog'], 
-		function(_, $, BaseDialog){
+define(['underscore', 'zepto', 'BaseDialog', 'utils/utils'], 
+		function(_, $, BaseDialog, utils){
 	
 	var ReviewModeDialog = BaseDialog.extend({
-		template : _.template($('#reviewModeTemplate').html()),
+		template : utils.template('review-mode'),
 
 		initialize : function(options){
 			this.mode = options.mode;

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/font-awesome.css" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>lang-flashcards</title>
+    </head>
+    <body>
+        <div class="body"></div>
+        <div id="menu-overlay" class="menu-overlay hidden"></div>
+        <div id="menu" class="menu hidden"></div>
+        <div id="dialog" class="dialog hidden"></div>
+        <!-- todo: conditional load of phonegap if it is the device -->
+        <script type="text/javascript" src="phonegap.js"></script>
+        <script src="js/lib/require.js" data-main="js/config.js"></script>
+        <!--script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript">
+            app.initialize();
+        </script-->
+    </body>
+    <script type="text/html" id="decksList">
+    	<div class="decks-list screen">
+	    	<div class="header">
+	    		<div class="button menu-button fa-bars right"></div>
+	    		<div class="title">
+	    			<%= title %>	
+	    		</div>
+	    		<div class="clearfix"></div>
+	    	</div>
+	    	<div class="content">
+	    		<div class="button today-button">today</div>
+	    		<div class="separator"></div>
+	    		<div class="decks-list">
+	    			<% _.each(decks, function(deck){ %>
+	    				<div class="deck" data-target="<%= deck %>">
+		    				<div class="button deck-button" data-target="<%= deck %>"><%= deck %></div>
+		    				<div class="clearfix"></div>
+	    				</div>	    				
+	    			<%})%>
+	    		</div>
+	    	</div>
+    	</div>
+    </script>
+    <script type="text/html" id="menuTemplate">
+			<% _.each(menus, function(menu){ %>
+				<div class="menu-item" data-target="<%= menu.id %>"><%= menu.name %></div>
+			<% }); %>
+    </script>
+    <script type="text/html" id="deckInfoTemplate">
+    	<div class="header">
+    		<div class="button close fa-ban"></div>
+    		<div class="title">Deck Information</div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="content">
+	    	<div class="line">
+	    		<span class="label">Name:</span>
+	    		<span class="value"><%= name %></span>
+	    	</div>
+	    	<div class="line">
+	    		<span class="label">Language:</span>
+	    		<span class="value"><%= lang %></span>
+	    	</div>
+	    	<div class="line">
+	    		<span class="label">Cards total:</span>
+	    		<span class="value"><%= cardsCount %></span>
+	    	</div>
+	    	<div class="line">
+	    		<span class="label">Cards selected:</span>
+	    		<span class="value"><%= cardsSelected %></span>
+	    	</div>
+    	</div>
+    </script>
+    <script type="text/html" id="reviewModeTemplate">
+    	<div class="header">
+    		<div class="button close fa-ban"></div>
+    		<div class="title">Review Mode</div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="content">
+	    	<div class="option">
+	    		<div class="state <% if(mode === 'plain'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='plain'></div>PLAIN
+	    		<div class="clearfix"></div>
+	    	</div>
+	    	<div class="option">
+	    		<div class="state <% if(mode === 'front'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='front'></div>FRONT
+	    		<div class="clearfix"></div>
+	    	</div>
+	    	<div class="option">
+	    		<div class="state <% if(mode === 'back'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='back'></div>BACK
+	    		<div class="clearfix"></div>
+	    	</div>
+	    	<div class="option">
+	    		<div class="state <% if(mode === 'random'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='random'></div>RANDOM
+	    		<div class="clearfix"></div>
+	    	</div>
+    	</div>
+    </script>
+    <script type="text/html" id="cardView">
+    	<div class="card-view screen">
+	    	<div class="header">
+	    		<% if(showBackButton) {%>
+	    			<div class="button back-button fa-arrow-left left"></div>
+	    		<% } %>
+	    		<div class="button home-button fa-home left"></div>
+	    		<div class="button menu-button fa-bars right"></div>
+	    		<div class="title">
+	    			<span class="text">
+	    				<%= card.deckName %>
+	    				<% if(card.deckSize) {%> 
+	    				: <span class="side <%= card.flipped ? 'side-back' : 'side-front' %>">
+	    					<%= card.index + 1 %>/<%= card.deckSize %>
+	    				  </span>
+	    				<%};%>
+	    			</span>
+	    		</div>
+	    		<div class="clearfix"></div>
+	    	</div>
+	    	<div class="content">
+		    	<% if(card.deckSize) {%>
+					<div class="selected <% if(card.selected){ %> fa-check-square-o <% }else{%> fa-square-o <% } %>"></div>
+				<% } %>
+		    	<div class="card-side">
+		    		<% if(card.reviews) { %>
+		    			<div class="reviews">
+		    				<% for(var i = 0; i < card.reviews; ++i ){ %>
+		    					<span class="fa-asterisk"></span>
+		    				<% } %>
+		    			</div>	
+		    		<% }; %>
+			    	<% if(card.deckSize) {%>
+    			    	<% if(card.top){
+				    		card.top.forEach(function(line){ %>
+				    			<div class="top"><%= line %></div>
+				    	<%	});
+				    		} %>
+				    	<% if(card.text){
+				    		card.text.forEach(function(line){ %>
+				    			<div class="text"><%= line %></div>
+				    	<%	});
+				    		} %>
+				    	<% if(card.bottom){
+				    		card.bottom.forEach(function(line){ %>
+				    			<div class="bottom"><%= line %></div>
+				    	<%	});
+				    		} %>
+			    	<% }else{ %>
+			    		<div class="text">Deck is EMPTY</div>
+			    	<%};%>
+		    	</div>
+	    	</div>
+    	</div>
+    </script>    
+    <script type="text/html" id="selectItemTemplate">
+    	<div class="header">
+    		<div class="button close fa-ban"></div>
+    		<div class="title"><%= title %></div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="content">
+	    	<% for(var i = 0; i < items.length; ++i){ %>
+		    	<div class="button variant">
+	    			<div class="checkbox fa-square-o"  data-target='<%= items[i] %>'></div><%= items[i] %>
+	    			<div class="clearfix"></div>
+	    		</div>
+	    	<% }; %>
+	    	<% if(canCreate){ %>
+		    	<div class="button variant">
+					<div class="checkbox fa-square-o"  data-target=''></div>
+					<input class="new-item"/>
+					<div class="clearfix"></div>
+				</div>
+			<% }; %>
+	    	<div class="commands">
+	    		<div class="button select"><%= actionName %></div>
+	    	</div>
+    	</div>
+    </script>
+    <script type="text/html" id="createItemTemplate">
+    	<div class="header">
+    		<div class="button close fa-ban"></div>
+    		<div class="title"><%= title %></div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="content">
+	    	<div class="editor">
+	    		<input type="text" class="new-item-name"/>	
+	    	</div>
+	    	<div class="commands">
+	    		<div class="button create">create</div>
+	    	</div>
+    	</div>
+    </script>
+    <script type="text/html" id="importFromWebLangsTemplate">
+    	<div class="header">
+    		<div class="button close fa-ban"></div>
+    		<div class="title">Cards Import [1/2]</div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="content">
+	    	<div class="loading">
+	    		<div class="message">Connecting to the server <span class="connecting"></span></div>
+	    	</div>
+	    	<div class="languages hidden">
+	    		<div class="message">Select source language</div>
+	    		<div class="langs-list"></div>
+	    	</div>
+	    </div>
+    </script>
+    <script type="text/html" id="importFromWebDecksTemplate">
+    	<div class="header">
+    		<div class="button close fa-ban"></div>
+    		<div class="title">Cards Import [2/2]</div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="content">
+	    	<div class="decks">
+	    		<div class="message">Selected language: <span class="sourceLang"><%= lang %></span></div>
+	    		<div class="message">Select deck to import</div>
+	    		<div class="decks-list">
+	    			<% _.each(decks, function(deck){ %>
+				    	<div class="button item-button" data-target="<%= deck %>">
+				    		<%= deck %>
+				    		<div class="loading"></div>
+				    	</div>
+	    			<% }); %>
+	    		</div>
+	    	</div>
+	    </div>
+    </script>
+    <script type="text/html" id="buttonTemplate">
+    	<div class="button item-button" data-target="<%= item %>">
+    		<%= item %>
+    		<div class="loading"></div>
+    	</div>
+    </script>
+    <script type="text/html" id="createBackupTemplate">
+    	<div class="header">
+    		<div class="button close fa-ban"></div>
+    		<div class="title">Create backup</div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="content">
+	    	<div class="errors hidden"></div>
+	    	<div class="editor">
+	    		Backup name:
+	    		<input type="text" class="new-item-name" value="<%= defaultName%>"/>	
+	    	</div>
+	    	<div class="result hidden">
+	    		Backup created with name: <span class="backup-name"></span>
+	    	</div>
+	    	<div class="commands">
+	    		<div class="button create">
+	    			create
+	    			<div class="loading"></div>
+	    		</div>
+	    	</div>
+    	</div>
+    </script>
+    <script type="text/html" id="restoreBackupTemplate">
+    	<div class="header">
+    		<div class="button close fa-ban"></div>
+    		<div class="title">Backup Restore</div>
+    		<div class="clearfix"></div>
+    	</div>
+    	<div class="content">
+    		<div class="errors hidden"></div>
+	    	<div class="loading-info">
+	    		<div class="message">Connecting to the server <span class="connecting"></span></div>
+	    	</div>
+	    	<div class="backups hidden">
+	    		<div class="message">Select backup to restore:</div>
+	    		<div class="backups-list"></div>
+		    	<div class="commands">
+		    		<div class="button restore">
+		    			restore
+		    			<div class="loading"></div>
+		    		</div>
+		    	</div>
+	    	</div>
+	    </div>
+    </script>
+    <script type="text/html" id="backupButtonTemplate">
+    	<div class="button item-button" data-target="<%= item %>">
+			<div class="checkbox fa-square-o"  data-target='<%= item %>'></div><%= item %>
+			<div class="clearfix"></div>
+    	</div>
+    </script>
+</html>

@@ -1,0 +1,230 @@
+@import "compass/css3/box-shadow";
+
+// --- set defaults ---
+html,body, .body{
+  margin: 0;
+  border: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+ // --- HTC one X (1280x720) styles --- begin
+$header-height: 80px;
+$header-border: 3px;
+$header-border-color: #444;
+$header-color: #fff;
+$header-background-color: #222;
+$header-font-size: 48px;
+$header-padding: 8px;
+$header-title-height: 54px;
+$button-height: 40px;
+$button-padding: 20px;
+$button-min-width: 80px;
+$button-border-color: #ddd;
+$button-border-radius: 0.3em;
+$button-margin: 0.3em;
+$button-font-size: 36px;
+$button-background-color: #444;
+$button-shadow-size: 5px;
+$button-shadow-color: #000;
+
+$button-disabled-border-color: #555;
+$button-disabled-color: #555;
+
+$content-background-color: #222;
+$content-color: #fff;
+$content-padding: 8px;
+
+$menu-width: 350px;
+$menu-color: #eee;
+$menu-background-color: #555;
+$menu-border-color: #111;
+
+$dialog-title-font-size: 44px;
+$dialog-title-height: 50px;
+$dialog-content-padding: 20px;
+$dialog-line-font-size: 36px;
+$dialog-line-label-width: 250px;
+$dialog-button-checkbox-height: 46px;
+$dialog-new-item-font-size: 32px;
+$dialog-min-width: 300px;
+$dialog-title-padding-top: 10px;
+
+$menu-item-font-size: 40px;
+$menu-padding: 20px;
+
+$card-text-font-size: 56px;
+$card-notes-text-font-size: 50px;
+$card-select-font-size: 80px;
+$card-reviews-font-size: 32px;
+$card-review-sign-top: 28px;
+
+$notification-font-size: 36px;
+$error-color: red;
+$success-color: green;
+
+// --- HTC one styles --- end
+
+/*$header-height: 44px;
+$header-border: 2px;
+$header-border-color: #444;
+$header-color: #fff;
+$header-background-color: #222;
+$header-font-size: 24px;
+
+$button-height: 20px;
+$button-padding: 10px;
+$button-min-width: 40px;
+$button-border-color: #ddd;
+$button-border-radius: 0.5em;
+$button-margin: 0.5em;
+$button-font-size: 18px;
+
+$button-disabled-border-color: #555;
+$button-disabled-color: #555;
+
+$content-background-color: #222;
+$content-color: #fff;
+$content-padding: 4px;
+
+$menu-width: 200px;
+$menu-color: #eee;
+$menu-background-color: #555;
+$menu-border-color: #111;
+
+$dialog-title-font-size: 22px;
+$dialog-padding: 10px;
+$dialog-line-font-size: 18px;
+$dialog-line-label-width: 150px;
+$dialog-variant-height: 30px;
+$dialog-new-item-font-size: 16px;
+
+$menu-item-font-size: 20px;
+$menu-padding: 10px;
+
+$card-text-font-size: 22px;
+$card-notes-text-font-size: 20px;
+$card-select-font-size: 50px;
+$card-name-padding-bottom: 35px;
+$card-reviews-font-size: 16px;
+*/
+@mixin screen-header(){
+  height: $header-height;
+  padding: $header-padding;
+  border-bottom: solid $header-border $header-border-color;
+  text-align: center;
+  font-size: $header-font-size;
+  font-weight: normal;
+  color: $header-color;
+  background-color: $header-background-color;
+}
+
+
+
+body,
+.body {
+  background-color: $content-background-color; 
+}
+
+@mixin square-button(){
+  font-family: FontAwesome;
+  font-size: $dialog-title-font-size !important;
+  height: $button-height;
+  width: $button-min-width - ($button-padding * 2);
+  padding: $button-padding;
+  border: solid 1px $button-border-color;
+  border-radius: $button-border-radius;
+  background-color: $button-background-color;
+  @include single-box-shadow($button-shadow-color, $button-shadow-size, $button-shadow-size);
+}
+
+@mixin button(){
+  height: $button-height;
+  min-width : $button-min-width;
+  border: solid 1px $button-border-color;
+  border-radius: $button-border-radius;
+  margin: $button-margin 0;
+  text-align: center;
+  padding: $button-padding;
+  font-size: $button-font-size;
+  background-color: $button-background-color;
+  @include single-box-shadow($button-shadow-color, $button-shadow-size, $button-shadow-size);
+}
+
+.screen {
+  width: 100%;
+  height: 100%;
+  .clearfix {
+    clear: both;
+  }
+  .header {
+    position: relative;
+    @include screen-header();
+    .home-button,
+    .menu-button {
+      @include square-button();
+    }
+    .menu-button {
+      position: absolute;
+      right: $header-padding;
+      top: $header-padding;
+    }
+    .home-button{
+      position: absolute;
+      left: $header-padding;
+      top: $header-padding;
+    }
+    .title {
+      padding: $header-padding * 2 $header-padding $header-padding;
+      height: $header-title-height;
+      overflow: hidden;
+    }
+  }
+  .content {
+    color: $content-color;
+    padding: $content-padding;
+    background-color: $content-background-color;
+    overflow-y: scroll;
+    .button{
+      position: relative;
+      @include button();
+      .loading{
+        position: absolute;
+        left: 5px;
+        bottom: 5px;
+        width: 16px;
+        height: 11px;
+      }
+      .loading-active {
+        background-image: inline-image('ajax-pulse.gif');
+      }
+    }
+  }
+  .button.disabled {
+    color: $button-disabled-border-color;
+    border-color: $button-disabled-border-color;
+  }
+  .right {
+    float: right;
+  }
+  .left {
+    float: left;
+  }
+}
+
+.clearfix {
+  clear: both;
+}
+
+@import "decks-list";
+@import "card-view";
+@import "menu";
+@import "dialog";
+@import "deck-info-dialog";
+@import "review-mode-dialog";
+@import "select-item-dialog";
+@import "loading-cards-view";
+@import "create-item-dialog";
+

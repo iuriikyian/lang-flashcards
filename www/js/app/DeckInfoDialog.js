@@ -1,8 +1,8 @@
-define(['underscore', 'zepto', 'BaseDialog'], 
-		function(_, $, BaseDialog){
+define(['underscore', 'zepto', 'BaseDialog', 'utils/utils'], 
+		function(_, $, BaseDialog, utils){
 	
 	var DeckInfoDialog = BaseDialog.extend({
-		template : _.template($('#deckInfoTemplate').html()),
+		template : utils.template('deck-info'),
 
 		initialize : function(options){
 			this.info = options.info;

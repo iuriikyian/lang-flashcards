@@ -311,7 +311,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     		});
     		menu.render();
     		var lang = this.decksManager.getCurrentLang();
-    		var me = this;
+    		var me = this, cards;
     		menu.on('menu:click', function(itemId){
     			me._destroyMenu();
     			switch(itemId){
@@ -339,7 +339,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     					deck.clearSelection();
     					break;
     				case 'sel2today':
-    					var cards = deck.removeSelectedCards();
+    					cards = deck.removeSelectedCards();
     					if(cards.length > 0){
     						var todayDeck = me.decksManager.getDeck(lang, 'today');
     						todayDeck.insertCards(cards);
@@ -384,7 +384,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     					});
     					break;
     				case 'sel2keep': // from today-deck
-    					var cards = deck.removeSelectedCards();
+    					cards = deck.removeSelectedCards();
     					console.log('cards to keep:');
     					console.log(cards);
     					if(cards.length){

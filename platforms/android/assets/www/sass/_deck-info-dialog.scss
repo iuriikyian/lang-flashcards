@@ -1,0 +1,10 @@
+.dialog {
+  .line {
+    font-size: $dialog-line-font-size;
+    .label {
+      display: inline-block;
+      width: $dialog-line-label-width;
+      font-weight: bold;
+    }
+  }
+}

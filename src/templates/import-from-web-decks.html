@@ -1,0 +1,19 @@
+<div class="header">
+	<div class="button close fa-ban"></div>
+	<div class="title">Cards Import [2/2]</div>
+	<div class="clearfix"></div>
+</div>
+<div class="content">
+	<div class="decks">
+		<div class="message">Selected language: <span class="sourceLang"><%= lang %></span></div>
+		<div class="message">Select deck to import</div>
+		<div class="decks-list">
+			<% _.each(decks, function(deck){ %>
+		    	<div class="button item-button" data-target="<%= deck %>">
+		    		<%= deck %>
+		    		<div class="loading"></div>
+		    	</div>
+			<% }); %>
+		</div>
+	</div>
+</div>

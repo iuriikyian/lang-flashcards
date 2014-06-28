@@ -1,9 +1,9 @@
-define(['underscore', 'zepto', 'backbone', 'zepto.hammer'], 
-		function(_, $, Backbone){
+define(['underscore', 'zepto', 'backbone', 'utils/utils', 'zepto.hammer'], 
+		function(_, $, Backbone, utils){
 	var HIDDEN_CLASS = 'hidden';
 	
 	var Menu = Backbone.View.extend({
-		template : _.template($('#menuTemplate').html()),
+		template : utils.template('menu'),
 		
 		initialize : function(options){
 			this.menus = options.menus;

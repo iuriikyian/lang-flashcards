@@ -1,10 +1,10 @@
-define(['underscore', 'zepto', 'BaseDialog'], 
-function(_, $, BaseDialog){
+define(['underscore', 'zepto', 'BaseDialog', 'utils/utils'], 
+function(_, $, BaseDialog, utils){
 	var HIDDEN_CLASS = 'hidden';
 	
 	var LoadingCards1Dialog = BaseDialog.extend({
-		template : _.template($('#importFromWebLangsTemplate').html()),
-		buttonTemplate : _.template($('#buttonTemplate').html()),
+		template : utils.template('import-from-web-langs'),
+		buttonTemplate : utils.template('button'),
 		
 		initialize : function(options){
 			this.lang = options.lang;

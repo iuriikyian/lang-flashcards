@@ -1,8 +1,8 @@
-define(['underscore', 'zepto', 'BaseDialog'], 
-		function(_, $, BaseDialog){
+define(['underscore', 'zepto', 'BaseDialog', 'utils/utils'], 
+		function(_, $, BaseDialog, utils){
 	
 	var CreateItemDialog = BaseDialog.extend({
-		template : _.template($('#createItemTemplate').html()),
+		template : utils.template('create-item'), //_.template($('#createItemTemplate').html()),
 		
 		initialize : function(options){
 			this.title = options.title;

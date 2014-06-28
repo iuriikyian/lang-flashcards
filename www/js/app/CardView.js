@@ -1,7 +1,7 @@
-define(['underscore', 'zepto', 'backbone', 'settings', 'zepto.hammer'], function(_, $, Backbone, settings){
+define(['underscore', 'zepto', 'backbone', 'settings', 'utils/utils', 'zepto.hammer'], function(_, $, Backbone, settings, utils){
 	
 	var CardView = Backbone.View.extend({
-		template : _.template($('#cardView').html()),
+		template : utils.template('card-view'),
 		name : 'card-view',
 		
 		initialize : function(options){
@@ -58,7 +58,7 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'zepto.hammer'], function
 			this.trigger('card:show-next');
 		},
 		_onFlip : function(){
-			this.trigger('card:flip')
+			this.trigger('card:flip');
 		},
 		_onContentClick : function(evt){
 			if($(evt.target).hasClass('selected')){
