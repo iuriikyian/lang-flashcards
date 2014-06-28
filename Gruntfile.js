@@ -79,12 +79,20 @@ module.exports = function(grunt) {
 	            runInBackground: false//true|false
 
 	        }
-	    }
+	    },
+
+	    exec : {
+        	'build' : {
+       			cmd : '../node_modules/.bin/phonegap build android'
+        	}
+        }
+
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-compass');
 	grunt.loadNpmTasks('grunt-contrib-jshint');	
+	grunt.loadNpmTasks('grunt-exec');	
 	grunt.loadNpmTasks('grunt-http-server');
 
 	grunt.registerTask('default', 'default build task', ['clean', 'compass', 'collect-templates', 'jshint']);
