@@ -1,12 +1,13 @@
-define(['underscore', 'zepto', 'backbone', 'settings', 'zepto.touch'], 
-		function(_, $, Backbone, settings){
+define(['underscore', 'zepto', 'backbone', 'zepto.touch'], 
+		function(_, $, Backbone){
 	var HIDDEN_CLASS = 'hidden';
-	var OVERLAY_SELECTOR = '#menu-overlay';
+	//var OVERLAY_SELECTOR = '#menu-overlay';
 	
 	var BaseDialog = Backbone.View.extend({
 		
 		initialize : function(options){
-			this.overlay = '#menu-overlay';
+			this.overlay = options.overlay; //'#menu-overlay';
+			this.tapEvent = options.tapEvent;
 		},
 		
 		_onClose : function(evt){
@@ -16,17 +17,17 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'zepto.touch'],
 		
 		close : function(){
 			this.$el.addClass(HIDDEN_CLASS);
-			$(OVERLAY_SELECTOR).addClass(HIDDEN_CLASS);
+			$(this.overlay).addClass(HIDDEN_CLASS);
 		},
 		
 		_base_render : function(model){
 			$(this.el).empty();
 			$(this.el).append(this.template(model));
-			$(OVERLAY_SELECTOR)
+			$(this.overlay)
 				.removeClass(HIDDEN_CLASS)
-				.on(settings.tapEvent, _.bind(this._onClose, this));
+				.on(this.tapEvent, _.bind(this._onClose, this));
 			this.$el.removeClass(HIDDEN_CLASS);
-			this.$('.header .close').on(settings.tapEvent, _.bind(this._onClose, this));
+			this.$('.header .close').on(this.tapEvent, _.bind(this._onClose, this));
 		}
 	});
 	

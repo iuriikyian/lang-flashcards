@@ -1,11 +1,12 @@
-define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'settings', 'zepto.touch'], 
-		function(_, $, BaseDialog, utils, settings){
+define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'], 
+		function(_, $, BaseDialog, utils){
 	var HIDDEN_CLASS = 'hidden';
 	
 	var SelectItemDialog = BaseDialog.extend({
 		template : utils.template('select-item'),
 		
 		initialize : function(options){
+			BaseDialog.prototype.initialize.call(this, options);
 			this.title = options.title;
 			this.items = options.items;
 			this.canCreate = options.canCreate || false;
@@ -14,8 +15,8 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'settings', 'zepto.t
 		},
 		
 		_initTouchEvents : function(){
-			this.$('.variant').on(settings.tapEvent, _.bind(this._onSelectVariant, this));
-			this.$('.commands .select').on(settings.tapEvent, _.bind(this._onSelect, this));
+			this.$('.variant').on(this.tapEvent, _.bind(this._onSelectVariant, this));
+			this.$('.commands .select').on(this.tapEvent, _.bind(this._onSelect, this));
 		},		
 		
 		_onSelectVariant : function(evt){

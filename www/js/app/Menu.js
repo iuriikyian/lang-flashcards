@@ -1,5 +1,5 @@
-define(['underscore', 'zepto', 'backbone', 'utils/utils', 'settings', 'zepto.touch'], 
-		function(_, $, Backbone, utils, settings){
+define(['underscore', 'zepto', 'backbone', 'utils/utils', 'zepto.touch'], 
+		function(_, $, Backbone, utils){
 	var HIDDEN_CLASS = 'hidden';
 	
 	var Menu = Backbone.View.extend({
@@ -8,21 +8,23 @@ define(['underscore', 'zepto', 'backbone', 'utils/utils', 'settings', 'zepto.tou
 		initialize : function(options){
 			this.menus = options.menus;
 			this.overlay = options.overlay;
+			this.tapEvent = options.tapEvent || 'tap';
 		},
 		
 		_initTouchEvents : function(){
-			this.$('.menu .menu-item').on(settings.tapEvent, _.bind(this._onMenuClick, this));
+			this.$('.menu .menu-item').on(this.tapEvent, _.bind(this._onMenuClick, this));
 		},		
 		
 		_onMenuClick : function(evt){
 			var menuId = $(evt.target).attr('data-target');
 			this.close();
-			this.trigger('menu:click', menuId);
+			this.trigger('selected', menuId);
 		},
 		
 		close : function(){
 			this.$el.addClass(HIDDEN_CLASS);
 			$(this.overlay).addClass(HIDDEN_CLASS);
+			this.trigger('closed');
 		},
 		
 		render : function(){
@@ -33,7 +35,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/utils', 'settings', 'zepto.tou
 			}));
 			$(this.overlay)
 				.removeClass(HIDDEN_CLASS)
-				.on(settings.tapEvent, _.bind(this.close, this));
+				.on(this.tapEvent, _.bind(this.close, this));
 			this.$el.removeClass(HIDDEN_CLASS);
 			this._initTouchEvents();
 			var pos = this.$el.position();

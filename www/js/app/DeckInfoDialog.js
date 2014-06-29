@@ -5,6 +5,7 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils'],
 		template : utils.template('deck-info'),
 
 		initialize : function(options){
+			BaseDialog.prototype.initialize.call(this, options);
 			this.info = options.info;
 		},
 		

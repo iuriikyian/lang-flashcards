@@ -1,5 +1,5 @@
-define(['underscore', 'zepto', 'utils/utils', 'BaseDialog', 'settings', 'zepto.touch'], 
-function(_, $, utils, BaseDialog, settings){
+define(['underscore', 'zepto', 'utils/utils', 'BaseDialog', 'zepto.touch'], 
+function(_, $, utils, BaseDialog){
 	var HIDDEN_CLASS = 'hidden';
 	
 	var RestoreBackupDialog = BaseDialog.extend({
@@ -7,6 +7,7 @@ function(_, $, utils, BaseDialog, settings){
 		buttonTemplate : utils.template('backup-button'),
 		
 		initialize : function(options){
+			BaseDialog.prototype.initialize.call(this, options);
 //			this.lang = options.lang;
 		},
 		
@@ -14,7 +15,7 @@ function(_, $, utils, BaseDialog, settings){
 			this._base_render({
 				lang : this.lang
 			});
-			this.$('.commands .restore').on(settings.tapEvent, _.bind(function(evt){
+			this.$('.commands .restore').on(this.tapEvent, _.bind(function(evt){
 				var $selected = this.$('.backups .backups-list .button .fa-check-square-o');
 				if($selected.length === 0){
 					return; // nothing selected
@@ -39,7 +40,7 @@ function(_, $, utils, BaseDialog, settings){
 			}, this);
 			this.$('.loading-info').addClass(HIDDEN_CLASS);
 			this.$('.backups .backups-list').empty().append(parts.join(''));
-			this.$('.backups .backups-list .button').on(settings.tapEvent, _.bind(function(evt){
+			this.$('.backups .backups-list .button').on(this.tapEvent, _.bind(function(evt){
 				console.log(evt);
 				this.$('.backups .backups-list .button .checkbox').removeClass('fa-check-square-o').addClass('fa-square-o');
 				$(evt.currentTarget).find('.checkbox').removeClass('fa-square-o').addClass('fa-check-square-o');

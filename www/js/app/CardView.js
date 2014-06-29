@@ -66,7 +66,7 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'utils/utils', 'zepto.tou
 				return;
 			}
 			var width = $(window).width();
-			var xPos = evt.gesture.center.pageX;
+			var xPos = evt.pageX;
 			if(xPos > width * 0.8){
 				return this._onShowNext();
 			}

@@ -1,10 +1,11 @@
-define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'settings', 'zepto.touch'], 
-		function(_, $, BaseDialog, utils, settings){
+define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'], 
+		function(_, $, BaseDialog, utils){
 	
 	var CreateItemDialog = BaseDialog.extend({
 		template : utils.template('create-item'),
 		
 		initialize : function(options){
+			BaseDialog.prototype.initialize.call(this, options);
 			this.title = options.title;
 		},
 		
@@ -19,7 +20,7 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'settings', 'zepto.t
 			this._base_render({
 				title : this.title
 			});
-			this.$('.commands .create').on(settings.tapEvent, _.bind(this._onCreate, this));
+			this.$('.commands .create').on(this.tapEvent, _.bind(this._onCreate, this));
 		}
 	});
 	

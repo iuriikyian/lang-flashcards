@@ -14,6 +14,8 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 		}
 		return window.device.uuid;
 	}
+
+    var TAP_EVENT = 'click';
 	
 	var MainRouter = Backbone.Router.extend({
 //		routes : {
@@ -73,7 +75,8 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	    	var view = new DecksView({
 	    		el : '.body',
 	    		decks : this.decksManager.getDeckNames(lang),
-	    		lang : lang
+	    		lang : lang,
+                tapEvent : TAP_EVENT
 	    	});
 	    	this.view = view;
 	    	view.render();
@@ -100,7 +103,8 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	    	var deck = this.decksManager.getDeck(lang, deckName);
     		var view = new CardView({
     			el : '.body',
-    			card : deck.getCurrentCardSideInfo()
+    			card : deck.getCurrentCardSideInfo(),
+                tapEvent : TAP_EVENT
     		});
     		this.view = view;
 	    	view.render();
@@ -151,12 +155,13 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     			    { id : 'remove-decks', name : 'delete decks'},
     			    { id : 'backup', name : 'backup'},
     			    { id : 'restore', name : 'restore'}
-    			]
+    			],
+                tapEvent : TAP_EVENT
     		});
     		menu.render();
     		var lang = this.decksManager.getCurrentLang();
     		var me = this;
-    		menu.on('menu:click', function(menuId){
+    		menu.on('selected', function(menuId){
     			console.log('Event:menu:click:' + menuId);
     			me._destroyMenu();
     			switch(menuId){
@@ -167,7 +172,9 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 							title : 'Select lang',
     						items : langs,
     						canCreate : true,
-    						actionName : 'switch'
+    						actionName : 'switch',
+                            overlay : '#menu-overlay',
+                            tapEvent : TAP_EVENT
     					});
     					me.dialog.render();
     					me.dialog.on('selected', function(lang){
@@ -188,7 +195,9 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     				case 'create-deck':
     					me.dialog = new CreateItemDialog({
 	   						el : '#dialog',
-							title : 'Create Deck'
+							title : 'Create Deck',
+                            tapEvent : TAP_EVENT,
+                            overlay : '#menu-overlay'
     					});
     					me.dialog.render();
     					me.dialog.on('close', function(){
@@ -213,7 +222,9 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 							title : 'Select Decks',
     						items : deckNames,
     						multipleSelect : true,
-    						actionName : 'remove'
+    						actionName : 'remove',
+                            tapEvent : TAP_EVENT,
+                            overlay : '#menu-overlay'
     					});
     					me.dialog.render();
     					me.dialog.on('close', function(){
@@ -232,7 +243,9 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     				case 'backup':
     					me.dialog = new CreateBackupDialog({
 	   						el : '#dialog',
-    						defaultName : DateUtils.datetime2ISO(new Date())
+    						defaultName : DateUtils.datetime2ISO(new Date()),
+                            overlay : '#menu-overlay',
+                            tapEvent : TAP_EVENT
     					});
     					me.dialog.render();
     					me.dialog.on('close', function(){
@@ -252,7 +265,9 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     					break;
     				case 'restore':
     					me.dialog = new RestoreBackupDialog({
-	   						el : '#dialog'
+	   						el : '#dialog',
+                            overlay : '#menu-overlay',
+                            tapEvent : TAP_EVENT
     					});
     					me.dialog.render();
     					me.dialog.on('close', function(){
@@ -307,18 +322,21 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     		var menu = new Menu({
 			    el : '#menu',
 			    overlay : '#menu-overlay',
-    			menus : menus
+    			menus : menus,
+                tapEvent : TAP_EVENT
     		});
     		menu.render();
     		var lang = this.decksManager.getCurrentLang();
     		var me = this, cards;
-    		menu.on('menu:click', function(itemId){
+    		menu.on('selected', function(itemId){
     			me._destroyMenu();
     			switch(itemId){
     				case 'mode':
     					me.dialog = new ReviewModeDialog({
 	   						 el : '#dialog',
-    						mode : deck.mode
+    						mode : deck.mode,
+                            overlay : '#menu-overlay',
+                            tapEvent : TAP_EVENT
     					});
     					me.dialog.render();
     					me.dialog.on('close', function(){
@@ -353,7 +371,9 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	   						el : '#dialog',
 							title : 'Select target Deck for cards',
     						items : deckNames,
-    						actionName : 'move'
+    						actionName : 'move',
+                            overlay : '#menu-overlay',
+                            tapEvent : TAP_EVENT
     					});
     					me.dialog.render();
     					me.dialog.on('close', function(){
@@ -394,8 +414,10 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     					break;
     				case 'deck-info':
     					me.dialog = new DeckInfoDialog({
-    						 el : '#dialog',
-    						 info : deck.getDeckInfo()
+    						el : '#dialog',
+    						info : deck.getDeckInfo(),
+                            overlay : '#menu-overlay',
+                            tapEvent : TAP_EVENT
     					});
     					me.dialog.render();
     					me.dialog.on('close', function(){
@@ -419,7 +441,9 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	    	var me = this;
 	    	me._destroyMenu();
 	    	var dialog = new LoadingCards1Dialog({
-					el : '#dialog'
+				el : '#dialog',
+                overlay : '#menu-overlay',
+                tapEvent : TAP_EVENT                
 	    	});
 	    	this.dialog = dialog;
 	    	dialog.render();
@@ -446,9 +470,10 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	    		me._destroyDialog();
 		    	var dialog = new LoadingCards2Dialog({
 					el : '#dialog',
-					overlay : '#menu-overlay',
 		    		lang : fromLang,
-		    		decks : decks
+		    		decks : decks,
+                    overlay : '#menu-overlay',
+                    tapEvent : TAP_EVENT                    
 		    	});
 		    	me.dialog = dialog;
 		    	dialog.render();

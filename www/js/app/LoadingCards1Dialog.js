@@ -1,5 +1,5 @@
 define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'], 
-function(_, $, BaseDialog, utils, settings){
+function(_, $, BaseDialog, utils){
 	var HIDDEN_CLASS = 'hidden';
 	
 	var LoadingCards1Dialog = BaseDialog.extend({
@@ -7,6 +7,7 @@ function(_, $, BaseDialog, utils, settings){
 		buttonTemplate : utils.template('button'),
 		
 		initialize : function(options){
+			BaseDialog.prototype.initialize.call(this, options);
 			this.lang = options.lang;
 		},
 		
@@ -23,7 +24,7 @@ function(_, $, BaseDialog, utils, settings){
 			}, this);
 			this.$('.loading').addClass(HIDDEN_CLASS);
 			this.$('.languages .langs-list').empty().append(parts.join(''));
-			this.$('.languages .langs-list .button').on(settings.tapEvent, _.bind(function(evt){
+			this.$('.languages .langs-list .button').on(this.tapEvent, _.bind(function(evt){
 				console.log(evt);
 				$(evt.target).find('.loading').addClass('loading-active');
 				var selectedLang = $(evt.target).attr('data-target');
