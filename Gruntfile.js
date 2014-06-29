@@ -6,18 +6,25 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 
 		clean : {
-			dev: ['www/css/index.css']
+			dev: ['src/css/index.css'],
+			www: [
+				'www/css/',
+				'www/fonts/',
+				'www/img/',
+				'www/js/<%= pkg.bundle %>.min.js',
+				'www/js/require.js'
+			]
 		},
 
 		compass : {
 			dev : {
 				options : {
 	                sassDir: 'src/sass',
-	                cssDir: 'www/css',
+	                cssDir: 'src/css',
 	                outputStyle: 'expanded',
 	                relativeAssets: true,
-	                imagesDir: 'www/img',
-	                fontsDir: 'www/fonts'
+	                imagesDir: 'src/img',
+	                fontsDir: 'src/fonts'
 				}
 			}
 		},
@@ -55,15 +62,50 @@ module.exports = function(grunt) {
                     google : false
                 },
             },
-            src: 'www/js/app/**/*js'
+            src: 'src/js/app/**/*js'
+        },
+
+        requirejs: {
+            compile: {
+                options: {
+                    // main file to start to look for its dependencies.
+                    name: 'app',
+                    baseUrl: "src/js/app",
+                    mainConfigFile: "src/js/config.js",
+                    amd: true,
+                    optimize: "none",
+//                    optimize: "uglify",
+                    out: "www/js/<%= pkg.bundle %>.min.js"//,
+                }
+            }
         },
 
 		'http-server': {
 
-	        dev: {
+	        www: {
 
 	            // the server root directory
 	            root: 'www',
+
+	            port: 8281,
+	            // port: function() { return 8282; }
+
+	            host: "127.0.0.1",
+
+	            cache: 0,
+	            showDir : true,
+	            autoIndex: true,
+	            defaultExt: "html",
+
+	            // run in parallel with other tasks
+	            runInBackground: false//true|false
+
+	        },
+
+	        dev: {
+
+	            // the server root directory
+	            root: 'src',
 
 	            port: 8282,
 	            // port: function() { return 8282; }
@@ -85,6 +127,31 @@ module.exports = function(grunt) {
         	'build' : {
        			cmd : '../node_modules/.bin/phonegap build android'
         	}
+        },
+
+        copy : {
+            'to-www': {
+                files: [
+                    {
+                        expand: true, 
+                        cwd: 'src/', 
+                        src : [
+    						"css/*.css",
+    						"fonts/*.ttf",
+    						"img/*.png",
+    						"img/*.gif"
+    					], 
+                        dest: "www/"
+                     },
+                    {
+                        //expand: true, 
+                        //cwd: 'src/js/lib/', 
+                        src : "src/js/lib/require.js",
+                        dest: "www/js/require.js"
+                     },
+
+                ]
+            }
         }
 
 	});
@@ -92,16 +159,23 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-compass');
 	grunt.loadNpmTasks('grunt-contrib-jshint');	
+	grunt.loadNpmTasks('grunt-contrib-requirejs');
+	grunt.loadNpmTasks('grunt-contrib-copy');	
 	grunt.loadNpmTasks('grunt-exec');	
 	grunt.loadNpmTasks('grunt-http-server');
 
-	grunt.registerTask('default', 'default build task', ['clean', 'compass', 'collect-templates', 'jshint']);
-	grunt.registerTask('serve', 'http server', ['http-server'])
+	grunt.registerTask('default', 'default build task', ['build-dev']);
+
+	grunt.registerTask('build-dev', 'default build task',  ['clean', 'compass', 'collect-templates', 'jshint']);
+	grunt.registerTask('build-www', 'collect/build resources for www', ['build-dev', 'requirejs', 'copy:to-www']);
+
+	grunt.registerTask('serve-dev', 'http server', ['http-server:dev']);
+	grunt.registerTask('serve-www', 'http server', ['http-server:www']);
 
 	grunt.registerTask('collect-templates', 'collect templates into templates file', function(){
 
 		var templatesDir = 'src/templates';
-		var templatesFile = 'www/js/app/templates.js';
+		var templatesFile = 'src/js/app/templates.js';
 		var templates = {};
 		grunt.file.recurse(templatesDir, function(abspath, rootdir, subdir, filename){
             var fileData = grunt.file.read(abspath);
