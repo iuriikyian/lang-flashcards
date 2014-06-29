@@ -13,6 +13,13 @@ module.exports = function(grunt) {
 				'www/img/',
 				'www/js/<%= pkg.bundle %>.min.js',
 				'www/js/require.js'
+			],
+			android: [
+				'platforms/android/assets/www/css/',
+				'platforms/android/assets/www/fonts/',
+				'platforms/android/assets/www/img/',
+				'platforms/android/assets/www/js/',
+				'platforms/android/assets/www/index.html'
 			]
 		},
 
@@ -168,6 +175,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('build-dev', 'default build task',  ['clean', 'compass', 'collect-templates', 'jshint']);
 	grunt.registerTask('build-www', 'collect/build resources for www', ['build-dev', 'requirejs', 'copy:to-www']);
+	grunt.registerTask('build-android', 'build android app', ['build-www', 'exec:build']);
 
 	grunt.registerTask('serve-dev', 'http server', ['http-server:dev']);
 	grunt.registerTask('serve-www', 'http server', ['http-server:www']);
