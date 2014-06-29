@@ -1,15 +1,9 @@
 define(['underscore', 'zepto', 'backbone', 'utils/date',
-        'DecksManager', 'DecksView', 'Menu', 'CardsServerAgent',
-        'CardView', 'LoadingCards1Dialog', 'LoadingCards2Dialog',
-        'SelectItemDialog', 'CreateItemDialog', 'ReviewModeDialog', 'DeckInfoDialog',
-        'CreateBackupDialog', 'RestoreBackupDialog',
-        'ViewsFactory'
+        'DecksManager', 'DecksView', 'CardsServerAgent',
+        'CardView', 'ViewsFactory'
         ], function(_, $, Backbone, DateUtils,
-        		DecksManager, DecksView, Menu, CardsServerAgent,
-        		CardView, LoadingCards1Dialog, LoadingCards2Dialog,
-        		SelectItemDialog, CreateItemDialog, ReviewModeDialog, DeckInfoDialog,
-        		CreateBackupDialog, RestoreBackupDialog,
-                ViewsFactory){
+        		DecksManager, DecksView, CardsServerAgent,
+        		CardView,  ViewsFactory){
 	function getDeviceId(){
 		if(_.isUndefined(window.device)){
 			return '4129036ec2073b7c'; //'test-4';
@@ -155,28 +149,20 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     			    { id : 'restore', name : 'restore'}
     			]
     		});
-            menu.on('closed', _.bind(function(){
-                this.viewsFactory.destroyView(menu);
-            }, this));
 
-    		menu.render();
+    		$('body').append(menu.render().el);
     		var lang = this.decksManager.getCurrentLang();
     		var me = this;
     		menu.on('selected', _.bind(function(menuId){
     			console.log('Event:menu:selected:' + menuId);
-                this.viewsFactory.destroyView(menu);
     			switch(menuId){
     				case 'lang':
     					var langs = this.decksManager.getLangs();
-    					this.dialog = new SelectItemDialog({
-	   						el : '#dialog',
-							title : 'Select lang',
-    						items : langs,
-    						canCreate : true,
-    						actionName : 'switch',
-                            overlay : OVERLAY_SELECTOR,
-                            tapEvent : TAP_EVENT
-    					});
+                        this.dialog = this.viewsFactory.createView('select-lang', {
+                            items : langs,
+                            canCreate : true,
+                            actionName : 'switch',
+                        });
     					this.dialog.render();
     					this.dialog.on('selected', function(lang){
     						console.log('Event:selected:lang:' + lang);
@@ -192,14 +178,12 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     						me._destroyDialog();
     						me.onShowDecksList();
     					});
+                        this.dialog.on('close', _.bind(function(){
+                            this._destroyDialog();
+                        }, this));
     					break;
     				case 'create-deck':
-    					this.dialog = new CreateItemDialog({
-	   						el : '#dialog',
-							title : 'Create Deck',
-                            tapEvent : TAP_EVENT,
-                            overlay : OVERLAY_SELECTOR
-    					});
+                        this.dialog = this.viewsFactory.createView('create-deck', {});
     					this.dialog.render();
     					this.dialog.on('close', function(){
     						me._destroyDialog();
@@ -218,15 +202,11 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     					break;
     				case 'remove-decks':
     					var deckNames = this.decksManager.getDeckNames(lang);
-    					this.dialog = new SelectItemDialog({
-	   						el : '#dialog',
-							title : 'Select Decks',
-    						items : deckNames,
-    						multipleSelect : true,
-    						actionName : 'remove',
-                            tapEvent : TAP_EVENT,
-                            overlay : OVERLAY_SELECTOR
-    					});
+                        this.dialog = this.viewsFactory.createView('select-decks', {
+                            items : deckNames,
+                            multipleSelect : true,
+                            actionName : 'remove',
+                        });
     					this.dialog.render();
     					this.dialog.on('close', function(){
     						me._destroyDialog();
@@ -242,12 +222,9 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     					});
     					break;
     				case 'backup':
-    					this.dialog = new CreateBackupDialog({
-	   						el : '#dialog',
-    						defaultName : DateUtils.datetime2ISO(new Date()),
-                            overlay : OVERLAY_SELECTOR,
-                            tapEvent : TAP_EVENT
-    					});
+                        this.dialog = this.viewsFactory.createView('create-backup', {
+                            defaultName : DateUtils.datetime2ISO(new Date())
+                        });
     					this.dialog.render();
     					this.dialog.on('close', function(){
     						me._destroyDialog();
@@ -265,11 +242,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     					});
     					break;
     				case 'restore':
-    					this.dialog = new RestoreBackupDialog({
-	   						el : '#dialog',
-                            overlay : OVERLAY_SELECTOR,
-                            tapEvent : TAP_EVENT
-    					});
+                        this.dialog = this.viewsFactory.createView('restore-backup', {});
     					this.dialog.render();
     					this.dialog.on('close', function(){
     						me._destroyDialog();
@@ -288,12 +261,12 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     						});
     					});
     					var backupNamesFetching = me.cardsServerAgent.fetchAvailableBackups(getDeviceId());
-    					backupNamesFetching.done(function(names){
-    						me.dialog.showBackups(names);
-    					});
-    					backupNamesFetching.fail(function(err){
-    						me.dialog.showError(err);
-    					});
+    					backupNamesFetching.done(_.bind(function(names){
+    						this.dialog.showBackups(names);
+    					}, this));
+    					backupNamesFetching.fail(_.bind(function(err){
+    						this.dialog.showError(err);
+    					}, this));
     					break;
     			}
     		}, this));
@@ -321,23 +294,15 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
             var menu = this.viewsFactory.createView('menu', {
     			menus : menus,
     		});
-            menu.on('closed', _.bind(function(){
-                this.viewsFactory.destroyView(menu);
-            }, this));
-
-    		menu.render();
+            $('body').append(menu.render().el);
     		var lang = this.decksManager.getCurrentLang();
     		var me = this, cards;
     		menu.on('selected', _.bind(function(itemId){
-                this.viewsFactory.destroyView(menu);
     			switch(itemId){
     				case 'mode':
-    					this.dialog = new ReviewModeDialog({
-	   						el : '#dialog',
-    						mode : deck.mode,
-                            overlay : OVERLAY_SELECTOR,
-                            tapEvent : TAP_EVENT
-    					});
+                        this.dialog = this.viewsFactory.createView('review-mode', {
+                            mode : deck.mode
+                        });
     					this.dialog.render();
     					this.dialog.on('close', function(){
     						me._destroyDialog();
@@ -367,14 +332,10 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     					break;
     				case 'sel2deck': // from today deck
     					var deckNames = this.decksManager.getDeckNames(lang);
-    					this.dialog = new SelectItemDialog({
-	   						el : '#dialog',
-							title : 'Select target Deck for cards',
-    						items : deckNames,
-    						actionName : 'move',
-                            overlay : OVERLAY_SELECTOR,
-                            tapEvent : TAP_EVENT
-    					});
+                        this.dialog = this.viewsFactory.createView('select-target-deck', {
+                            items : deckNames,
+                            actionName : 'move'
+                        });
     					this.dialog.render();
     					this.dialog.on('close', function(){
     						me._destroyDialog();
@@ -413,12 +374,9 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     					}
     					break;
     				case 'deck-info':
-    					this.dialog = new DeckInfoDialog({
-    						el : '#dialog',
-    						info : deck.getDeckInfo(),
-                            overlay : OVERLAY_SELECTOR,
-                            tapEvent : TAP_EVENT
-    					});
+                        this.dialog = this.viewsFactory.createView('deck-info', {
+                            info : deck.getDeckInfo()
+                        });
     					this.dialog.render();
     					this.dialog.on('close', function(){
     						me._destroyDialog();
@@ -438,11 +396,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	    
 	    onShowLoadCards1 : function(targetDeck){
 	    	var me = this;
-	    	var dialog = new LoadingCards1Dialog({
-				el : '#dialog',
-                overlay : OVERLAY_SELECTOR,
-                tapEvent : TAP_EVENT                
-	    	});
+            var dialog = this.viewsFactory.createView('load-cards-1', {});
 	    	this.dialog = dialog;
 	    	dialog.render();
 	    	var lang = this.decksManager.getCurrentLang();
@@ -464,16 +418,13 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	    onShowLoadCards2 : function(fromLang, targetDeck){
 	    	var me = this;
 	    	var fetching = this.cardsServerAgent.fetchDecks(fromLang);
-	    	fetching.done(function(decks){
-	    		me._destroyDialog();
-		    	var dialog = new LoadingCards2Dialog({
-					el : '#dialog',
-		    		lang : fromLang,
-		    		decks : decks,
-                    overlay : OVERLAY_SELECTOR,
-                    tapEvent : TAP_EVENT                    
-		    	});
-		    	me.dialog = dialog;
+	    	fetching.done(_.bind(function(decks){
+	    		this._destroyDialog();
+                var dialog = this.viewsFactory.createView('load-cards-2', {
+                    lang : fromLang,
+                    decks : decks,
+                });
+		    	this.dialog = dialog;
 		    	dialog.render();
 		    	dialog.on('close', function(){
 		    		me._destroyDialog();
@@ -490,7 +441,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 		    			alert(err);
 		    		});
 		    	});
-	    	});
+	    	}, this));
 	    	fetching.fail(function(err){
 	    		alert(err);
 	    	});
@@ -505,8 +456,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	    
 	    _destroyDialog : function(){
     		if(! _.isUndefined(this.dialog)){
-    			this.dialog.close();
-    			this.dialog.off();
+                this.viewsFactory.destroyView(this.dialog);                
     			delete this.dialog;
     		}
 	    }
