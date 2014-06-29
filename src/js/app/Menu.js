@@ -17,13 +17,14 @@ define(['underscore', 'zepto', 'backbone', 'utils/utils', 'zepto.touch'],
 		
 		_onMenuClick : function(evt){
 			var menuId = $(evt.target).attr('data-target');
-			this.close();
 			this.trigger('selected', menuId);
+			//this.close();
 		},
 		
 		close : function(){
 			this.$el.addClass(HIDDEN_CLASS);
 			$(this.overlay).addClass(HIDDEN_CLASS);
+			this.$el.empty();
 			this.trigger('closed');
 		},
 		
