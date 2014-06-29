@@ -214,8 +214,21 @@ body,
   }
 }
 
+.overlay{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 99%;
+  height: 99%;
+  opacity : 0.3; 
+}
+
 .clearfix {
   clear: both;
+}
+
+.hidden {
+  display: none;
 }
 
 @import "decks-list";

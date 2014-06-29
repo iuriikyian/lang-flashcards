@@ -1,12 +1,3 @@
-.menu-overlay{
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 99%;
-  height: 99%;
-  opacity : 0.3; 
-}
-
 .menu{
   position: absolute;
   right: 0;
@@ -20,8 +11,4 @@
     font-size: $menu-item-font-size;
     padding: $menu-padding;
   }
-}
-
-.hidden {
-  display: none;
 }

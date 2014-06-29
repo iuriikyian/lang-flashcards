@@ -1,12 +1,11 @@
 define(['underscore', 'zepto', 'backbone', 'zepto.touch'], 
 		function(_, $, Backbone){
 	var HIDDEN_CLASS = 'hidden';
-	//var OVERLAY_SELECTOR = '#menu-overlay';
 	
 	var BaseDialog = Backbone.View.extend({
 		
 		initialize : function(options){
-			this.overlay = options.overlay; //'#menu-overlay';
+			this.overlay = options.overlay;
 			this.tapEvent = options.tapEvent;
 		},
 		
