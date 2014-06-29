@@ -153,6 +153,15 @@ body,
   @include single-box-shadow($button-shadow-color, $button-shadow-size, $button-shadow-size);
 }
 
+@mixin overlay(){
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 99%;
+  height: 99%;
+  opacity : 0.3; 
+}
+
 .screen {
   width: 100%;
   height: 100%;

@@ -26,6 +26,7 @@ function(_, $, BaseDialog, utils){
 				decks : this.decks
 			});
 			this._initTouchEvents();
+			return this;
 		}
 	});
 	

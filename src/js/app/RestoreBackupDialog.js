@@ -26,6 +26,7 @@ function(_, $, utils, BaseDialog){
 					this.trigger('restore', selectedBackup);
 				}
 			}, this));
+			return this;
 		},
 		
 		showError : function(message){

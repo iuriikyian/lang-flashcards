@@ -11,6 +11,7 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils'],
 		
 		render : function(){
 			this._base_render(this.info);
+			return this;
 		}
 	});
 	

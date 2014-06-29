@@ -19,12 +19,17 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'],
 				this.showError('Name cannot be empty');
 			}
 		},
+
+		close : function(){
+			this.remove();
+		},
 		
 		render : function(){
 			this._base_render({
 				defaultName : this.defaultName
 			});
 			this.$('.commands .create').on(this.tapEvent, _.bind(this._onCreate, this));
+			return this;
 		},
 		
 		showError : function(message){

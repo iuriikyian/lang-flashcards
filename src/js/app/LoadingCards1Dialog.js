@@ -15,6 +15,7 @@ function(_, $, BaseDialog, utils){
 			this._base_render({
 				lang : this.lang
 			});
+			return this;
 		},
 		
 		showLanguages : function(languages){

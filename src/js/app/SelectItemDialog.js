@@ -39,20 +39,19 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'],
 					items.push($(item).attr('data-target'));
 				});
 				if(items.length){
-					this.close();
 					this.trigger('selected', items);
+					this.remove();
 				}
 			}else{
 				var variant = $selected.attr('data-target');
 				if(variant){
-					this.close();
 					this.trigger('selected', variant);
+					this.remove();
 				}else{
 					variant = $selected.parent().find('.new-item').val();
 					if(!variant){
 						return; // nothing entered
 					}
-					this.close();
 					this.trigger('create', variant);
 				}
 			}
@@ -66,6 +65,7 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'],
 				canCreate : this.canCreate
 			});
 			this._initTouchEvents();
+			return this;
 		}
 	});
 	

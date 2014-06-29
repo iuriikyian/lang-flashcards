@@ -5,12 +5,8 @@ define(['views/menu/Menu', 'DeckInfoDialog', 'SelectItemDialog', 'CreateItemDial
 		CreateBackupDialog, RestoreBackupDialog, ReviewModeDialog,
 		LoadingCards1Dialog, LoadingCards2Dialog){
 
-	var OVERLAY_SELECTOR = '#overlay',
-		DIALOG_SELECTOR = '#dialog',
-		TAP_EVENT = 'click',
+	var TAP_EVENT = 'click',
 		DEFAULT_DIALOG_OPTIONS = {
-			el : DIALOG_SELECTOR,
-			overlay : OVERLAY_SELECTOR,
 			tapEvent : TAP_EVENT
 		};
 
@@ -28,28 +24,22 @@ define(['views/menu/Menu', 'DeckInfoDialog', 'SelectItemDialog', 'CreateItemDial
 		'select-lang' : {
 			view : SelectItemDialog,
 			options : {
-				el : DIALOG_SELECTOR,
 				title : 'Select lang',
-	            overlay : OVERLAY_SELECTOR,
 	            tapEvent : TAP_EVENT
     		}
 		},
 		'create-deck' : {
 			view : CreateItemDialog,
 			options : {
-				el : DIALOG_SELECTOR,
 				title : 'Create Deck',
-				tapEvent : TAP_EVENT,
-				overlay : OVERLAY_SELECTOR
+				tapEvent : TAP_EVENT
 			}
 		},
 		'select-decks' : {
 			view : SelectItemDialog,
 			options : {
-				el : DIALOG_SELECTOR,
 				title : 'Select Decks',
-				tapEvent : TAP_EVENT,
-				overlay : OVERLAY_SELECTOR				
+				tapEvent : TAP_EVENT//,
 			}
 		},
 		'create-backup' : {
@@ -67,9 +57,7 @@ define(['views/menu/Menu', 'DeckInfoDialog', 'SelectItemDialog', 'CreateItemDial
 		'select-target-deck' : {
 			view : SelectItemDialog,
 			options : {
-				el : DIALOG_SELECTOR,
 				title : 'Select target Deck for cards',
-				overlay : OVERLAY_SELECTOR,
 				tapEvent : TAP_EVENT
 			}
 		},

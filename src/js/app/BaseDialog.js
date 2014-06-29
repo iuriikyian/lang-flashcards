@@ -3,9 +3,10 @@ define(['underscore', 'zepto', 'backbone', 'zepto.touch'],
 	var HIDDEN_CLASS = 'hidden';
 	
 	var BaseDialog = Backbone.View.extend({
-		
+		//className : 'dialog',
+
 		initialize : function(options){
-			this.overlay = options.overlay;
+			//this.overlay = options.overlay;
 			this.tapEvent = options.tapEvent;
 		},
 		
@@ -15,17 +16,14 @@ define(['underscore', 'zepto', 'backbone', 'zepto.touch'],
 		},
 		
 		close : function(){
-			this.$el.addClass(HIDDEN_CLASS);
-			$(this.overlay).addClass(HIDDEN_CLASS);
+			this.remove();
+			//this.$el.addClass(HIDDEN_CLASS);
+			//$(this.overlay).addClass(HIDDEN_CLASS);
 		},
 		
 		_base_render : function(model){
-			$(this.el).empty();
 			$(this.el).append(this.template(model));
-			$(this.overlay)
-				.removeClass(HIDDEN_CLASS)
-				.on(this.tapEvent, _.bind(this._onClose, this));
-			this.$el.removeClass(HIDDEN_CLASS);
+			this.$('.overlay').on(this.tapEvent, _.bind(this._onClose, this));
 			this.$('.header .close').on(this.tapEvent, _.bind(this._onClose, this));
 		}
 	});

@@ -18,6 +18,7 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'],
 		render : function(){
 			this._base_render({mode : this.mode});
 			this.$('.option').on(this.tapEvent, _.bind(this._onSelectMode, this));
+			return this;
 		}
 	});
 	

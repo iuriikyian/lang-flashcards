@@ -13,6 +13,7 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'],
 			var name = this.$('input.new-item-name').val();
 			if(name){
 				this.trigger('create', name);
+				this.remove();
 			}
 		},
 		
@@ -21,6 +22,7 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'],
 				title : this.title
 			});
 			this.$('.commands .create').on(this.tapEvent, _.bind(this._onCreate, this));
+			return this;
 		}
 	});
 	

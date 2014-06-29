@@ -1,23 +1,26 @@
-<div class="header">
-	<div class="button close fa-ban"></div>
-	<div class="title"><%= title %></div>
-	<div class="clearfix"></div>
-</div>
-<div class="content">
-	<% for(var i = 0; i < items.length; ++i){ %>
-    	<div class="button variant">
-			<div class="checkbox fa-square-o"  data-target='<%= items[i] %>'></div><%= items[i] %>
-			<div class="clearfix"></div>
+<div class="overlay"></div>
+<div class="dialog">
+	<div class="header">
+		<div class="button close fa-ban"></div>
+		<div class="title"><%= title %></div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="content">
+		<% for(var i = 0; i < items.length; ++i){ %>
+	    	<div class="button variant">
+				<div class="checkbox fa-square-o"  data-target='<%= items[i] %>'></div><%= items[i] %>
+				<div class="clearfix"></div>
+			</div>
+		<% }; %>
+		<% if(canCreate){ %>
+	    	<div class="button variant">
+				<div class="checkbox fa-square-o"  data-target=''></div>
+				<input class="new-item"/>
+				<div class="clearfix"></div>
+			</div>
+		<% }; %>
+		<div class="commands">
+			<div class="button select"><%= actionName %></div>
 		</div>
-	<% }; %>
-	<% if(canCreate){ %>
-    	<div class="button variant">
-			<div class="checkbox fa-square-o"  data-target=''></div>
-			<input class="new-item"/>
-			<div class="clearfix"></div>
-		</div>
-	<% }; %>
-	<div class="commands">
-		<div class="button select"><%= actionName %></div>
 	</div>
 </div>

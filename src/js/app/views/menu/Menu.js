@@ -27,13 +27,17 @@ define(['underscore', 'zepto', 'backbone', 'utils/utils', 'zepto.touch'],
 			}));
 			this.$('.overlay').on(this.tapEvent, _.bind(this._onClose, this));
 			this.$('.menu .menu-item').on(this.tapEvent, _.bind(this._onMenuClick, this));
-			//var pos = this.$el.position();
+			return this;
+		},
+
+		afterRender : function(){
+			var $menu = this.$('.menu');
+			var pos = $menu.position();
 			var height = $(window).height();
-			var maxHeight = height; // - pos.top;
-			this.$el.css({
+			var maxHeight = height - pos.top;
+			$menu.css({
 				'max-height' : '' + maxHeight + 'px'
 			});
-			return this;
 		}
 	});
 	

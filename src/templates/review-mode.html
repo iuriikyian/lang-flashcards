@@ -1,23 +1,26 @@
-<div class="header">
-	<div class="button close fa-ban"></div>
-	<div class="title">Review Mode</div>
-	<div class="clearfix"></div>
-</div>
-<div class="content">
-	<div class="option">
-		<div class="state <% if(mode === 'plain'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='plain'></div>PLAIN
+<div class="overlay"></div>
+<div class="dialog">
+	<div class="header">
+		<div class="button close fa-ban"></div>
+		<div class="title">Review Mode</div>
 		<div class="clearfix"></div>
 	</div>
-	<div class="option">
-		<div class="state <% if(mode === 'front'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='front'></div>FRONT
-		<div class="clearfix"></div>
-	</div>
-	<div class="option">
-		<div class="state <% if(mode === 'back'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='back'></div>BACK
-		<div class="clearfix"></div>
-	</div>
-	<div class="option">
-		<div class="state <% if(mode === 'random'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='random'></div>RANDOM
-		<div class="clearfix"></div>
+	<div class="content">
+		<div class="option">
+			<div class="state <% if(mode === 'plain'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='plain'></div>PLAIN
+			<div class="clearfix"></div>
+		</div>
+		<div class="option">
+			<div class="state <% if(mode === 'front'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='front'></div>FRONT
+			<div class="clearfix"></div>
+		</div>
+		<div class="option">
+			<div class="state <% if(mode === 'back'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='back'></div>BACK
+			<div class="clearfix"></div>
+		</div>
+		<div class="option">
+			<div class="state <% if(mode === 'random'){ %>fa-dot-circle-o<%}else{%>fa-circle-o<% } %>" data-mode='random'></div>RANDOM
+			<div class="clearfix"></div>
+		</div>
 	</div>
 </div>
