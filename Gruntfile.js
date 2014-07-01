@@ -179,7 +179,8 @@ module.exports = function(grunt) {
         			'review-mode',
         			'select-item',
         			'card-view',
-        			'decks-list'
+        			'decks-list',
+        			'select-file'
         		],
         		'dest-template' : 'src/js/app/templates.js',
         		'dest-scss' : 'src/sass/',
@@ -217,11 +218,13 @@ module.exports = function(grunt) {
 				//grunt.log.writeln(abspath);
 				var ext = filename.substr(filename.length - 5);
 				if(ext === '.html'){
-					grunt.log.writeln('template: ' + filename);
-					//grunt.file.copy(filePath, cfg['dest-template'] + fileName);
-		            var fileData = grunt.file.read(abspath);
-		            var key = filename.substr(0, filename.length - 5);
-		            templates[key] = fileData;
+					if(filename.indexOf('-test') === -1){ // skip view tests
+						grunt.log.writeln('template: ' + filename);
+						//grunt.file.copy(filePath, cfg['dest-template'] + fileName);
+			            var fileData = grunt.file.read(abspath);
+			            var key = filename.substr(0, filename.length - 5);
+			            templates[key] = fileData;
+			        }
 				}
 				if(ext === '.scss'){
 					grunt.log.writeln('scss: ' + filename);

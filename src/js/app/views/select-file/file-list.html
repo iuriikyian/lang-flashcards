@@ -1,0 +1,22 @@
+<div class="list-items">
+	<div class="current-dir" data-dir="<%= dir %>">
+		<div class="marker fa-folder-open"></div>
+		<span class="value"><%= dir %></span>
+	</div>
+	<% if(parentDir){ %>
+		<div class="dir button parent" data-dir="<%= parentDir %>">..</div>
+	<% } %>
+	<% _.each(list, function(entry){ %>
+		<% if(entry.isDir){ %>
+			<div class="dir button" data-dir="<%= entry.name %>">
+				<div class="marker fa-folder"></div>
+				<span class="value"><%= entry.name %></span>
+			</div>
+		<% }else{ %>
+			<div class="file button" data-file="<%= entry.name %>">
+				<div class="marker fa-square-o"></div>
+				<span class="value"><%= entry.name %></span>
+			</div>
+		<% } %>
+	<% }); %>
+</div>

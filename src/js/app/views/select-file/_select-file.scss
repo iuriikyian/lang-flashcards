@@ -1,0 +1,57 @@
+.select-file{
+	bottom: 10%;
+	.dialog-content {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		.content {
+			position: absolute;
+			top: 100px;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			.content-container {
+				$commands-height: 85px;
+				position: relative;
+				width: 100%;
+				height: 100%;
+				.list {
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: $commands-height;
+					overflow-y: scroll;
+				}
+				.commands {
+					position: absolute;
+					left: 0;
+					right: 0;
+					bottom: 0;
+				}
+			}
+
+		}
+		.marker {
+			float: left;
+			font-family: FontAwesome;
+			padding-top: 5px;
+			width: $dialog-button-checkbox-height;
+		}
+		.current-dir {
+			padding-left: 20px;
+			font-size: $dialog-line-font-size;
+			.value {
+				display: inline-block;
+				padding-left: 20px;
+			}
+			
+		}
+		.dir, .file{
+			text-align: left;
+			.value {
+				padding-left: 20px;
+			}
+		}
+	}
+}
