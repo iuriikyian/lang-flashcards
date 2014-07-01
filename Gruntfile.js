@@ -6,7 +6,11 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 
 		clean : {
-			dev: ['src/css/index.css'],
+			dev: [
+				'src/css/index.css',
+				'src/sass/',
+				'src/js/app/templates.js'
+			],
 			www: [
 				'www/css/',
 				'www/fonts/',
@@ -159,6 +163,28 @@ module.exports = function(grunt) {
 
                 ]
             }
+        },
+        'resources-collector' : {
+        	'dev' : {
+        		cwd : 'src/js/app/views/',
+        		src : [
+        			'common',
+        			'base-dialog',
+        			'create-backup',
+        			'create-item',
+        			'deck-info',
+        			'loading-cards',
+        			'menu',
+        			'restore-backup',
+        			'review-mode',
+        			'select-item',
+        			'card-view',
+        			'decks-list'
+        		],
+        		'dest-template' : 'src/js/app/templates.js',
+        		'dest-scss' : 'src/sass/',
+        		'dest-scss-index' : 'index.scss'
+        	}
         }
 
 	});
@@ -173,24 +199,43 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('default', 'default build task', ['build-dev']);
 
-	grunt.registerTask('build-dev', 'default build task',  ['clean', 'compass', 'collect-templates', 'jshint']);
+	grunt.registerTask('build-dev', 'default build task',  ['clean', 'resources-collector', 'compass', 'jshint']);
 	grunt.registerTask('build-www', 'collect/build resources for www', ['build-dev', 'requirejs', 'copy:to-www']);
 	grunt.registerTask('build-android', 'build android app', ['build-www', 'exec:build']);
 
 	grunt.registerTask('serve-dev', 'http server', ['http-server:dev']);
 	grunt.registerTask('serve-www', 'http server', ['http-server:www']);
 
-	grunt.registerTask('collect-templates', 'collect templates into templates file', function(){
-
-		var templatesDir = 'src/templates';
-		var templatesFile = 'src/js/app/templates.js';
+	grunt.registerMultiTask("resources-collector", function(){
+		var config = grunt.config.get("resources-collector");
+		var cfg = config[this.target];
+		grunt.log.write('Collecting view template/scss resources for target: ' + this.target);
+		var scssFiles = [];
 		var templates = {};
-		grunt.file.recurse(templatesDir, function(abspath, rootdir, subdir, filename){
-            var fileData = grunt.file.read(abspath);
-            var key = filename.substr(0, filename.length - 5);
-            templates[key] = fileData;
-        });
-        grunt.file.write(templatesFile, 'define([], function(){ return ' + JSON.stringify(templates) + '; });');
-        grunt.log.ok('created ' + templatesFile);
+		_.each(cfg.src, function(dir){
+			grunt.file.recurse(cfg.cwd + dir, function(abspath, rootdir, subdir, filename){
+				//grunt.log.writeln(abspath);
+				var ext = filename.substr(filename.length - 5);
+				if(ext === '.html'){
+					grunt.log.writeln('template: ' + filename);
+					//grunt.file.copy(filePath, cfg['dest-template'] + fileName);
+		            var fileData = grunt.file.read(abspath);
+		            var key = filename.substr(0, filename.length - 5);
+		            templates[key] = fileData;
+				}
+				if(ext === '.scss'){
+					grunt.log.writeln('scss: ' + filename);
+					grunt.file.copy(abspath, cfg['dest-scss'] + filename);
+					scssFiles.push(filename.substr(1, filename.length - 6));
+				}
+			});
+		});
+		grunt.file.write(cfg['dest-template'], 'define([], function(){ return ' + JSON.stringify(templates) + '; });');
+
+		var scssFileParts = ['/*!!!generated!!!*/'];
+		_.each(scssFiles, function(scssFile){
+			scssFileParts.push('@import "' + scssFile + '";');
+		});
+		grunt.file.write(cfg['dest-scss'] + cfg['dest-scss-index'], scssFileParts.join('\n'));
 	});
 };

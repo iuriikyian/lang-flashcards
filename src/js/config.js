@@ -8,7 +8,8 @@ require.config({
         'zepto.touch'           : '../lib/zepto.touch',
         underscore              : '../lib/underscore',
         'underscore.deferred'   : '../lib/underscore.deferred',
-        backbone				: '../lib/backbone'
+        backbone				: '../lib/backbone',
+        BaseDialog              : 'views/base-dialog/BaseDialog'
     },
 
     shim   : {
