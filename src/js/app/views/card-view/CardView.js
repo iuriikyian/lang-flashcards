@@ -1,5 +1,5 @@
-define(['underscore', 'zepto', 'backbone', 'settings', 'utils/utils', 'zepto.touch'], 
-	function(_, $, Backbone, settings, utils){
+define(['underscore', 'zepto', 'backbone', 'utils/utils', 'zepto.touch'], 
+	function(_, $, Backbone, utils){
 	
 	var CardView = Backbone.View.extend({
 		className : 'body',
@@ -8,14 +8,15 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'utils/utils', 'zepto.tou
 		
 		initialize : function(options){
 			this.card = options.card;
+			this.tapEvent = options.tapEvent;
 		},
 		
 		_initTouchEvents : function(){
-			this.$('.content').on(settings.tapEvent, _.bind(this._onContentClick, this));
+			this.$('.content').on(this.tapEvent, _.bind(this._onContentClick, this));
 			var $header = this.$('.header'); 
-			$header.find('.home-button').on(settings.tapEvent, _.bind(this._onHome, this));
-			$header.find('.menu-button').on(settings.tapEvent, _.bind(this._onShowMenu, this));			
-			this.$('.content .selected').on(settings.tapEvent, _.bind(this._onToggleSelected, this));
+			$header.find('.home-button').on(this.tapEvent, _.bind(this._onHome, this));
+			$header.find('.menu-button').on(this.tapEvent, _.bind(this._onShowMenu, this));			
+			this.$('.content .selected').on(this.tapEvent, _.bind(this._onToggleSelected, this));
 			this.$('.content').swipeLeft(_.bind(this._onShowNext, this));
 			this.$('.content').swipeRight(_.bind(this._onShowPrev, this));
 			this.$('.content').swipeUp(_.bind(this._onFlip, this));
@@ -29,8 +30,7 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'utils/utils', 'zepto.tou
 		render : function(){
 			$(this.el).empty();
 			$(this.el).append(this.template({
-				card : this.card,
-				showBackButton : settings.showBackButton
+				card : this.card
 			}));
 			var height = $(window).height();
 			var headerHeight = this.$('.header').height();

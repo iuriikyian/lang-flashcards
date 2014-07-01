@@ -43,7 +43,7 @@ require.config({
 });
 
 var appConfig = {
-	isBrowser : true
+	isBrowser : false
 };
 
 /**
@@ -55,11 +55,19 @@ require(['zepto'], function($){
 	$(function(){
 		console.log('document loaded');
 		if(appConfig.isBrowser){ // web testing
-			require(['app']);
+			require(['app'], function(App){
+                var app = new App();
+                app.initialize();
+            });
 		}
 		document.addEventListener('deviceready', function(){
 			console.log('Event:deviceready');
-			require(['app']);
+            require(['app'], function(App){
+                console.log('app loaded');
+                var app = new App();
+                console.log('app initialized');
+                app.initialize();
+            });
 		}, false);
 		console.log('deviceready listener added');
 	});

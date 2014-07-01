@@ -9,81 +9,57 @@ define(['views/menu/Menu', 'views/deck-info/DeckInfoDialog',
 		LoadingCards1Dialog, LoadingCards2Dialog,
 		CardView, DecksView){
 
-	var TAP_EVENT = 'tap',//'click',
-		DEFAULT_DIALOG_OPTIONS = {
-			tapEvent : TAP_EVENT
-		};
-
 	return {
 		menu : {
-			view : Menu,
-			options : {
-				tapEvent : TAP_EVENT
-			}
+			view : Menu
 		},
 		'deck-info' : {
-			view : DeckInfoDialog,
-			options : DEFAULT_DIALOG_OPTIONS
+			view : DeckInfoDialog
 		},
 		'select-lang' : {
 			view : SelectItemDialog,
 			options : {
-				title : 'Select lang',
-	            tapEvent : TAP_EVENT
+				title : 'Select lang'
     		}
 		},
 		'create-deck' : {
 			view : CreateItemDialog,
 			options : {
-				title : 'Create Deck',
-				tapEvent : TAP_EVENT
+				title : 'Create Deck'
 			}
 		},
 		'select-decks' : {
 			view : SelectItemDialog,
 			options : {
-				title : 'Select Decks',
-				tapEvent : TAP_EVENT//,
+				title : 'Select Decks'
 			}
 		},
 		'create-backup' : {
-			view : CreateBackupDialog,
-			options : DEFAULT_DIALOG_OPTIONS
+			view : CreateBackupDialog
 		},
 		'restore-backup' : {
-			view : RestoreBackupDialog,
-			options : DEFAULT_DIALOG_OPTIONS
+			view : RestoreBackupDialog
 		},
 		'review-mode' : {
-			view : ReviewModeDialog,
-			options : DEFAULT_DIALOG_OPTIONS
+			view : ReviewModeDialog
 		},
 		'select-target-deck' : {
 			view : SelectItemDialog,
 			options : {
-				title : 'Select target Deck for cards',
-				tapEvent : TAP_EVENT
+				title : 'Select target Deck for cards'
 			}
 		},
 		'load-cards-1' : {
-			view : LoadingCards1Dialog,
-			options : DEFAULT_DIALOG_OPTIONS
+			view : LoadingCards1Dialog
 		},
 		'load-cards-2' : {
-			view : LoadingCards2Dialog,
-			options : DEFAULT_DIALOG_OPTIONS
+			view : LoadingCards2Dialog
 		},
 		'decks-list' : {
-			view : DecksView,
-			options : {
-				tapEvent : TAP_EVENT
-			}
+			view : DecksView
 		},
 		'card-view' : {
-			view : CardView,
-			options : {
-				tapEvent : TAP_EVENT
-			}
+			view : CardView
 		}
 	};
 });

@@ -14,7 +14,9 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	var MainRouter = Backbone.Router.extend({
 		
 		initialize : function(options){
-            this.viewsFactory = new ViewsFactory();
+            this.viewsFactory = new ViewsFactory({
+                isDevice : options.isDevice
+            });
 			this.decksManager = options.decksManager;
 			this.cardsServerAgent = new CardsServerAgent();
 		},
