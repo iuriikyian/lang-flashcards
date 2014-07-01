@@ -1,9 +1,7 @@
 define(['underscore', 'zepto', 'backbone', 'utils/date',
-        'DecksManager', 'DecksView', 'CardsServerAgent',
-        'CardView', 'ViewsFactory'
+        'DecksManager', 'CardsServerAgent', 'ViewsFactory'
         ], function(_, $, Backbone, DateUtils,
-        		DecksManager, DecksView, CardsServerAgent,
-        		CardView,  ViewsFactory){
+        		DecksManager, CardsServerAgent, ViewsFactory){
 	function getDeviceId(){
 		if(_.isUndefined(window.device)){
 			return '4129036ec2073b7c'; //'test-4';
@@ -11,13 +9,9 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 		return window.device.uuid;
 	}
 
-    var TAP_EVENT = 'click';
     var OVERLAY_SELECTOR = '#overlay';
 	
 	var MainRouter = Backbone.Router.extend({
-//		routes : {
-//			"" : "onStart"
-//		},
 		
 		initialize : function(options){
             this.viewsFactory = new ViewsFactory();
@@ -43,10 +37,6 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 		
 		onBackbutton : function(evt){
 			console.log('back button handler called');
-			if(! _.isUndefined(this.dialog)){
-				this._destroyDialog();
-				return;
-			}
 
 			if(this.view.name === 'card-view'){
 				this.view.willBeClosed();
@@ -64,50 +54,48 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 		
 		onShowDecksList : function(){
 			this.decksManager.setCurrentDeck('');
-	    	this._destroyCurrentView();
 	    	var lang = this.decksManager.getCurrentLang();
-	    	var view = new DecksView({
-	    		el : '.body',
-	    		decks : this.decksManager.getDeckNames(lang),
-	    		lang : lang,
-                tapEvent : TAP_EVENT
-	    	});
+            var view = this.viewsFactory.createView('decks-list', {
+                decks : this.decksManager.getDeckNames(lang),
+                lang : lang
+            });
 	    	this.view = view;
-	    	view.render();
+	    	$('body').append(view.render().el);
 	    	view.on('show:menu', _.bind(function(){
 	    		console.log('Event:show:menu');
 	    		this.showDecksViewMenu();
 	    	}, this));
 	    	view.on('show:today-deck', _.bind(function(){
 	    		console.log('Event:show:today-deck');
+                view.remove();
+                delete this.view;
 	    		this.onShowDeckCards('today');
-	    		//this.navigate('cards/today', {trigger:true});
 	    	}, this));
 	    	view.on('show:deck', _.bind(function(deckName){
 	    		console.log('Event:show:deck:' + deckName);
+                view.remove();
+                delete this.view;
 	    		this.onShowDeckCards(deckName);
-	    		//this.navigate(['cards', deckName].join('/'), {trigger:true});
 	    	}, this));
 		},
 		
 		onShowDeckCards : function(deckName){
 			this.decksManager.setCurrentDeck(deckName);
-	    	this._destroyCurrentView();
 	    	var lang = this.decksManager.getCurrentLang();
 	    	var deck = this.decksManager.getDeck(lang, deckName);
-    		var view = new CardView({
-    			el : '.body',
-    			card : deck.getCurrentCardSideInfo(),
-                tapEvent : TAP_EVENT
-    		});
+            var view = this.viewsFactory.createView('card-view', {
+                card : deck.getCurrentCardSideInfo()
+            });
     		this.view = view;
-	    	view.render();
+            $('body').append(view.render().el);
 	    	view.on('save-deck-state', _.bind(function(){
 	    		this.decksManager.saveDeckState(deck);
 	    	}, this));
 	    	view.on('home', _.bind(function(){
 	    		this.decksManager.saveDeckState(deck);
 	    		console.log('Event:home');
+                view.remove();
+                delete this.view;
 	    		this.onShowDecksList();
 	    	}, this));
 	    	view.on('show:menu', _.bind(function(){
@@ -366,7 +354,6 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	    
 	    onShowLoadCards1 : function(targetDeck){
             var dialog = this.viewsFactory.createView('load-cards-1', {});
-	    	this.dialog = dialog;
             $('body').append(dialog.render().el);
 	    	var lang = this.decksManager.getCurrentLang();
 	    	var fetching = this.cardsServerAgent.fetchLanguages();
@@ -408,15 +395,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	    	fetching.fail(function(err){
 	    		alert(err);
 	    	});
-	    },
-	    
-	    _destroyCurrentView : function(){
-	    	if(!_.isUndefined(this.view)){
-	    		this.view.undelegateEvents();
-	    		delete this.view;
-	    	}
 	    }
-		
 	});
 	
 	return MainRouter;

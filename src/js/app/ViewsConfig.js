@@ -2,12 +2,14 @@ define(['views/menu/Menu', 'views/deck-info/DeckInfoDialog',
 	'views/select-item/SelectItemDialog', 'views/create-item/CreateItemDialog',
 	'views/create-backup/CreateBackupDialog', 'views/restore-backup/RestoreBackupDialog', 
 	'views/review-mode/ReviewModeDialog',
-	'views/loading-cards/LoadingCards1Dialog', 'views/loading-cards/LoadingCards2Dialog'],
+	'views/loading-cards/LoadingCards1Dialog', 'views/loading-cards/LoadingCards2Dialog',
+	'views/card-view/CardView', 'views/decks-list/DecksView'],
 	function(Menu, DeckInfoDialog, SelectItemDialog, CreateItemDialog,
 		CreateBackupDialog, RestoreBackupDialog, ReviewModeDialog,
-		LoadingCards1Dialog, LoadingCards2Dialog){
+		LoadingCards1Dialog, LoadingCards2Dialog,
+		CardView, DecksView){
 
-	var TAP_EVENT = 'click',
+	var TAP_EVENT = 'tap',//'click',
 		DEFAULT_DIALOG_OPTIONS = {
 			tapEvent : TAP_EVENT
 		};
@@ -70,6 +72,18 @@ define(['views/menu/Menu', 'views/deck-info/DeckInfoDialog',
 		'load-cards-2' : {
 			view : LoadingCards2Dialog,
 			options : DEFAULT_DIALOG_OPTIONS
+		},
+		'decks-list' : {
+			view : DecksView,
+			options : {
+				tapEvent : TAP_EVENT
+			}
+		},
+		'card-view' : {
+			view : CardView,
+			options : {
+				tapEvent : TAP_EVENT
+			}
 		}
 	};
 });

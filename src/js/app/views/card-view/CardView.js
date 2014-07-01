@@ -2,6 +2,7 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'utils/utils', 'zepto.tou
 	function(_, $, Backbone, settings, utils){
 	
 	var CardView = Backbone.View.extend({
+		className : 'body',
 		template : utils.template('card-view'),
 		name : 'card-view',
 		
@@ -42,6 +43,7 @@ define(['underscore', 'zepto', 'backbone', 'settings', 'utils/utils', 'zepto.tou
 				'padding-top' : ((contentHeight - linesHeight) / 2) + 'px' 
 			});
 			this._initTouchEvents();
+			return this;
 		},
 		setCard : function(card){
 			this.card = card;

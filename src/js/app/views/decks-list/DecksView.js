@@ -4,6 +4,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/utils', 'settings', 'zepto.tou
 	var EDIT_MODE_CLASS = 'edit-mode';
 	
 	var DecksView = Backbone.View.extend({
+		className : 'body',
 		template : utils.template('decks-list'),
 		name : 'decks-view',
 		
@@ -27,6 +28,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/utils', 'settings', 'zepto.tou
 			}));
 			this._initTouchEvents();
 			this.updateContentHeight();
+			return this;
 		},
 		
 		updateContentHeight : function(){
