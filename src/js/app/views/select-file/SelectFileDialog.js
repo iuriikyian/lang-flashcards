@@ -18,8 +18,8 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'],
 		},
 
 		_initItemEvents : function(){
-			this.$('.list .file').on(this.tapEvent, _.bind(this._onSelectFile, this));
-			this.$('.list .dir').on(this.tapEvent, _.bind(this._onSelectDir, this));
+			this.$('.list .file').on(this.singleTapEvent, _.bind(this._onSelectFile, this));
+			this.$('.list .dir').on(this.singleTapEvent, _.bind(this._onSelectDir, this));
 		},
 
 		_offItemEvents : function(){
@@ -36,6 +36,7 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'],
 					currentDir = currentDir + '/';
 				}
 				this.trigger('selected', currentDir + currentFile);
+				this.remove();
 			}
 			
 		},
@@ -95,7 +96,7 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'],
 			contentRendering.fail(function(err){
 				this._base_render({
 					title : 'select file',
-					content : content
+					content : ''
 				});
 				this._initTouchEvents();
 				dfd.resolve(this);

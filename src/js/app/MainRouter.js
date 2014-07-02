@@ -1,7 +1,11 @@
 define(['underscore', 'zepto', 'backbone', 'utils/date',
-        'DecksManager', 'CardsServerAgent', 'ViewsFactory'
-        ], function(_, $, Backbone, DateUtils,
-        		DecksManager, CardsServerAgent, ViewsFactory){
+        'DecksManager', 'CardsServerAgent', 'ViewsFactory',
+        'ServicesFactory'
+        ], 
+function(_, $, Backbone, DateUtils,
+        DecksManager, CardsServerAgent, ViewsFactory,
+        ServicesFactory){
+
 	function getDeviceId(){
 		if(_.isUndefined(window.device)){
 			return '4129036ec2073b7c'; //'test-4';
@@ -14,6 +18,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 	var MainRouter = Backbone.Router.extend({
 		
 		initialize : function(options){
+            this.servicesFactory = new ServicesFactory({});
             this.viewsFactory = new ViewsFactory({
                 isDevice : options.isDevice
             });
@@ -134,7 +139,8 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     			    { id : 'create-deck', name : 'create deck'},
     			    { id : 'remove-decks', name : 'delete decks'},
     			    { id : 'backup', name : 'backup'},
-    			    { id : 'restore', name : 'restore'}
+    			    { id : 'restore', name : 'restore'},
+                    { id : 'test-fs', name : 'test fs' }
     			]
     		});
 
@@ -237,6 +243,17 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     						dialog.showError(err);
     					}, this));
     					break;
+                    case 'test-fs':
+                        var fsSrv = this.servicesFactory.get('file-system');
+                        var listing = fsSrv.list('/My Documents');
+                        //var listing = fsSrv.list('/');
+                        listing.done(function(data){
+                            console.log(JSON.stringify(data));
+                        });
+                        listing.fail(function(err){
+                            console.log(JSON.stringify(err));    
+                        });
+                        break;
     			}
     		}, this));
 	    },
@@ -255,6 +272,7 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
 				menus.push({ id : 'sel2deck', name : 'sel->deck', order : 45});
 				menus.push({ id : 'sel2keep', name : 'sel->keep', order : 48});
 				menus.push({ id : 'import-from-web', name : 'from web', order : 70});
+                menus.push({ id : 'import-from-file', name : 'from file', order : 80});
 			}else{
 				menus.push({ id : 'sel2today', name : 'sel->today', order : 45});
 			}
@@ -349,6 +367,33 @@ define(['underscore', 'zepto', 'backbone', 'utils/date',
     				case 'import-from-web': // from 'today deck view
     					this.onShowLoadCards1(deck);
     					break;
+                    case 'import-from-file':
+                        var fileSysteService = this.servicesFactory.get('file-system');
+                        dialog = this.viewsFactory.createView('select-file', {
+                            fileService : fileSysteService
+                        });
+                        var rendering = dialog.render();
+                        rendering.done(function(){
+                            $('body').append(dialog.el);
+                        });
+                        rendering.fail(function(err){
+                            console.log(JSON.stringify(err));
+                        });
+                        dialog.on('selected', _.bind(function(filePath){
+                            alert('load cards from file: ' + filePath);
+                            var fileLoading = fileSysteService.load(filePath);
+                            fileLoading.done(_.bind(function(content){
+                                var parser = this.servicesFactory.get('cards-text-parser');
+                                var cards = parser.parse(content);
+                                deck.insertCards(cards);
+                                this.decksManager.saveDeckCards(deck);
+                            }, this));
+                            fileLoading.fail(function(err){
+                                console.log(JSON.stringify(err));
+                                alert('Fail to load selected file');    
+                            });
+                        }, this));
+                        break;
     			}
     			console.log('Event:menu:click:' + itemId);
     		}, this));

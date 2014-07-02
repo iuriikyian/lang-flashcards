@@ -3,11 +3,12 @@ define(['views/menu/Menu', 'views/deck-info/DeckInfoDialog',
 	'views/create-backup/CreateBackupDialog', 'views/restore-backup/RestoreBackupDialog', 
 	'views/review-mode/ReviewModeDialog',
 	'views/loading-cards/LoadingCards1Dialog', 'views/loading-cards/LoadingCards2Dialog',
-	'views/card-view/CardView', 'views/decks-list/DecksView'],
+	'views/card-view/CardView', 'views/decks-list/DecksView',
+	'views/select-file/SelectFileDialog'],
 	function(Menu, DeckInfoDialog, SelectItemDialog, CreateItemDialog,
 		CreateBackupDialog, RestoreBackupDialog, ReviewModeDialog,
 		LoadingCards1Dialog, LoadingCards2Dialog,
-		CardView, DecksView){
+		CardView, DecksView, SelectFileDialog){
 
 	return {
 		menu : {
@@ -60,6 +61,9 @@ define(['views/menu/Menu', 'views/deck-info/DeckInfoDialog',
 		},
 		'card-view' : {
 			view : CardView
+		},
+		'select-file' : {
+			view : SelectFileDialog
 		}
 	};
 });

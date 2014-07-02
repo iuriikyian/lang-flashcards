@@ -6,6 +6,7 @@ define(['underscore', 'ViewsConfig'], function(_, viewsCofig){
 			var View = config.view;
 			var opts = _.defaults(options, config.options || {});
 			opts.tapEvent = this.isDevice ? 'touchstart' : 'click';
+			opts.singleTapEvent = this.isDevice ? 'tap' : 'click';
 			return new View(opts);
 		};
 

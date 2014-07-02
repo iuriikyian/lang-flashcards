@@ -8,6 +8,7 @@ define(['underscore', 'zepto', 'backbone', 'zepto.touch'],
 		initialize : function(options){
 			//this.overlay = options.overlay;
 			this.tapEvent = options.tapEvent;
+			this.singleTapEvent = options.singleTapEvent;
 		},
 		
 		_onClose : function(evt){

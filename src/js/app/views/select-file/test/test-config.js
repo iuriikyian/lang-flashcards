@@ -59,8 +59,8 @@ function run_test($){
                 '' : {
                     a : {
                         a2 : {
-                            e : 'ccccc',
-                            f : 'rrrr'
+                            'ccccc long name of the file asd asd asda s as d asd asd  asd' : true,
+                            'rrrr' : true
                         },
                         b2 : 'sdfsdf',
                         c2 : 'asdad'
@@ -127,7 +127,8 @@ function run_test($){
         var fileService = new TestFileService();
         var dlg = new SelectFileDialog({
             fileService : fileService,
-            tapEvent : 'click'
+            tapEvent : 'click',
+            singleTapEvent : 'click'
         });
         var rendering = dlg.render();
         rendering.done(function(){
