@@ -13,7 +13,19 @@ function(_, $, Backbone, DateUtils,
 		return window.device.uuid;
 	}
 
-    var OVERLAY_SELECTOR = '#overlay';
+    var _addDialogClosedHandler = function(dialog, context){
+        dialog.on('closed', _.bind(function(){
+            delete context.dialog;
+        }, context));
+        context.dialog = dialog;
+    };
+
+    var _addMenuClosedHandler = function(menu, context){
+        menu.on('closed', _.bind(function(){
+            delete context.menu;
+        }, context));
+        context.menu = menu;
+    };
 	
 	var MainRouter = Backbone.Router.extend({
 		
@@ -44,9 +56,18 @@ function(_, $, Backbone, DateUtils,
 		
 		onBackbutton : function(evt){
 			console.log('back button handler called');
-
+            if(this.dialog){
+                this.dialog.close();
+                return;
+            }
+            if(this.menu){
+                this.menu.close();
+                return;
+            }
 			if(this.view.name === 'card-view'){
 				this.view.willBeClosed();
+                this.view.remove();
+                delete this.view;
 				this.onShowDecksList();
 				return;
 			}
@@ -147,6 +168,7 @@ function(_, $, Backbone, DateUtils,
     		$('body').append(menu.render().el);
             menu.afterRender();
     		var lang = this.decksManager.getCurrentLang();
+            _addMenuClosedHandler(menu, this);
     		menu.on('selected', _.bind(function(menuId){
     			console.log('Event:menu:selected:' + menuId);
                 var dialog;
@@ -171,6 +193,7 @@ function(_, $, Backbone, DateUtils,
     						this.decksManager.saveDeckCards(deck);
     						this.onShowDecksList();
     					}, this));
+                        _addDialogClosedHandler(dialog, this);
     					break;
     				case 'create-deck':
                         dialog = this.viewsFactory.createView('create-deck', {});
@@ -185,6 +208,7 @@ function(_, $, Backbone, DateUtils,
     						this.decksManager.createDeck(lang, deckName);
 							this.onShowDecksList();
     					}, this));
+                        _addDialogClosedHandler(dialog, this);
     					break;
     				case 'remove-decks':
     					var deckNames = this.decksManager.getDeckNames(lang);
@@ -202,6 +226,7 @@ function(_, $, Backbone, DateUtils,
     						}, this);
     						this.onShowDecksList();
     					}, this));
+                        _addDialogClosedHandler(dialog, this);
     					break;
     				case 'backup':
                         dialog = this.viewsFactory.createView('create-backup', {
@@ -219,6 +244,7 @@ function(_, $, Backbone, DateUtils,
     							alert(err);
     						});
     					}, this));
+                        _addDialogClosedHandler(dialog, this);
     					break;
     				case 'restore':
                         dialog = this.viewsFactory.createView('restore-backup', {});
@@ -235,6 +261,7 @@ function(_, $, Backbone, DateUtils,
     							alert(err);
     						});
     					}, this));
+                        _addDialogClosedHandler(dialog, this);
     					var backupNamesFetching = this.cardsServerAgent.fetchAvailableBackups(getDeviceId());
     					backupNamesFetching.done(_.bind(function(names){
     						dialog.showBackups(names);
@@ -283,6 +310,7 @@ function(_, $, Backbone, DateUtils,
     		});
             $('body').append(menu.render().el);
             menu.afterRender();
+            _addMenuClosedHandler(menu, this);
     		var lang = this.decksManager.getCurrentLang();
     		var me = this, cards;
     		menu.on('selected', _.bind(function(itemId){
@@ -296,6 +324,7 @@ function(_, $, Backbone, DateUtils,
     					dialog.on('mode-selected', function(mode){
     						deck.setMode(mode);
     					});
+                        _addDialogClosedHandler(dialog, this);
     					break;
     				case 'shuffle':
     					deck.shuffle();
@@ -344,6 +373,7 @@ function(_, $, Backbone, DateUtils,
     							alert('target deck is not found');
     						}
     					}, this));
+                        _addDialogClosedHandler(dialog, this);
     					break;
     				case 'sel2keep': // from today-deck
     					cards = deck.removeSelectedCards();
@@ -359,6 +389,7 @@ function(_, $, Backbone, DateUtils,
                             info : deck.getDeckInfo()
                         });
     					$('body').append(dialog.render().el);
+                        _addDialogClosedHandler(dialog, this);
     					break;
     				case 'delete-card':
     					deck.deleteCurrentCard();
@@ -393,6 +424,7 @@ function(_, $, Backbone, DateUtils,
                                 alert('Fail to load selected file');    
                             });
                         }, this));
+                        _addDialogClosedHandler(dialog, this);
                         break;
     			}
     			console.log('Event:menu:click:' + itemId);
@@ -415,6 +447,7 @@ function(_, $, Backbone, DateUtils,
                     dialog.close();    
                 });
 	    	}, this));
+            _addDialogClosedHandler(dialog, this);
 	    },
 		
 	    onShowLoadCards2 : function(fromLang, targetDeck, onLoaded){
@@ -438,6 +471,7 @@ function(_, $, Backbone, DateUtils,
 		    			alert(err);
 		    		});
 		    	}, this));
+                _addDialogClosedHandler(dialog, this);
 	    	}, this));
 	    	fetching.fail(function(err){
 	    		alert(err);

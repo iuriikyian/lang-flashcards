@@ -36,7 +36,7 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'],
 					currentDir = currentDir + '/';
 				}
 				this.trigger('selected', currentDir + currentFile);
-				this.remove();
+				this.close();
 			}
 			
 		},

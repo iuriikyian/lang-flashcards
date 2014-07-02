@@ -17,10 +17,6 @@ define(['underscore', 'zepto', 'backbone', 'utils/utils', 'zepto.touch'],
 			$header.find('.home-button').on(this.tapEvent, _.bind(this._onHome, this));
 			$header.find('.menu-button').on(this.tapEvent, _.bind(this._onShowMenu, this));			
 			this.$('.content .selected').on(this.tapEvent, _.bind(this._onToggleSelected, this));
-			this.$('.content').swipeLeft(_.bind(this._onShowNext, this));
-			this.$('.content').swipeRight(_.bind(this._onShowPrev, this));
-			this.$('.content').swipeUp(_.bind(this._onFlip, this));
-			this.$('.content').swipeDown(_.bind(this._onFlip, this));
 		},
 		
 		willBeClosed : function(){
@@ -64,11 +60,15 @@ define(['underscore', 'zepto', 'backbone', 'utils/utils', 'zepto.touch'],
 			this.trigger('card:flip');
 		},
 		_onContentClick : function(evt){
+			console.log('_onContentClick' );
+			console.log('contentClick: ' + evt.touches.length );
 			if($(evt.target).hasClass('selected')){
 				return;
 			}
 			var width = $(window).width();
-			var xPos = evt.pageX;
+			// to handle browser usage and touchstart event usage on device
+			var xPos = _.isUndefined(evt.touches) ? evt.pageX : evt.touches[0].pageX;
+			console.log('width: ' + width + ', xPos: ' + xPos);
 			if(xPos > width * 0.8){
 				return this._onShowNext();
 			}

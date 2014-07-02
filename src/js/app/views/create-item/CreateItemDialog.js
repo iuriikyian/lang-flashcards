@@ -13,7 +13,7 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'],
 			var name = this.$('input.new-item-name').val();
 			if(name){
 				this.trigger('create', name);
-				this.remove();
+				this.close();
 			}
 		},
 		

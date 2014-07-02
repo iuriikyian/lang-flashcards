@@ -18,6 +18,7 @@ define(['underscore', 'zepto', 'backbone', 'zepto.touch'],
 		
 		close : function(){
 			this.remove();
+			this.trigger('closed');
 			//this.$el.addClass(HIDDEN_CLASS);
 			//$(this.overlay).addClass(HIDDEN_CLASS);
 		},

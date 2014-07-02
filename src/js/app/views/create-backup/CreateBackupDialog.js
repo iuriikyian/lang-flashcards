@@ -20,10 +20,6 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'],
 			}
 		},
 
-		close : function(){
-			this.remove();
-		},
-		
 		render : function(){
 			this._base_render({
 				defaultName : this.defaultName

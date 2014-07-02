@@ -40,13 +40,13 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'],
 				});
 				if(items.length){
 					this.trigger('selected', items);
-					this.remove();
+					this.close();
 				}
 			}else{
 				var variant = $selected.attr('data-target');
 				if(variant){
 					this.trigger('selected', variant);
-					this.remove();
+					this.close();
 				}else{
 					variant = $selected.parent().find('.new-item').val();
 					if(!variant){
