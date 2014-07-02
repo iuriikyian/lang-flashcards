@@ -49,81 +49,92 @@ var appConfig = {
 
 function run_test($){
 
-    var TestFileService = function(){
-        var SEPARATOR = '/',
-            testData = {
-            '' : {
-                a : {
-                    a2 : {
-                        e : 'ccccc',
-                        f : 'rrrr'
-                    },
-                    b2 : 'sdfsdf',
-                    c2 : 'asdad'
-                },
-                b : 'sdd',
-                c : 'eeee'
-            }
-        };
 
-        this.list = function(dirPath){
-            var pathParts = dirPath.split(SEPARATOR);
-            if(pathParts[pathParts.length - 1] === ''){
-                pathParts.pop();
-            }
-            var dirData = testData;
-            var selectedDir;
-            _.each(pathParts, function(dirName, idx){
-                if(idx === pathParts.length - 1){
-                    selectedDir = dirData[dirName];
-                }else{
-                    dirData = dirData[dirName];
+    require(['underscore', 'zepto', 'views/select-file/SelectFileDialog', 'underscore.deferred'], 
+    function(_, $, SelectFileDialog){
+
+        var TestFileService = function(){
+            var SEPARATOR = '/',
+                testData = {
+                '' : {
+                    a : {
+                        a2 : {
+                            e : 'ccccc',
+                            f : 'rrrr'
+                        },
+                        b2 : 'sdfsdf',
+                        c2 : 'asdad'
+                    },
+                    b : 'sdd',
+                    c : 'eeee'
                 }
-            });
-            if(selectedDir){
-                var res = [];
-                _.each(selectedDir, function(value, key){
-                    if(_.isObject(value)){
-                        res.push({
-                            name : key,
-                            isDir : true
-                        });
+            };
+
+            this.list = function(dirPath){
+                var dfd = new _.Deferred();
+                var pathParts = dirPath.split(SEPARATOR);
+                if(pathParts[pathParts.length - 1] === ''){
+                    pathParts.pop();
+                }
+                var dirData = testData;
+                var selectedDir;
+                _.each(pathParts, function(dirName, idx){
+                    if(idx === pathParts.length - 1){
+                        selectedDir = dirData[dirName];
                     }else{
-                        res.push({
-                            name : key,
-                            isDir : false
-                        });
+                        dirData = dirData[dirName];
                     }
                 });
-                var data = {
-                    dir : dirPath,
-                    list : res
-                };
-                if(dirPath !== SEPARATOR){ // not root
-                    var parts = dirPath.split(SEPARATOR);
-                    console.log(parts);
-                    parts.shift(); // remove leading slash
-                    parts.pop(); // remove last dir
-                    data.parentDir = SEPARATOR + parts.join(SEPARATOR);
+                if(selectedDir){
+                    var res = [];
+                    _.each(selectedDir, function(value, key){
+                        if(_.isObject(value)){
+                            res.push({
+                                name : key,
+                                isDir : true
+                            });
+                        }else{
+                            res.push({
+                                name : key,
+                                isDir : false
+                            });
+                        }
+                    });
+                    var data = {
+                        dir : dirPath,
+                        list : res
+                    };
+                    if(dirPath !== SEPARATOR){ // not root
+                        var parts = dirPath.split(SEPARATOR);
+                        console.log(parts);
+                        parts.shift(); // remove leading slash
+                        parts.pop(); // remove last dir
+                        data.parentDir = SEPARATOR + parts.join(SEPARATOR);
+                    }else{
+                        data.parentDir = null;
+                    }
+                    console.dir(data);
+                    dfd.resolve(data);
                 }else{
-                    data.parentDir = null;
+                    dfd.reject({
+                        message : 'selected dir is not found'
+                    });
                 }
-                console.dir(data);
-                return data;
-            }
+                return dfd.promise();
+            };
         };
-    };
-
-    require(['zepto', 'views/select-file/SelectFileDialog'], function($, SelectFileDialog){
 
         var fileService = new TestFileService();
         var dlg = new SelectFileDialog({
             fileService : fileService,
             tapEvent : 'click'
         });
-        $('body').append(dlg.render().el);
-        dlg.on('selected', function(itemPath){
-            console.log('selected: ' + itemPath);
+        var rendering = dlg.render();
+        rendering.done(function(){
+            $('body').append(dlg.el);
+            dlg.on('selected', function(itemPath){
+                console.log('selected: ' + itemPath);
+            });        
         });
     });
 }

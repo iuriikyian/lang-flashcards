@@ -74,22 +74,46 @@ define(['underscore', 'zepto', 'BaseDialog', 'utils/utils', 'zepto.touch'],
 			}
 			console.log('currentDir: ' + this.currentDir);
 			this._offItemEvents();
-			this.$('.content .list').empty().append(this._renderContent());
-			this._initItemEvents();
+			var rendering = this._renderContent();
+			rendering.done(_.bind(function(content){
+				this.$('.content .list').empty().append(content);
+				this._initItemEvents();
+			}, this));
 		},
 
 		render : function(){
-			this._base_render({
-				title : 'select file',
-				content : this._renderContent()
+			var dfd = new _.Deferred();
+			var contentRendering = this._renderContent();
+			contentRendering.done(_.bind(function(content){
+				this._base_render({
+					title : 'select file',
+					content : content
+				});
+				this._initTouchEvents();
+				dfd.resolve(this);
+			}, this));
+			contentRendering.fail(function(err){
+				this._base_render({
+					title : 'select file',
+					content : content
+				});
+				this._initTouchEvents();
+				dfd.resolve(this);
+				alert(err.message);
 			});
-			this._initTouchEvents();
-			return this;
+			return dfd.promise();
 		},
 
 		_renderContent : function(){
-			var dirData = this.fileService.list(this.currentDir);
-			return this.fileListTemplate(dirData);
+			var dfd = new _.Deferred();
+			var gettingList = this.fileService.list(this.currentDir);
+			gettingList.done(_.bind(function(dirData){
+				dfd.resolve(this.fileListTemplate(dirData));
+			}, this));
+			gettingList.fail(function(err){
+				dfd.reject(err);
+			});
+			return dfd.promise();
 		}
 	});
 	
