@@ -160,8 +160,8 @@ function(_, $, Backbone, DateUtils,
     			    { id : 'create-deck', name : 'create deck'},
     			    { id : 'remove-decks', name : 'delete decks'},
     			    { id : 'backup', name : 'backup'},
-    			    { id : 'restore', name : 'restore'},
-                    { id : 'test-fs', name : 'test fs' }
+    			    { id : 'restore', name : 'restore'}/*,
+                    { id : 'test-fs', name : 'test fs' }*/
     			]
     		});
 
@@ -270,7 +270,7 @@ function(_, $, Backbone, DateUtils,
     						dialog.showError(err);
     					}, this));
     					break;
-                    case 'test-fs':
+                    /*case 'test-fs':
                         var fsSrv = this.servicesFactory.get('file-system');
                         var listing = fsSrv.list('/My Documents');
                         //var listing = fsSrv.list('/');
@@ -280,7 +280,7 @@ function(_, $, Backbone, DateUtils,
                         listing.fail(function(err){
                             console.log(JSON.stringify(err));    
                         });
-                        break;
+                        break;*/
     			}
     		}, this));
 	    },

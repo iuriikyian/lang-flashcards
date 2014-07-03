@@ -42,14 +42,27 @@ require.config({
     }
 });
 
+var nop = function(){};
+
 var appConfig = {
-	isBrowser : false
+	isBrowser : true,
+    _console : {
+        log : nop,
+        info : nop,
+        debug : nop,
+        warn : nop,
+        error : nop,
+        dir : nop
+    }
 };
+
+if(appConfig.console){
+    window.console = appConfig.console;
+}
 
 /**
  * Run the App!
  */
-
 console.log('start of app loading');
 require(['zepto'], function($){
 	$(function(){

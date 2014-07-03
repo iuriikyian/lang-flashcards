@@ -135,8 +135,14 @@ module.exports = function(grunt) {
 	    },
 
 	    exec : {
-        	'build' : {
-       			cmd : '../node_modules/.bin/phonegap build android'
+        	'build-android' : {
+       			cmd : 'platforms/android/cordova/build'
+        	},
+        	'build-android-release' : {
+       			cmd : 'platforms/android/cordova/build --release'
+        	},
+        	'clean-android' : {
+        		cmd : 'platforms/android/cordova/clean'
         	}
         },
 
@@ -202,7 +208,10 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('build-dev', 'default build task',  ['clean', 'resources-collector', 'compass', 'jshint']);
 	grunt.registerTask('build-www', 'collect/build resources for www', ['build-dev', 'requirejs', 'copy:to-www']);
-	grunt.registerTask('build-android', 'build android app', ['build-www', 'exec:build']);
+	grunt.registerTask('build-android', 'build android app', ['build-www', 'exec:build-android']);
+	grunt.registerTask('build-android-release', 'build android app release', ['build-www', 'exec:build-android-release']);
+
+	grunt.registerTask('clean-all', 'clean all generated files', ['clean', 'exec:clean-android']);	
 
 	grunt.registerTask('serve-dev', 'http server', ['http-server:dev']);
 	grunt.registerTask('serve-www', 'http server', ['http-server:www']);

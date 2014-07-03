@@ -1,8 +1,22 @@
 require.config({});
 
+var nop = function(){};
+
 var appConfig = {
-	isBrowser : false
+	isBrowser : false,
+    console : {
+        log : nop,
+        info : nop,
+        debug : nop,
+        warn : nop,
+        error : nop,
+        dir : nop
+    }
 };
+
+if(appConfig.console){
+    window.console = appConfig.console;
+}
 
 /**
  * Run the App!
