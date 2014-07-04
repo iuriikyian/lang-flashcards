@@ -26,7 +26,7 @@ function(_, $, Backbone, DateUtils,
         }, context));
         context.menu = menu;
     };
-	
+
 	var MainRouter = Backbone.Router.extend({
 		
 		initialize : function(options){
@@ -66,8 +66,7 @@ function(_, $, Backbone, DateUtils,
             }
 			if(this.view.name === 'card-view'){
 				this.view.willBeClosed();
-                this.view.remove();
-                delete this.view;
+                this._removeCurrentView();
 				this.onShowDecksList();
 				return;
 			}
@@ -81,6 +80,7 @@ function(_, $, Backbone, DateUtils,
 		},
 		
 		onShowDecksList : function(){
+            this._removeCurrentView();
 			this.decksManager.setCurrentDeck('');
 	    	var lang = this.decksManager.getCurrentLang();
             var view = this.viewsFactory.createView('decks-list', {
@@ -95,19 +95,16 @@ function(_, $, Backbone, DateUtils,
 	    	}, this));
 	    	view.on('show:today-deck', _.bind(function(){
 	    		console.log('Event:show:today-deck');
-                view.remove();
-                delete this.view;
 	    		this.onShowDeckCards('today');
 	    	}, this));
 	    	view.on('show:deck', _.bind(function(deckName){
 	    		console.log('Event:show:deck:' + deckName);
-                view.remove();
-                delete this.view;
 	    		this.onShowDeckCards(deckName);
 	    	}, this));
 		},
 		
 		onShowDeckCards : function(deckName){
+            this._removeCurrentView();
 			this.decksManager.setCurrentDeck(deckName);
 	    	var lang = this.decksManager.getCurrentLang();
 	    	var deck = this.decksManager.getDeck(lang, deckName);
@@ -122,8 +119,6 @@ function(_, $, Backbone, DateUtils,
 	    	view.on('home', _.bind(function(){
 	    		this.decksManager.saveDeckState(deck);
 	    		console.log('Event:home');
-                view.remove();
-                delete this.view;
 	    		this.onShowDecksList();
 	    	}, this));
 	    	view.on('show:menu', _.bind(function(){
@@ -254,8 +249,6 @@ function(_, $, Backbone, DateUtils,
     						backupFetching.done(_.bind(function(data){
     							console.log(data);
     							this.decksManager.restoreFromBackup(data);
-                                this.view.remove();
-                                delete this.view;
                                 this.onShowDecksList();
     						}, this));
     						backupFetching.fail(function(err){
@@ -478,7 +471,14 @@ function(_, $, Backbone, DateUtils,
 	    	fetching.fail(function(err){
 	    		alert(err);
 	    	});
-	    }
+	    },
+
+        _removeCurrentView : function(){
+            if(this.view){
+                this.view.remove();
+                delete this.view;
+            }
+        }
 	});
 	
 	return MainRouter;
