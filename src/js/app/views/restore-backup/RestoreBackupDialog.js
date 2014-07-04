@@ -24,6 +24,7 @@ function(_, $, utils, BaseDialog){
 				if(selectedBackup){
 					this.$('.commands .restore .loading').addClass('loading-active');
 					this.trigger('restore', selectedBackup);
+					this.close();
 				}
 			}, this));
 			return this;

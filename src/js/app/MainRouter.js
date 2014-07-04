@@ -254,7 +254,9 @@ function(_, $, Backbone, DateUtils,
     						backupFetching.done(_.bind(function(data){
     							console.log(data);
     							this.decksManager.restoreFromBackup(data);
-        						this.onShowDecksList();
+                                this.view.remove();
+                                delete this.view;
+                                this.onShowDecksList();
     						}, this));
     						backupFetching.fail(function(err){
     							dialog.showError(err);
