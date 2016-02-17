@@ -1,5 +1,6 @@
 var _ = require('underscore'),
 	$ = require('jquery'),
+	jh = require('jquery-hammerjs'),	
 	Backbone = require('backbone');
 
 var HIDDEN_CLASS = 'hidden';

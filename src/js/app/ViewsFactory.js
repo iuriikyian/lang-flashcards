@@ -1,10 +1,10 @@
 var _ = require('underscore'),
-	ViewsConfig = require('./ViewsConfig');
+	viewsConfig = require('./ViewsConfig');
 
 module.exports = function(config){
 	this.isDevice = config.isDevice;
 	this.createView = function(viewName, options){
-		var config = viewsCofig[viewName];
+		var config = viewsConfig[viewName];
 		var View = config.view;
 		var opts = _.defaults(options, config.options || {});
 		opts.tapEvent = this.isDevice ? 'touchstart' : 'click';

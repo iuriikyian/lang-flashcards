@@ -1,7 +1,7 @@
 var _ = require('underscore'),
 	$ = require('jquery'),
 	Backbone = require('backbone'),
-	utils = require('../../utils/utils');
+	utils = require('./utils/utils');
 
 var SRV_URL = 'https://script.google.com/macros/s/AKfycbxeEg8kcHw0tJ1qC8HE5Y47QOao05DV1H7NxGOjxX26hdPVezw/exec';
 var SERVER_URL =  SRV_URL + '?path=';

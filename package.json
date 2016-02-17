@@ -3,7 +3,7 @@
   "version": "1.1.2",
   "description": "lang-flashcards",
   "main": "index.js",
-  "bundle": "lang-flashcards",
+  "bundle": "ik.lang.flashcards",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -38,6 +38,8 @@
     "grunt-http-server": "0.0.5",
     "hammerjs": "^2.0.6",
     "jquery": "^2.2.0",
+    "jquery-hammerjs": "^2.0.0",
+    "phonegap": "^5.5.2",
     "underscore": "^1.8.3"
   }
 }

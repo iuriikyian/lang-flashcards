@@ -17,12 +17,14 @@
  * under the License.
  */
 
+require('jquery-hammerjs');
+
 var _ = require('underscore'),
 	DecksManager = require('./DecksManager'),
 	MainRouter = require('./MainRouter'),
     Storage = require('./local/Storage');
 
-module.exports = function(){
+var App = function(){
 	this.initialize = function(){
 		console.log('initialize start');
     	this.lang = 'english';
@@ -63,3 +65,32 @@ module.exports = function(){
 		this.router.onResize();
 	};
 };
+
+var nop = function(){};
+
+var appConfig = {
+	isBrowser : true,
+    _console : {
+        log : nop,
+        info : nop,
+        debug : nop,
+        warn : nop,
+        error : nop,
+        dir : nop
+    }
+};
+
+if(appConfig.console){
+    window.console = appConfig.console;
+}
+
+/**
+ * Run the App!
+ */
+document.addEventListener('deviceready', function(){
+	console.log('Event:deviceready');
+    var app = new App();
+    console.log('app initialized');
+    app.initialize();
+}, false);
+console.log('deviceready listener added');

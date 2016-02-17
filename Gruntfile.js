@@ -4,6 +4,10 @@ var _ = require('underscore'),
 module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+ 		phonegap : 'node_modules/.bin/phonegap',
+        appDir : '<%= pkg.name %>',
+        generatedAppDir : 'temp-app',
+        androidRes : 'platforms/android/res',
 
 		clean : {
 			dev: [
@@ -11,20 +15,18 @@ module.exports = function(grunt) {
 				'src/sass/',
 				'src/js/app/templates.js'
 			],
-			www: [
-				'www/css/',
-				'www/fonts/',
-				'www/img/',
-				'www/js/<%= pkg.bundle %>.min.js',
-				'www/js/require.js'
-			],
-			android: [
-				'platforms/android/assets/www/css/',
-				'platforms/android/assets/www/fonts/',
-				'platforms/android/assets/www/img/',
-				'platforms/android/assets/www/js/',
-				'platforms/android/assets/www/index.html'
-			]
+			www: ['www/'],
+			css: ['src/css/index.css'],
+			browser:[ 'platforms/browser', 'plugins/browser.json'],
+			ios:[ 'platforms/ios', 'plugins/ios.json'],
+            android:[ 'platforms/android', 'plugins/android.json'],
+            'phonegap-generated' : [
+                '.cordova',
+                'hooks',
+                'platforms',
+                'plugins'
+            ],
+            'phonegap-generated-app' : [ '<%= generatedAppDir %>']
 		},
 
 		compass : {
@@ -78,8 +80,11 @@ module.exports = function(grunt) {
 
         browserify : {
             'dev' : {
+            	browserifyOptions : {
+            		debug : true
+            	},
                 src : ['src/js/app/index.js'],
-                dest: 'src/index.js'
+                dest: 'www/js/index.js'
             }
         },
 
@@ -142,15 +147,58 @@ module.exports = function(grunt) {
 	    },
 
 	    exec : {
-        	'build-android' : {
-        		cmd : '../node_modules/.bin/phonegap build android'
-        	},
-        	'build-android-release' : {
-       			cmd : 'platforms/android/cordova/build --release'
-        	},
-        	'clean-android' : {
-        		cmd : 'platforms/android/cordova/clean'
-        	}
+            'create-app' : {
+                cwd: '.',
+                command: '<%= phonegap %> create <%= generatedAppDir %> <%= pkg.bundle %> <%= appName %>'
+            },
+            'add-platform-ios' : {
+                cwd : '.',
+                command : '<%= phonegap %> platform add ios'
+            },
+            'add-platform-android' : {
+                cwd : '.',
+                command : '<%= phonegap %> platform add android'
+            },
+            'add-platform-browser' : { // for testing
+                cwd : '.',
+                command : '<%=phonegap %> platform add browser'
+            },
+            'build-ios' : {
+                cwd: '.',
+                command: '<%= phonegap %> build ios'
+            },
+            'build-android' : {
+                cwd: '.',
+                command: '<%= phonegap %> build android'
+            },
+            'build-browser' : {
+                cwd : '.',
+                command: '<%= phonegap %> build browser'
+            },
+            'serve-browser' : {
+                cwd : '.',
+                command: '<%= phonegap %> run browser'
+            },
+            'plugin-console' : {
+                cwd : '.',
+                command : '<%= phonegap %> plugin add cordova-plugin-console@1.0.1'
+            },
+            'plugin-file' : {
+                cwd : '.',
+                command : '<%= phonegap %> plugin add cordova-plugin-file@3.0.0'
+            },
+            'plugin-network-information' : {
+                cwd : '.',
+                command : '<%= phonegap %> plugin add cordova-plugin-network-information@1.0.1'
+            },
+            'plugin-whitelist' : {
+                cwd : '.',
+                command : '<%= phonegap %> plugin add cordova-plugin-whitelist@1.0.0'
+            },
+            'plugin-dialogs' : {
+                cwd : '.',
+                command : '<%= phonegap %> plugin add cordova-plugin-dialogs@1.1.1'
+            }
         },
 
         copy : {
@@ -163,17 +211,25 @@ module.exports = function(grunt) {
     						"css/*.css",
     						"fonts/*.ttf",
     						"img/*.png",
-    						"img/*.gif"
+    						"img/*.gif",
+    						'index.html'
     					],
                         dest: "www/"
-                     },
+                     }
+                ]
+            },
+            'phonegap-generated' : {
+                files: [
                     {
-                        //expand: true,
-                        //cwd: 'src/js/lib/',
-                        src : "src/js/lib/require.js",
-                        dest: "www/js/require.js"
-                     },
-
+                        expand: true,
+                        cwd: '<%= generatedAppDir %>',
+                        src : [
+                            'plugins/**/*',
+                            'hooks/**/*',
+                            'platforms/**/*'
+                        ],
+                        dest: '.'
+                    }
                 ]
             }
         },
@@ -213,6 +269,15 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('default', 'default build task', ['build-dev']);
 
+	grunt.registerTask('build', 'build for browser',  [
+		'clean', 
+		'resources-collector', 
+		'compass', 
+		'jshint',
+		'browserify',
+		'copy:to-www'
+	]);
+
 	grunt.registerTask('build-dev', 'default build task',  ['clean', 'resources-collector', 'compass', 'jshint']);
 	grunt.registerTask('build-www', 'collect/build resources for www', ['build-dev', 'requirejs', 'copy:to-www']);
 	grunt.registerTask('build-android', 'build android app', ['build-www', 'exec:build-android']);
@@ -249,7 +314,7 @@ module.exports = function(grunt) {
 				}
 			});
 		});
-		grunt.file.write(cfg['dest-template'], 'define([], function(){ return ' + JSON.stringify(templates) + '; });');
+		grunt.file.write(cfg['dest-template'], 'module.exports = ' + JSON.stringify(templates) + ';');
 
 		var scssFileParts = ['/*!!!generated!!!*/'];
 		_.each(scssFiles, function(scssFile){
@@ -257,4 +322,48 @@ module.exports = function(grunt) {
 		});
 		grunt.file.write(cfg['dest-scss'] + cfg['dest-scss-index'], scssFileParts.join('\n'));
 	});
+
+	grunt.registerTask('clean-build', [
+        // 'clean:project',
+        // 'clean:fonts',
+        // 'clean:img',
+        // 'clean:res',
+        'clean:css',
+        // 'clean:jst',
+        'clean:www'
+    ]);
+
+	grunt.registerTask('install-plugins-browser', [
+        'exec:plugin-console',
+        'exec:plugin-network-information',
+        'exec:plugin-file',
+        'exec:plugin-dialogs'
+    ]);
+
+	grunt.registerTask('build-browser',
+        'create phonegap app for browser',
+        [
+            'clean:browser',
+            'clean:phonegap-generated-app',
+            'clean:phonegap-generated',
+            'exec:create-app',
+            'copy:phonegap-generated',
+            'clean:phonegap-generated-app',
+            'clean-build',
+            // 'copy:sass-browser',
+            'build',
+            'exec:add-platform-browser',
+            'install-plugins-browser'
+            // 'patch-file:browser-inappbrowser-plugin',
+            // 'patch-file:browser-inappbrowser'
+        ]
+    );
+
+    grunt.registerTask(
+        'serve-browser',
+        'run app in web browser',
+        [
+            'exec:serve-browser'
+        ]
+    );
 };

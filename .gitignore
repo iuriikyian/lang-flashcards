@@ -1,6 +1,10 @@
 .DS_Store
-bower_components/
 .sass-cache/
 .project
 node_modules/
 keystore/
+platforms/
+www/
+hooks/
+.cordova/
+plugins/

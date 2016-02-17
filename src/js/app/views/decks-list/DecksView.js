@@ -1,5 +1,7 @@
 var _ = require('underscore'),
 	$ = require('jquery'),
+	hammer = require('hammerjs'),
+	jh = require('jquery-hammerjs'),
 	Backbone = require('backbone'),
 	utils = require('../../utils/utils');
 
