@@ -76,20 +76,27 @@ module.exports = function(grunt) {
             src: 'src/js/app/**/*js'
         },
 
-        requirejs: {
-            compile: {
-                options: {
-                    // main file to start to look for its dependencies.
-                    name: 'app',
-                    baseUrl: "src/js/app",
-                    mainConfigFile: "src/js/config.js",
-                    amd: true,
-                    optimize: "none",
-//                    optimize: "uglify",
-                    out: "www/js/<%= pkg.bundle %>.min.js"//,
-                }
+        browserify : {
+            'dev' : {
+                src : ['src/js/app/index.js'],
+                dest: 'src/index.js'
             }
         },
+
+//         requirejs: {
+//             compile: {
+//                 options: {
+//                     // main file to start to look for its dependencies.
+//                     name: 'app',
+//                     baseUrl: "src/js/app",
+//                     mainConfigFile: "src/js/config.js",
+//                     amd: true,
+//                     optimize: "none",
+// //                    optimize: "uglify",
+//                     out: "www/js/<%= pkg.bundle %>.min.js"//,
+//                 }
+//             }
+//         },
 
 		'http-server': {
 
@@ -150,19 +157,19 @@ module.exports = function(grunt) {
             'to-www': {
                 files: [
                     {
-                        expand: true, 
-                        cwd: 'src/', 
+                        expand: true,
+                        cwd: 'src/',
                         src : [
     						"css/*.css",
     						"fonts/*.ttf",
     						"img/*.png",
     						"img/*.gif"
-    					], 
+    					],
                         dest: "www/"
                      },
                     {
-                        //expand: true, 
-                        //cwd: 'src/js/lib/', 
+                        //expand: true,
+                        //cwd: 'src/js/lib/',
                         src : "src/js/lib/require.js",
                         dest: "www/js/require.js"
                      },
@@ -198,10 +205,10 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-compass');
-	grunt.loadNpmTasks('grunt-contrib-jshint');	
-	grunt.loadNpmTasks('grunt-contrib-requirejs');
-	grunt.loadNpmTasks('grunt-contrib-copy');	
-	grunt.loadNpmTasks('grunt-exec');	
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-browserify');
+	grunt.loadNpmTasks('grunt-exec');
 	grunt.loadNpmTasks('grunt-http-server');
 
 	grunt.registerTask('default', 'default build task', ['build-dev']);
@@ -211,7 +218,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('build-android', 'build android app', ['build-www', 'exec:build-android']);
 	grunt.registerTask('build-android-release', 'build android app release', ['build-www', 'exec:build-android', 'exec:build-android-release']);
 
-	grunt.registerTask('clean-all', 'clean all generated files', ['clean', 'exec:clean-android']);	
+	grunt.registerTask('clean-all', 'clean all generated files', ['clean', 'exec:clean-android']);
 
 	grunt.registerTask('serve-dev', 'http server', ['http-server:dev']);
 	grunt.registerTask('serve-www', 'http server', ['http-server:www']);

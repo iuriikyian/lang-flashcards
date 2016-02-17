@@ -28,7 +28,7 @@ require.config({
         'underscore.deferred': {
             deps: ['underscore']
         },
-        
+
         backbone : {
         	deps: ['underscore', 'zepto'],
         	exports: 'Backbone'
@@ -50,7 +50,7 @@ var appConfig = {
 function run_test($){
 
 
-    require(['underscore', 'zepto', 'views/select-file/SelectFileDialog', 'underscore.deferred'], 
+    require(['underscore', 'zepto', 'views/select-file/SelectFileDialog', 'underscore.deferred'],
     function(_, $, SelectFileDialog){
 
         var TestFileService = function(){
@@ -135,7 +135,7 @@ function run_test($){
             $('body').append(dlg.el);
             dlg.on('selected', function(itemPath){
                 console.log('selected: ' + itemPath);
-            });        
+            });
         });
     });
 }

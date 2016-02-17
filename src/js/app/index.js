@@ -16,52 +16,50 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-define(['underscore', 'zepto', 'DecksManager', 'MainRouter',
-         //'in-memory/Storage', 'in-memory/testData',
-         'local/Storage'], 
-	function(_, $, DecksManager, MainRouter, Storage){//, testData){
-	
-		var App = function(){
-			this.initialize = function(){
-				console.log('initialize start');
-		    	this.lang = 'english';
-		    	//this.decksManager = new DecksManager(new InMemoryStorage(testData));
-		    	this.decksManager = new DecksManager(new Storage());
-		    	var isDevice = _.isUndefined(window.device) === false;
-		    	console.log('isDevice: ' + isDevice.toString());
-		        this.router = new MainRouter({
-		        	decksManager : this.decksManager,
-		        	isDevice : isDevice
-		        });
-		        this.bindEvents();
-		        this.router.onStart();
-		        console.log('initialize end');
-			};
-		
-			this.bindEvents = function(){
-				console.log('installing backbutton handler');
-				var me = this;
-		        document.addEventListener('backbutton', function(evt){
-		        	console.log('backbutton event called');
-		        	me.onBackbutton(evt);
-		        	console.log('backbutton event end');
-		        }, true);	        
-				console.log('backbutton handler installed');
-				window.addEventListener('resize', function(evt){
-					me.onResize();
-				});
-			};
-			
-			this.onBackbutton = function(){
-				console.log('onBackbutton start');
-				this.router.onBackbutton();
-				console.log('onBackbutton end');
-			};
-			
-			this.onResize = function(){
-				this.router.onResize();
-			};
-		};
-	
-		return App;
-});
+
+var _ = require('underscore'),
+	DecksManager = require('./DecksManager'),
+	MainRouter = require('./MainRouter'),
+    Storage = require('./local/Storage');
+
+module.exports = function(){
+	this.initialize = function(){
+		console.log('initialize start');
+    	this.lang = 'english';
+    	//this.decksManager = new DecksManager(new InMemoryStorage(testData));
+    	this.decksManager = new DecksManager(new Storage());
+    	var isDevice = _.isUndefined(window.device) === false;
+    	console.log('isDevice: ' + isDevice.toString());
+        this.router = new MainRouter({
+        	decksManager : this.decksManager,
+        	isDevice : isDevice
+        });
+        this.bindEvents();
+        this.router.onStart();
+        console.log('initialize end');
+	};
+
+	this.bindEvents = function(){
+		console.log('installing backbutton handler');
+		var me = this;
+        document.addEventListener('backbutton', function(evt){
+        	console.log('backbutton event called');
+        	me.onBackbutton(evt);
+        	console.log('backbutton event end');
+        }, true);
+		console.log('backbutton handler installed');
+		window.addEventListener('resize', function(evt){
+			me.onResize();
+		});
+	};
+
+	this.onBackbutton = function(){
+		console.log('onBackbutton start');
+		this.router.onBackbutton();
+		console.log('onBackbutton end');
+	};
+
+	this.onResize = function(){
+		this.router.onResize();
+	};
+};
