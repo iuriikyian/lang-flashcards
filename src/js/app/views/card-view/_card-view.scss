@@ -39,6 +39,11 @@
       height: 100%;
       positions: relative;
       text-align: center;
+      // old flexbox support
+      display: -webkit-box;
+      display: box;
+      -webkit-box-orient: vertical;
+      box-orient: vertical;
       @include display-flex;
       @include flex-direction(column);
       .reviews {
@@ -49,6 +54,9 @@
         font-size: $card-reviews-font-size;
       }
       .placeholder {
+        // old flexbox support
+        -webkit-box-flex: 1;
+        flex: 1;
         @include flex-grow(1);
       }
       .top,
