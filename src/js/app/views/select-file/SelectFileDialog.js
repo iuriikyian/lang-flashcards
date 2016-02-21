@@ -45,7 +45,7 @@ module.exports = BaseDialog.extend({
 	},
 
 	_onSelectFile : function(evt){
-		var $target = $(evt.currentTarget);
+		var $target = $(evt.target);
 		var fileName = $target.attr('data-file');
 		console.log('select file:' + fileName);
 		this.$('.list .file .fa-check-square-o').removeClass('fa-check-square-o').addClass('fa-square-o');
@@ -64,7 +64,7 @@ module.exports = BaseDialog.extend({
 	},
 
 	_onSelectDir : function(evt){
-		var $target = $(evt.currentTarget);
+		var $target = $(evt.target);
 		var dirName = $target.attr('data-dir');
 		console.log('select dir: ' + dirName);
 		if($target.hasClass('parent')){

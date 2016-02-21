@@ -12,14 +12,14 @@ module.exports = BaseDialog.extend({
 	},
 
 	_onSelectMode : function(evt){
-		var mode = $(evt.currentTarget).find('.state').attr('data-mode');
+		var mode = $(evt.target).find('.state').attr('data-mode');
 		this.close();
 		this.trigger('mode-selected', mode);
 	},
 
 	render : function(){
 		this._base_render({mode : this.mode});
-		this.$('.option').hammer().on('tap', _.bind(this._onSelectMode, this));
+		utils.hammerOn(this.$('.option'), 'tap', _.bind(this._onSelectMode, this));
 		return this;
 	}
 });

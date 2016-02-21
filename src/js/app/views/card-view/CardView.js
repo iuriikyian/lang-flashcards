@@ -14,7 +14,7 @@ module.exports = Backbone.View.extend({
 	},
 
 	_initTouchEvents : function(){
-		this.$('.content').on(this.tapEvent, _.bind(this._onContentClick, this));
+		utils.hammerOn(this.$('.content'), 'tap', _.bind(this._onContentClick, this));
 		var $header = this.$('.header');
 		utils.hammerOn($header.find('.home-button'), 'tap', _.bind(this._onHome, this));
 		utils.hammerOn($header.find('.menu-button'), 'tap', _.bind(this._onShowMenu, this));
@@ -63,13 +63,12 @@ module.exports = Backbone.View.extend({
 	},
 	_onContentClick : function(evt){
 		console.log('_onContentClick' );
-		console.log('contentClick: ' + evt.touches.length );
 		if($(evt.target).hasClass('selected')){
 			return;
 		}
 		var width = $(window).width();
 		// to handle browser usage and touchstart event usage on device
-		var xPos = _.isUndefined(evt.touches) ? evt.pageX : evt.touches[0].pageX;
+		var xPos = _.isUndefined(evt.pointers) ? evt.pageX : evt.pointers[0].pageX;
 		console.log('width: ' + width + ', xPos: ' + xPos);
 		if(xPos > width * 0.8){
 			return this._onShowNext();

@@ -18,16 +18,16 @@ module.exports = BaseDialog.extend({
 	},
 
 	_initTouchEvents : function(){
-		this.$('.variant').hammer().on('tap', _.bind(this._onSelectVariant, this));
-		this.$('.commands .select').hammer().on('tap', _.bind(this._onSelect, this));
+		utils.hammerOn(this.$('.variant'), 'tap', _.bind(this._onSelectVariant, this));
+		utils.hammerOn(this.$('.commands .select'), 'tap', _.bind(this._onSelect, this));
 	},
 
 	_onSelectVariant : function(evt){
 		if(this.multipleSelect){
-			$(evt.currentTarget).find('.checkbox').toggleClass('fa-square-o').toggleClass('fa-check-square-o');
+			$(evt.target).find('.checkbox').toggleClass('fa-square-o').toggleClass('fa-check-square-o');
 		}else{
 			this.$('.variant .checkbox').removeClass('fa-check-square-o').addClass('fa-square-o');
-			$(evt.currentTarget).find('.checkbox').removeClass('fa-square-o').addClass('fa-check-square-o');
+			$(evt.target).find('.checkbox').removeClass('fa-square-o').addClass('fa-check-square-o');
 		}
 	},
 

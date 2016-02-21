@@ -47,7 +47,7 @@ module.exports = BaseDialog.extend({
 		utils.hammerOn(this.$('.backups .backups-list .button'), 'tap', _.bind(function(evt){
 			console.log(evt);
 			this.$('.backups .backups-list .button .checkbox').removeClass('fa-check-square-o').addClass('fa-square-o');
-			$(evt.currentTarget).find('.checkbox').removeClass('fa-square-o').addClass('fa-check-square-o');
+			$(evt.target).find('.checkbox').removeClass('fa-square-o').addClass('fa-check-square-o');
 
 //				var $buttons = this.$('.backups .backups-list .button');
 //				$(evt.target).find('.loading').addClass('loading-active');

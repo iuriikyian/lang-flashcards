@@ -137,7 +137,7 @@ body,
   border: solid 1px $button-border-color;
   border-radius: $button-border-radius;
   background-color: $button-background-color;
-  @include single-box-shadow($button-shadow-color, $button-shadow-size, $button-shadow-size);
+  @include single-box-shadow($button-shadow-size, $button-shadow-size, $button-shadow-color);
 }
 
 @mixin button(){
@@ -150,7 +150,7 @@ body,
   padding: $button-padding;
   font-size: $button-font-size;
   background-color: $button-background-color;
-  @include single-box-shadow($button-shadow-color, $button-shadow-size, $button-shadow-size);
+  @include single-box-shadow($button-shadow-size, $button-shadow-size, $button-shadow-color);
 }
 
 @mixin overlay(){
