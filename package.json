@@ -1,6 +1,6 @@
 {
   "name": "lang-flashcards",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "lang-flashcards",
   "main": "index.js",
   "bundle": "ik.lang.flashcards",
