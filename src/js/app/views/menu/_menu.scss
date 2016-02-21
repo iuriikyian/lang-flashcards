@@ -8,7 +8,7 @@
     color: $menu-color;
     overflow-y: scroll;
     .menu-item {
-      border-bottom: solid 1px $menu-border-color;
+      border-bottom: solid 1 * $px $menu-border-color;
       font-size: $menu-item-font-size;
       padding: $menu-padding;
     }

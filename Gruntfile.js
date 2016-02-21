@@ -12,6 +12,7 @@ module.exports = function(grunt) {
 		clean : {
 			dev: [
 				'src/css/index.css',
+                'src/css/index2.css',
 				'src/sass/',
 				'src/js/app/templates.js'
 			],
@@ -202,7 +203,17 @@ module.exports = function(grunt) {
                         dest: '<%= androidRes %>/drawable-xxhdpi/icon.png'
                     }
                 ]
-            }            
+            },
+            'scss-variables' : {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'src/sass-config',
+                        src : ['*.scss'],
+                        dest: 'src/sass'
+                    }
+                ]                
+            }           
         },
         'resources-collector' : {
         	'dev' : {
@@ -224,7 +235,8 @@ module.exports = function(grunt) {
         		],
         		'dest-template' : 'src/js/app/templates.js',
         		'dest-scss' : 'src/sass/',
-        		'dest-scss-index' : 'index.scss'
+        		'dest-scss-index' : 'index.scss',
+                'dest-scss-index2' : 'index2.scss'
         	}
         }
 	});
@@ -241,7 +253,8 @@ module.exports = function(grunt) {
 	grunt.registerTask('build', 'build for browser',  [
 		'clean', 
 		'resources-collector', 
-		'compass', 
+        'copy:scss-variables',
+		'compass',
 		'jshint',
 		'browserify',
 		'copy:to-www'
@@ -258,7 +271,8 @@ module.exports = function(grunt) {
 		var config = grunt.config.get("resources-collector");
 		var cfg = config[this.target];
 		grunt.log.write('Collecting view template/scss resources for target: ' + this.target);
-		var scssFiles = [];
+		var scssFiles = ['variables'];
+        var scssFiles2 = ['variables2'];
 		var templates = {};
 		_.each(cfg.src, function(dir){
 			grunt.file.recurse(cfg.cwd + dir, function(abspath, rootdir, subdir, filename){
@@ -277,6 +291,7 @@ module.exports = function(grunt) {
 					grunt.log.writeln('scss: ' + filename);
 					grunt.file.copy(abspath, cfg['dest-scss'] + filename);
 					scssFiles.push(filename.substr(1, filename.length - 6));
+                    scssFiles2.push(filename.substr(1, filename.length - 6));
 				}
 			});
 		});
@@ -287,6 +302,12 @@ module.exports = function(grunt) {
 			scssFileParts.push('@import "' + scssFile + '";');
 		});
 		grunt.file.write(cfg['dest-scss'] + cfg['dest-scss-index'], scssFileParts.join('\n'));
+
+        var scssFileParts2 = ['/*!!!generated 2!!!*/'];
+        _.each(scssFiles2, function(scssFile){
+            scssFileParts2.push('@import "' + scssFile + '";');
+        });
+        grunt.file.write(cfg['dest-scss'] + cfg['dest-scss-index2'], scssFileParts2.join('\n'));
 	});
 
 	grunt.registerTask('clean-build', [

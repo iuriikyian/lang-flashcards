@@ -96,7 +96,7 @@ module.exports = BaseDialog.extend({
 			this._initTouchEvents();
 			dfd.resolve(this);
 		}, this));
-		contentRendering.fail(function(err){
+		contentRendering.fail(_.bind(function(err){
 			this._base_render({
 				title : 'select file',
 				content : ''
@@ -104,7 +104,7 @@ module.exports = BaseDialog.extend({
 			this._initTouchEvents();
 			dfd.resolve(this);
 			alert(err.message);
-		});
+		}, this));
 		return dfd.promise();
 	},
 

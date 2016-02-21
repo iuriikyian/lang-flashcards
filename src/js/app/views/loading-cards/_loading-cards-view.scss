@@ -4,8 +4,8 @@
       text-align: center;
       .connecting {
         display: inline-block;
-        width: 16px;
-        height: 11px;
+        width: 16 * $px;
+        height: 11 * $px;
         background-image: inline-image('ajax-pulse.gif');
       }
     }
@@ -14,10 +14,10 @@
       @include button();
       .loading{
         position: absolute;
-        left: 5px;
-        bottom: 5px;
-        width: 16px;
-        height: 11px;
+        left: 5 * $px;
+        bottom: 5 * $px;
+        width: 16 * $px;
+        height: 11 * $px;
       }
       .loading-active {
         background-image: inline-image('ajax-pulse.gif');

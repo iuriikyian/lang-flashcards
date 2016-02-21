@@ -3,24 +3,22 @@
 .card-view{
   .header{
     .title{
-//      padding: 0;
       .text{
         display: inline-block;
         vertical-align: middle;
-//        padding-bottom: $card-name-padding-bottom;
-        margin-left: 10px;
+        margin-left: 10 * $px;
         .side-front{
-          border-top: solid 2px $header-border-color;
+          border-top: solid 2 * $px $header-border-color;
         }
         .side-back{
-          border-bottom: solid 2px $header-border-color;
+          border-bottom: solid 2 * $px $header-border-color;
         }
       }
     }
   }
   .content {
     position: absolute;
-    top: 100px;
+    top: 50 * $px;
     left: 0;
     right: 0;
     bottom: 0;

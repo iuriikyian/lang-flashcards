@@ -10,24 +10,24 @@ html,body, .body{
   overflow: hidden;
 }
 
- // --- HTC one X (1280x720) styles --- begin
-$header-height: 80px;
-$header-border: 3px;
+ // --- variables --- begin
+$header-height: 40 * $px;
+$header-border: 1 * $px;
 $header-border-color: #444;
 $header-color: #fff;
 $header-background-color: #222;
-$header-font-size: 48px;
-$header-padding: 8px;
-$header-title-height: 54px;
-$button-height: 40px;
-$button-padding: 20px;
-$button-min-width: 80px;
+$header-font-size: 24 * $px;
+$header-padding: 4 * $px;
+$header-title-height: 27 * $px;
+$button-height: 20 * $px;
+$button-padding: 10 * $px;
+$button-min-width: 40 * $px;
 $button-border-color: #ddd;
-$button-border-radius: 0.3em;
-$button-margin: 0.3em;
-$button-font-size: 36px;
+$button-border-radius: 5 * $px;
+$button-margin: 5 * $px;
+$button-font-size: 18 * $px;
 $button-background-color: #444;
-$button-shadow-size: 5px;
+$button-shadow-size: 2 * $px;
 $button-shadow-color: #000;
 
 $button-disabled-border-color: #555;
@@ -35,81 +35,39 @@ $button-disabled-color: #555;
 
 $content-background-color: #222;
 $content-color: #fff;
-$content-padding: 8px;
+$content-padding: 4 * $px;
 
-$menu-width: 350px;
+$menu-width: 175 * $px;
 $menu-color: #eee;
 $menu-background-color: #555;
 $menu-border-color: #111;
 
-$dialog-title-font-size: 44px;
-$dialog-title-height: 50px;
-$dialog-content-padding: 20px;
-$dialog-line-font-size: 36px;
-$dialog-line-label-width: 250px;
-$dialog-button-checkbox-height: 46px;
-$dialog-new-item-font-size: 32px;
-$dialog-min-width: 300px;
-$dialog-title-padding-top: 10px;
+$dialog-title-font-size: 22 * $px;
+$dialog-title-height: 25 * $px;
+$dialog-content-padding: 10 * $px;
+$dialog-line-font-size: 18 * $px;
+$dialog-line-label-width: 125 * $px;
+$dialog-button-checkbox-height: 23 * $px;
+$dialog-new-item-font-size: 16 * $px;
+$dialog-min-width: 150 * $px;
+$dialog-title-padding-top: 5 * $px;
 
-$menu-item-font-size: 40px;
-$menu-padding: 20px;
+$menu-item-font-size: 20 * $px;
+$menu-padding: 10 * $px;
 
-$card-text-font-size: 56px;
-$card-notes-text-font-size: 50px;
-$card-select-font-size: 80px;
-$card-reviews-font-size: 32px;
-$card-review-sign-top: 28px;
+$card-text-font-size: 27 * $px;
+$card-notes-text-font-size: 25 * $px;
+$card-select-font-size: 40 * $px;
+$card-reviews-font-size: 16 * $px;
+$card-review-sign-top: 14 * $px;
 
-$notification-font-size: 36px;
+$notification-font-size: 18 * $px;
 $error-color: red;
 $success-color: green;
 
-// --- HTC one styles --- end
+// --- variables --- end
 
-/*$header-height: 44px;
-$header-border: 2px;
-$header-border-color: #444;
-$header-color: #fff;
-$header-background-color: #222;
-$header-font-size: 24px;
-
-$button-height: 20px;
-$button-padding: 10px;
-$button-min-width: 40px;
-$button-border-color: #ddd;
-$button-border-radius: 0.5em;
-$button-margin: 0.5em;
-$button-font-size: 18px;
-
-$button-disabled-border-color: #555;
-$button-disabled-color: #555;
-
-$content-background-color: #222;
-$content-color: #fff;
-$content-padding: 4px;
-
-$menu-width: 200px;
-$menu-color: #eee;
-$menu-background-color: #555;
-$menu-border-color: #111;
-
-$dialog-title-font-size: 22px;
-$dialog-padding: 10px;
-$dialog-line-font-size: 18px;
-$dialog-line-label-width: 150px;
-$dialog-variant-height: 30px;
-$dialog-new-item-font-size: 16px;
-
-$menu-item-font-size: 20px;
-$menu-padding: 10px;
-
-$card-text-font-size: 22px;
-$card-notes-text-font-size: 20px;
-$card-select-font-size: 50px;
-$card-name-padding-bottom: 35px;
-$card-reviews-font-size: 16px;
-*/
+// --- mixins --- begin
 @mixin screen-header(){
   height: $header-height;
   padding: $header-padding;
@@ -121,20 +79,13 @@ $card-reviews-font-size: 16px;
   background-color: $header-background-color;
 }
 
-
-
-body,
-.body {
-  background-color: $content-background-color; 
-}
-
 @mixin square-button(){
   font-family: FontAwesome;
   font-size: $dialog-title-font-size !important;
   height: $button-height;
-  width: $button-min-width - ($button-padding * 2);
+  /*width: $button-min-width - ($button-padding * 2);*/
   padding: $button-padding;
-  border: solid 1px $button-border-color;
+  border: solid 1 * $px $button-border-color;
   border-radius: $button-border-radius;
   background-color: $button-background-color;
   @include single-box-shadow($button-shadow-size, $button-shadow-size, $button-shadow-color);
@@ -143,7 +94,7 @@ body,
 @mixin button(){
   height: $button-height;
   min-width : $button-min-width;
-  border: solid 1px $button-border-color;
+  border: solid 1 * $px $button-border-color;
   border-radius: $button-border-radius;
   margin: $button-margin 0;
   text-align: center;
@@ -166,6 +117,12 @@ body,
   white-space:nowrap; 
   overflow: hidden;
   text-overflow:ellipsis;
+}
+// --- mixins --- end
+
+body,
+.body {
+  background-color: $content-background-color; 
 }
 
 .screen {
@@ -207,10 +164,10 @@ body,
       @include button();
       .loading{
         position: absolute;
-        left: 5px;
-        bottom: 5px;
-        width: 16px;
-        height: 11px;
+        left: 5 * $px;
+        bottom: 5 * $px;
+        width: 16 * $px;
+        height: 11 * $px;
       }
       .loading-active {
         background-image: inline-image('ajax-pulse.gif');
