@@ -26,25 +26,29 @@
     				<% } %>
     			</div>	
     		<% }; %>
-	    	<% if(card.deckSize) {%>
-		    	<% if(card.top){
-		    		card.top.forEach(function(line){ %>
-		    			<div class="top"><%= line %></div>
-		    	<%	});
+    		<div class="placeholder"></div>
+    		<div class="card-content">
+		    	<% if(card.deckSize) {%>
+			    	<% if(card.top){
+			    		card.top.forEach(function(line){ %>
+			    			<div class="top"><%= line %></div>
+			    	<%	});
+			    		} %>
+			    	<% if(card.text){
+			    		card.text.forEach(function(line){ %>
+			    			<div class="text"><%= line %></div>
+			    	<%	});
+			    		} %>
+			    	<% if(card.bottom){
+			    		card.bottom.forEach(function(line){ %>
+			    			<div class="bottom"><%= line %></div>
+			    	<%	});
 		    		} %>
-		    	<% if(card.text){
-		    		card.text.forEach(function(line){ %>
-		    			<div class="text"><%= line %></div>
-		    	<%	});
-		    		} %>
-		    	<% if(card.bottom){
-		    		card.bottom.forEach(function(line){ %>
-		    			<div class="bottom"><%= line %></div>
-		    	<%	});
-		    		} %>
-	    	<% }else{ %>
-	    		<div class="text">Deck is EMPTY</div>
-	    	<%};%>
+		    	<% }else{ %>
+		    		<div class="text">Deck is EMPTY</div>
+		    	<%};%>
+	    	</div>
+	    	<div class="placeholder"></div>
     	</div>
 	</div>
 </div>

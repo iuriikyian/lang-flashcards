@@ -10,7 +10,6 @@ module.exports = Backbone.View.extend({
 
 	initialize : function(options){
 		this.card = options.card;
-		// this.tapEvent = options.tapEvent;
 	},
 
 	_initTouchEvents : function(){
@@ -30,16 +29,6 @@ module.exports = Backbone.View.extend({
 		$(this.el).append(this.template({
 			card : this.card
 		}));
-		var height = $(window).height();
-		var headerHeight = this.$('.header').height();
-		var contentHeight = height - headerHeight;
-		var $content = this.$('.content');
-		var $cardSide = this.$('.content .card-side');
-		var linesHeight = $cardSide.height();
-		$content.height(contentHeight);
-		$cardSide.css({
-			'padding-top' : ((contentHeight - linesHeight) / 2) + 'px'
-		});
 		this._initTouchEvents();
 		return this;
 	},

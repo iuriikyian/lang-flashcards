@@ -1,3 +1,5 @@
+@import "compass/css3/flexbox";
+
 .card-view{
   .header{
     .title{
@@ -17,7 +19,11 @@
     }
   }
   .content {
-    position: relative;
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     .selected{
       position: absolute;
       left: $header-padding;
@@ -29,15 +35,23 @@
       display: inline-block;
       text-align: left;
     }
+
     .card-side {
+      width: 100%;
+      height: 100%;
       positions: relative;
       text-align: center;
+      @include display-flex;
+      @include flex-direction(column);
       .reviews {
         position: absolute;
         left: $card-select-font-size + $header-padding;
         top: $card-review-sign-top;
         font-family: FontAwesome;
         font-size: $card-reviews-font-size;
+      }
+      .placeholder {
+        @include flex-grow(1);
       }
       .top,
       .bottom {
