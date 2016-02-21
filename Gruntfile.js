@@ -154,6 +154,7 @@ module.exports = function(grunt) {
     						"fonts/*.ttf",
     						"img/*.png",
     						"img/*.gif",
+                            "res/*.png",
     						'index.html'
     					],
                         dest: "www/"
@@ -173,7 +174,35 @@ module.exports = function(grunt) {
                         dest: '.'
                     }
                 ]
-            }
+            },
+            'to-android-icons' : {
+                files: [
+                    {
+                        src: 'src/res/icon/android/icon-48-mdpi.png',
+                        dest: '<%= androidRes %>/drawable/icon.png'
+                    },
+                    {
+                        src: 'src/res/icon/android/icon-36-ldpi.png',
+                        dest: '<%= androidRes %>/drawable-ldpi/icon.png'
+                    },
+                    {
+                        src: 'src/res/icon/android/icon-48-mdpi.png',
+                        dest: '<%= androidRes %>/drawable-mdpi/icon.png'
+                    },
+                    {
+                        src: 'src/res/icon/android/icon-96-xhdpi.png',
+                        dest: '<%= androidRes %>/drawable-xhdpi/icon.png'
+                    },
+                    {
+                        src: 'src/res/icon/android/icon-72-hdpi.png',
+                        dest: '<%= androidRes %>/drawable-hdpi/icon.png'
+                    },
+                    {
+                        src: 'src/res/icon/android/icon-144-xxhdpi.png',
+                        dest: '<%= androidRes %>/drawable-xxhdpi/icon.png'
+                    }
+                ]
+            }            
         },
         'resources-collector' : {
         	'dev' : {
@@ -198,7 +227,6 @@ module.exports = function(grunt) {
         		'dest-scss-index' : 'index.scss'
         	}
         }
-
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-clean');
@@ -278,6 +306,13 @@ module.exports = function(grunt) {
         'exec:plugin-dialogs'
     ]);
 
+    grunt.registerTask('install-plugins-android', [
+        'exec:plugin-whitelist',
+        'exec:plugin-network-information',
+        'exec:plugin-file',
+        'exec:plugin-dialogs'
+    ]);
+
 	grunt.registerTask('build-browser',
         'create phonegap app for browser',
         [
@@ -294,6 +329,25 @@ module.exports = function(grunt) {
             'install-plugins-browser'
             // 'patch-file:browser-inappbrowser-plugin',
             // 'patch-file:browser-inappbrowser'
+        ]
+    );
+
+    grunt.registerTask('build-android',
+        'create phonegap app for android',
+        [
+            'clean:android',
+            'clean:phonegap-generated-app',
+            'clean:phonegap-generated',
+            'exec:create-app',
+            'copy:phonegap-generated',
+            'clean:phonegap-generated-app',
+            'clean-build',
+            'build',
+            'exec:add-platform-android',
+            'install-plugins-android',
+            'copy:to-android-icons',
+            'exec:build-android',
+            'copy:to-android-icons' // to prevent changes in buid
         ]
     );
 

@@ -50,10 +50,6 @@
     <icon platform="android" qualifier="hdpi" src="www/res/icon/android/icon-72-hdpi.png" />
     <icon platform="android" qualifier="xhdpi" src="www/res/icon/android/icon-96-xhdpi.png" />
     <icon platform="android" qualifier="xxhdpi" src="www/res/icon/android/icon-144-xhdpi.png" />
-    <icon gap:platform="android" gap:qualifier="ldpi" src="www/res/icon/android/icon-36-ldpi.png" />
-    <icon gap:platform="android" gap:qualifier="mdpi" src="www/res/icon/android/icon-48-mdpi.png" />
-    <icon gap:platform="android" gap:qualifier="hdpi" src="www/res/icon/android/icon-72-hdpi.png" />
-    <icon gap:platform="android" gap:qualifier="xhdpi" src="www/res/icon/android/icon-96-xhdpi.png" />
     <icon gap:platform="blackberry" src="www/res/icon/blackberry/icon-80.png" />
     <icon gap:platform="blackberry" gap:state="hover" src="www/res/icon/blackberry/icon-80.png" />
     <icon gap:platform="ios" height="57" src="www/res/icon/ios/icon-57.png" width="57" />
@@ -74,5 +70,6 @@
     <gap:splash gap:platform="ios" height="1024" src="www/res/screen/ios/screen-ipad-portrait.png" width="768" />
     <gap:splash gap:platform="ios" height="768" src="www/res/screen/ios/screen-ipad-landscape.png" width="1024" />
     <gap:splash gap:platform="winphone" src="www/res/screen/windows-phone/screen-portrait.jpg" />
-    <access origin="*" />
+    <allow-navigation href="*" />
+
 </widget>
