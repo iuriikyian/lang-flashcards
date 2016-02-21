@@ -32,8 +32,8 @@ module.exports = Backbone.View.extend({
 		$(this.el).append(this.template({
 			menus : this.menus,
 		}));
-		this.$('.overlay').hammer().on('tap', _.bind(this._onClose, this));
-		this.$('.menu .menu-item').hammer().on('tap', _.bind(this._onMenuClick, this));
+		utils.hammerOn(this.$('.overlay'), 'tap', _.bind(this._onClose, this));
+		utils.hammerOn(this.$('.menu .menu-item'), 'tap', _.bind(this._onMenuClick, this));
 		return this;
 	},
 

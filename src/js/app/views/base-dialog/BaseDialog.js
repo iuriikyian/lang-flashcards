@@ -1,15 +1,13 @@
 var _ = require('underscore'),
 	$ = require('jquery'),
-	jh = require('jquery-hammerjs'),	
-	Backbone = require('backbone');
+	Backbone = require('backbone'),
+	utils = require('../../utils/utils');
 
 var HIDDEN_CLASS = 'hidden';
 
 module.exports = Backbone.View.extend({
-	//className : 'dialog',
 
 	initialize : function(options){
-		//this.overlay = options.overlay;
 		this.tapEvent = options.tapEvent;
 		this.singleTapEvent = options.singleTapEvent;
 	},
@@ -22,13 +20,11 @@ module.exports = Backbone.View.extend({
 	close : function(){
 		this.remove();
 		this.trigger('closed');
-		//this.$el.addClass(HIDDEN_CLASS);
-		//$(this.overlay).addClass(HIDDEN_CLASS);
 	},
 
 	_base_render : function(model){
 		$(this.el).append(this.template(model));
-		this.$('.overlay').hammer().on('tap', _.bind(this._onClose, this));
-		this.$('.header .close').hammer().on('tap', _.bind(this._onClose, this));
+		utils.hammerOn(this.$('.overlay'), 'tap',_.bind(this._onClose, this));
+		utils.hammerOn(this.$('.header .close'), 'tap', _.bind(this._onClose, this));
 	}
 });

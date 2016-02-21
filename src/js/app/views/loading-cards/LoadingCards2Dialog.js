@@ -14,7 +14,7 @@ module.exports = BaseDialog.extend({
 	},
 
 	_initTouchEvents : function(){
-		this.$('.decks .decks-list .button').hammer().on('tap', _.bind(function(evt){
+		utils.hammerOn(this.$('.decks .decks-list .button'), 'tap', _.bind(function(evt){
 			console.log(evt);
 			$(evt.target).find('.loading').addClass('loading-active');
 			var selectedDeck = $(evt.target).attr('data-target');

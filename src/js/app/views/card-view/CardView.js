@@ -16,9 +16,9 @@ module.exports = Backbone.View.extend({
 	_initTouchEvents : function(){
 		this.$('.content').on(this.tapEvent, _.bind(this._onContentClick, this));
 		var $header = this.$('.header');
-		$header.find('.home-button').hammer().on('tap', _.bind(this._onHome, this));
-		$header.find('.menu-button').hammer().on('tap', _.bind(this._onShowMenu, this));
-		this.$('.content .selected').hammer().on('tap', _.bind(this._onToggleSelected, this));
+		utils.hammerOn($header.find('.home-button'), 'tap', _.bind(this._onHome, this));
+		utils.hammerOn($header.find('.menu-button'), 'tap', _.bind(this._onShowMenu, this));
+		utils.hammerOn(this.$('.content .selected'), 'tap', _.bind(this._onToggleSelected, this));
 	},
 
 	willBeClosed : function(){

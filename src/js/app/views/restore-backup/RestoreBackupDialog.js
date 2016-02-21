@@ -44,7 +44,7 @@ module.exports = BaseDialog.extend({
 		}, this);
 		this.$('.loading-info').addClass(HIDDEN_CLASS);
 		this.$('.backups .backups-list').empty().append(parts.join(''));
-		this.$('.backups .backups-list .button').hammer().on('tap', _.bind(function(evt){
+		utils.hammerOn(this.$('.backups .backups-list .button'), 'tap', _.bind(function(evt){
 			console.log(evt);
 			this.$('.backups .backups-list .button .checkbox').removeClass('fa-check-square-o').addClass('fa-square-o');
 			$(evt.currentTarget).find('.checkbox').removeClass('fa-square-o').addClass('fa-check-square-o');

@@ -88,64 +88,6 @@ module.exports = function(grunt) {
             }
         },
 
-//         requirejs: {
-//             compile: {
-//                 options: {
-//                     // main file to start to look for its dependencies.
-//                     name: 'app',
-//                     baseUrl: "src/js/app",
-//                     mainConfigFile: "src/js/config.js",
-//                     amd: true,
-//                     optimize: "none",
-// //                    optimize: "uglify",
-//                     out: "www/js/<%= pkg.bundle %>.min.js"//,
-//                 }
-//             }
-//         },
-
-		'http-server': {
-
-	        www: {
-
-	            // the server root directory
-	            root: 'www',
-
-	            port: 8281,
-	            // port: function() { return 8282; }
-
-	            host: "127.0.0.1",
-
-	            cache: 0,
-	            showDir : true,
-	            autoIndex: true,
-	            defaultExt: "html",
-
-	            // run in parallel with other tasks
-	            runInBackground: false//true|false
-
-	        },
-
-	        dev: {
-
-	            // the server root directory
-	            root: 'src',
-
-	            port: 8282,
-	            // port: function() { return 8282; }
-
-	            host: "127.0.0.1",
-
-	            cache: 0,
-	            showDir : true,
-	            autoIndex: true,
-	            defaultExt: "html",
-
-	            // run in parallel with other tasks
-	            runInBackground: false//true|false
-
-	        }
-	    },
-
 	    exec : {
             'create-app' : {
                 cwd: '.',
@@ -265,7 +207,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-browserify');
 	grunt.loadNpmTasks('grunt-exec');
-	grunt.loadNpmTasks('grunt-http-server');
 
 	grunt.registerTask('default', 'default build task', ['build-dev']);
 
@@ -284,9 +225,6 @@ module.exports = function(grunt) {
 	grunt.registerTask('build-android-release', 'build android app release', ['build-www', 'exec:build-android', 'exec:build-android-release']);
 
 	grunt.registerTask('clean-all', 'clean all generated files', ['clean', 'exec:clean-android']);
-
-	grunt.registerTask('serve-dev', 'http server', ['http-server:dev']);
-	grunt.registerTask('serve-www', 'http server', ['http-server:www']);
 
 	grunt.registerMultiTask("resources-collector", function(){
 		var config = grunt.config.get("resources-collector");

@@ -1,7 +1,6 @@
 var _ = require('underscore'),
 	$ = require('jquery'),
-	hammer = require('hammerjs'),
-	jh = require('jquery-hammerjs'),
+	Hammer = require('hammerjs'),
 	Backbone = require('backbone'),
 	utils = require('../../utils/utils');
 
@@ -20,10 +19,10 @@ module.exports = Backbone.View.extend({
 	},
 
 	_initTouchEvents : function(){
-		this.$('.header .menu-button').hammer().on('tap', _.bind(this._onShowMenu, this));
+		utils.hammerOn(this.$('.header .menu-button'), 'tap', _.bind(this._onShowMenu, this));
 		var $content = this.$('.content');
-		$content.find('.today-button').hammer().on('tap', _.bind(this._onShowTodayDeck, this));
-		$content.find('.deck-button').hammer().on('tap', _.bind(this._onShowDeck, this));
+		utils.hammerOn($content.find('.today-button'), 'tap', _.bind(this._onShowTodayDeck, this));
+		utils.hammerOn($content.find('.deck-button'), 'tap', _.bind(this._onShowDeck, this));
 	},
 
 	render : function(){

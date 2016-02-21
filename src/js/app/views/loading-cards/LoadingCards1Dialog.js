@@ -28,7 +28,7 @@ module.exports = BaseDialog.extend({
 		}, this);
 		this.$('.loading').addClass(HIDDEN_CLASS);
 		this.$('.languages .langs-list').empty().append(parts.join(''));
-		this.$('.languages .langs-list .button').hammer().on('tap', _.bind(function(evt){
+		utils.hammerOn(this.$('.languages .langs-list .button'), 'tap', _.bind(function(evt){
 			console.log(evt);
 			$(evt.target).find('.loading').addClass('loading-active');
 			var selectedLang = $(evt.target).attr('data-target');

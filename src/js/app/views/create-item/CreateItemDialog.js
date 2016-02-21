@@ -23,7 +23,7 @@ module.exports = BaseDialog.extend({
 		this._base_render({
 			title : this.title
 		});
-		this.$('.commands .create').hammer().on('tap', _.bind(this._onCreate, this));
+		utils.hammerOn(this.$('.commands .create'), 'tap', _.bind(this._onCreate, this));
 		return this;
 	}
 });

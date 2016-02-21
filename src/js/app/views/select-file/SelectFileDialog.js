@@ -21,8 +21,8 @@ module.exports = BaseDialog.extend({
 	},
 
 	_initItemEvents : function(){
-		this.$('.list .file').hammer().on('tap', _.bind(this._onSelectFile, this));
-		this.$('.list .dir').hammer().on('tap', _.bind(this._onSelectDir, this));
+		utils.hammerOn(this.$('.list .file'), 'tap', _.bind(this._onSelectFile, this));
+		utils.hammerOn(this.$('.list .dir'), 'tap', _.bind(this._onSelectDir, this));
 	},
 
 	_offItemEvents : function(){
