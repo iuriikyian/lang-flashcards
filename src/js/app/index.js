@@ -17,8 +17,6 @@
  * under the License.
  */
 
-require('jquery-hammerjs');
-
 var _ = require('underscore'),
 	DecksManager = require('./DecksManager'),
 	MainRouter = require('./MainRouter'),
